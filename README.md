@@ -11,8 +11,7 @@ current version v0.1
 - 1 sample per pixel
 - no bucketing
 - orthographics camera
-- no spliting and bounding
-- dice each and every entire primitive
+- no splitting and bounding (dice entire primitives, each and every)
 
 ####v2.0
 
@@ -33,8 +32,12 @@ current version v0.1
 
 ####v6.0
 
+- (GP)GPU implementation
+
+####v7.0
+
 - shading language
 
-####v17.0
+####v113A.0
 
 - full Renderman specification :D
