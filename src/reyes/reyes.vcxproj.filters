@@ -1,36 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="core">
-      <UniqueIdentifier>{e89e5ce4-8f0c-44a4-8b04-3c4883905997}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="app">
+    <Filter Include="reyes">
       <UniqueIdentifier>{94e09b13-4988-47b9-8eb1-ddbc96d9fa3b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="math">
-      <UniqueIdentifier>{67870b9e-7344-4418-9b3a-21448656421b}</UniqueIdentifier>
+    <Filter Include="reyes\core">
+      <UniqueIdentifier>{e89e5ce4-8f0c-44a4-8b04-3c4883905997}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>app</Filter>
-    </ClCompile>
     <ClCompile Include="core.cpp">
-      <Filter>core</Filter>
+      <Filter>reyes\core</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mem.hpp">
-      <Filter>core</Filter>
+      <Filter>reyes\core</Filter>
     </ClInclude>
     <ClInclude Include="shape.hpp">
-      <Filter>app</Filter>
+      <Filter>reyes</Filter>
     </ClInclude>
-    <ClInclude Include="vec.hpp">
-      <Filter>math</Filter>
+    <ClInclude Include="core.h">
+      <Filter>reyes\core</Filter>
     </ClInclude>
-    <ClInclude Include="mat.hpp">
-      <Filter>math</Filter>
+    <ClInclude Include="camera.hpp">
+      <Filter>reyes</Filter>
+    </ClInclude>
+    <ClInclude Include="vecmx.hpp">
+      <Filter>reyes</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer.hpp">
+      <Filter>reyes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -76,10 +76,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="mat.hpp" />
+    <ClInclude Include="camera.hpp" />
+    <ClInclude Include="core.h" />
     <ClInclude Include="mem.hpp" />
+    <ClInclude Include="renderer.hpp" />
     <ClInclude Include="shape.hpp" />
-    <ClInclude Include="vec.hpp" />
+    <ClInclude Include="vecmx.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core.cpp" />

@@ -1,17 +1,10 @@
-#include "mem.hpp"
+#include "core.h"
 
-namespace reyes
-{
-    namespace globals
-    {
-        reyes::mem::mAllocator mem;
-        reyes::mem::StackAllocator< 1<<23/*8MB*/ > stackmem;
-    }
-}
+reyes::mem::mAllocator reyes::MEMORY;
+reyes::mem::StackAllocator< 1 << 24/*16MB*/ > reyes::STACK;
+reyes::renderer REYES;
 
-using namespace reyes::globals;
-
-extern void appMain();
+using namespace reyes;
 
 int main()
 {

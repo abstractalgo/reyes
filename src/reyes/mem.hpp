@@ -12,11 +12,15 @@
 #endif
 #endif
 
+#define RMEM_NEW(_alloc, _type) static_cast<_type*>(_alloc.alloc(sizeof(_type)).ptr)
+#define RMEM_MAKE(_type, _name, _alloc) _type _name = *(static_cast<_type*>(_alloc.alloc(sizeof(_type)).ptr))
+#define RMEM_DEL(_name, _alloc) { reyes::mem::blk _blk(static_cast<void*>(&_name),sizeof(_name)); _alloc.free(_blk); }
+
 namespace reyes
 {
     namespace mem
     {
-        /* Memory descriptor sturcture. */
+        /* Memory block sturcture. */
         struct blk
         {
             void* ptr;
