@@ -30,7 +30,10 @@
     <ClInclude Include="vecmx.hpp">
       <Filter>reyes</Filter>
     </ClInclude>
-    <ClInclude Include="renderer.hpp">
+    <ClInclude Include="pipeline.hpp">
+      <Filter>reyes</Filter>
+    </ClInclude>
+    <ClInclude Include="image.hpp">
       <Filter>reyes</Filter>
     </ClInclude>
   </ItemGroup>

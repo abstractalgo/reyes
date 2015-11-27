@@ -78,8 +78,9 @@
   <ItemGroup>
     <ClInclude Include="camera.hpp" />
     <ClInclude Include="core.h" />
+    <ClInclude Include="image.hpp" />
     <ClInclude Include="mem.hpp" />
-    <ClInclude Include="renderer.hpp" />
+    <ClInclude Include="pipeline.hpp" />
     <ClInclude Include="shape.hpp" />
     <ClInclude Include="vecmx.hpp" />
   </ItemGroup>
