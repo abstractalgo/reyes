@@ -10,6 +10,11 @@ namespace reyes
 
     };
 
+	class Primitive
+	{
+
+	};
+
     /* Enum used to determine split direction of the Shape. */
     enum SplitDir { U, V };
 

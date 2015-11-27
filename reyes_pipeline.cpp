@@ -11,7 +11,7 @@ render(shape[] scene, camera camera, backbuffer image)
 
     // BOUND-SPLIT
     // get all shapes under some limit size
-    while(unsplit_shapes.notEmpty)                      // if there is any big shape
+    while (unsplit_shapes)                              // if there is any big shape
         shape = unsplit_shapes.pop()                    // get next shape from list
         grid = shape.dice(8,8)                          // coarse uGrid
         grid = grid.project(camera)                     // project uGrid
@@ -30,24 +30,24 @@ render(shape[] scene, camera camera, backbuffer image)
 
     // DICE
     // get all small shapes and dice them
-    while(split_shapes.notEmpty)
+    while (split_shapes)
         shape = split_shapes.pop()                      // get shape
         grid = shape.dice(8,8)                          // dice it
         uGrids.push(grid)                               // push the data
 
     // SHADE
     // run shader on grid points
-    while(uGrids.notEmpty)
+    while (uGrids)
         grid = grids.pop()                              // get grid
         shadedGrid = grid.shade()                       // shade points in it
         shadedGrids.push(shadedGrid)                    // pust the data
 
     // SAMPLE
     // sample shaded points and get samples to be injected into a color buffer
-    while(uGrids.notEmpty)
+    while (uGrids)
         grid = shadedGrids.pop()                        // get the shaded grid
-        foreach quad in grid
-            image.rasterize(quad)                       // rasterize and inject into buffer
+        foreach quadrilateral in grid
+            image.rasterize(quadrilateral)              // rasterize and inject into buffer
 
     // can combine dice and shade and sample
 }
