@@ -7,11 +7,11 @@ current version v0.1
 
 ####v1.0
 
-- G-buffer + z-buffer
-- 1 sample per pixel
-- no bucketing
-- orthographics camera
+- ~~G-buffer + z-buffer (1 sample per pixel)~~
+- ~~no bucketing~~
+- ~~orthographic camera~~
 - no splitting and bounding (dice entire primitives, each and every)
+- basic pipeline
 
 ####v2.0
 
@@ -29,9 +29,11 @@ current version v0.1
 ####v5.0
 
 - A-buffer (transparency support + optimizations)
+- additional primitives
 
 ####v6.0
 
+- fix cracks
 - multithreaded/jobified
 
 ####v7.0

@@ -5,29 +5,33 @@
 
 namespace reyes
 {
-    template<class PixelInfo>
     /* Image storage. */
     struct Image
     {
-        Image(uint16_t _width, uint16_t _height);
-        void inject(vec4 location, PixelInfo pixel);
+        Image(uint16_t _width, uint16_t _height) {}
+        template<class GridTy>
+        void rasterize(Grid<GridTy>& grid) {}
     };
 
-    struct GBufferPixelInfo
+    struct GBufferPixel
     {
         color color;
-        double z;
+        float z;
     };
 
-    template<>
-    struct Image<GBufferPixelInfo>
+    struct GBuffer : public Image
     {
         uint16_t width, height;
+        GBufferPixel* data;
 
-        Image(uint8_t _width, uint8_t _height)
-            : width(_width)
+        GBuffer(uint8_t _width, uint8_t _height)
+            : Image(_width, _height)
+            , width(_width)
             , height(_height)
+            , data(new GBufferPixel[width*height])
         {}
+
+        template<class GridTy>
+        void rasterize(Grid<GridTy>& grid);
     };
-    typedef Image<GBufferPixelInfo> GBuffer;
 }

@@ -6,9 +6,9 @@ using namespace reyes;
 void appMain()
 {
     // scene setup
-    Shape scene[1];
+    std::list<Shape> scene;
     Rectangle r({ 0, 0, 0 }, { 1, 1 });
-    scene[0] = r;
+    scene.push_back(r);
 
     // camera setup
     camera camera;

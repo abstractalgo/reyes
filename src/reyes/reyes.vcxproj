@@ -82,6 +82,7 @@
     <ClInclude Include="image.hpp" />
     <ClInclude Include="mem.hpp" />
     <ClInclude Include="pipeline.hpp" />
+    <ClInclude Include="primitive.hpp" />
     <ClInclude Include="shape.hpp" />
     <ClInclude Include="vecmx.hpp" />
   </ItemGroup>
