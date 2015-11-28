@@ -32,12 +32,16 @@ current version v0.1
 
 ####v6.0
 
+- multithreaded/jobified
+
+####v7.0
+
 - (GP)GPU implementation
 
 ####v7.0
 
 - shading language
 
-####v113A.0
+####v113A
 
 - full Renderman specification :D

@@ -36,5 +36,8 @@
     <ClInclude Include="image.hpp">
       <Filter>reyes</Filter>
     </ClInclude>
+    <ClInclude Include="grid.hpp">
+      <Filter>reyes</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

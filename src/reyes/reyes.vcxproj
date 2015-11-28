@@ -78,6 +78,7 @@
   <ItemGroup>
     <ClInclude Include="camera.hpp" />
     <ClInclude Include="core.h" />
+    <ClInclude Include="grid.hpp" />
     <ClInclude Include="image.hpp" />
     <ClInclude Include="mem.hpp" />
     <ClInclude Include="pipeline.hpp" />

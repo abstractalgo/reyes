@@ -7,24 +7,25 @@ namespace reyes
     /* Camera struct (POD type). */
     struct camera
     {
-        math::mx4 view;
-        math::mx4 projection;
-        camera() {}
+        mx4 view;
+        mx4 projection;
 
-        camera& perspective(float FOV, float ncp, float fcp)
+        /* Mark perspective frustum. */
+        void perspective(float FOV, float ncp, float fcp)
         {
-            return *this;
+            // TODO
         }
 
-        camera& orthographic(float ncp, float fcp, float width, float height)
+        /* Make orthographics frustum. */
+        void orthographic(float ncp, float fcp, float width, float height)
         {
-            return *this;
+            // TODO
         }
 
         /* Orient camera to look at the target position, with selected up vector, from the selected origin. */
-        camera& lookAt(const math::vec3 from, math::vec3 to, const math::vec3 up = { 0, 1, 0 })
+        void lookAt(const vec3 from, vec3 to, const vec3 up = { 0, 1, 0 })
         {
-            return *this;
+            // TODO
         }
     };
 }
