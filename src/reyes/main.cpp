@@ -12,14 +12,12 @@ void appMain()
 
     // camera setup
     camera camera;
-    camera.perspective(/*fov*/ 45.0f, /*ncp*/ 0.0001f, /*fcp*/ 1000.0f);
-    camera.lookAt(/*from*/ { 10, 10, 0 }, /*to*/ { 0, 0, 0 } /*up*/);
+    camera.orthographic(-10, 10, 10, 10);
+    camera.lookAt(/*eye*/ { 0, 0, -5 }, /*target*/ { 0, 0, 0 } /*up*/);
 
     // image setup
     GBuffer image(10,10);
 
     // render 
-    reyes::render<GBuffer>(scene, camera, image);
-    
-    printf("Hello world.\n");
+    reyes::render(scene, camera, image);
 }
