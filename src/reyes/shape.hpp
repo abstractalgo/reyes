@@ -1,7 +1,9 @@
 #pragma once
 
+#include "mem.hpp"
 #include "vecmx.hpp"
 #include "grid.hpp"
+#include <cassert>
 
 namespace reyes
 {
@@ -19,8 +21,8 @@ namespace reyes
     {
         mx4 transform;
 
-        virtual void split(SplitDir direction, Shape** child_a, Shape** child_b) {}
-        virtual void dice(Grid<PosNormalMat>& grid) {}
+        virtual void split(SplitDir direction, mem::ObjectStack<Shape>& stack) {}
+        virtual GridI<PosNormalMat>* dice(mem::ObjectStack<GridI<PosNormalMat>>& grids) {}
 
         virtual vec3 N(float u, float v) { return{ 0, 0, 0 }; }
         virtual vec3 P(float u, float v) { return{ 0, 0, 0 }; }
@@ -45,47 +47,45 @@ namespace reyes
             , size(_size)
         {}
 
-        void split(SplitDir direction, Shape** child_a, Shape** child_b)
+        void split(SplitDir direction, mem::ObjectStack<Shape>& stack)
         {
-            Rectangle* halves = new Rectangle[2];
-            halves[0].center = center;
-            halves[0].size = size;
-            halves[1].center = center;
-            halves[1].size = size;
+            Rectangle& child_a = *(Rectangle*)stack.alloc(sizeof(Rectangle));
+            Rectangle& child_b = *(Rectangle*)stack.alloc(sizeof(Rectangle));
+            child_a.center = center;
+            child_a.size = size;
+            child_b.center = center;
+            child_b.size = size;
             if (U == direction)
             {
-                halves[0].start_u = start_u;
-                halves[0].end_u = end_u;
-                halves[1].start_u = start_u;
-                halves[1].end_u = end_u;
+                child_a.start_u = start_u;
+                child_a.end_u = end_u;
+                child_b.start_u = start_u;
+                child_b.end_u = end_u;
 
-                halves[0].start_v = start_v;
-                halves[0].end_v = start_v + (end_v - start_v) / 2.0;
-                halves[1].start_v = start_v + (end_v - start_v) / 2.0;
-                halves[1].end_v = end_v;
+                child_a.start_v = start_v;
+                child_a.end_v = start_v + (end_v - start_v) / 2.0;
+                child_b.start_v = start_v + (end_v - start_v) / 2.0;
+                child_b.end_v = end_v;
             }
             else if (V == direction)
             {
-                halves[0].start_u = start_u;
-                halves[0].end_u = start_u + (end_u - start_u) / 2.0;
-                halves[1].start_u = start_u + (end_u - start_u) / 2.0;
-                halves[1].end_u = end_u;
+                child_a.start_u = start_u;
+                child_a.end_u = start_u + (end_u - start_u) / 2.0;
+                child_b.start_u = start_u + (end_u - start_u) / 2.0;
+                child_b.end_u = end_u;
 
-                halves[0].start_v = start_v;
-                halves[0].end_v = end_v;
-                halves[1].start_v = start_v;
-                halves[1].end_v = end_v;
+                child_a.start_v = start_v;
+                child_a.end_v = end_v;
+                child_b.start_v = start_v;
+                child_b.end_v = end_v;
             }
-            *child_a = halves + 0;
-            *child_b = halves + 1;
         }
 
         
-        void dice(Grid<PosNormalMat>& grid)
+        GridI<PosNormalMat>* dice(void)
         {
-            _shit<Triangle> shit;
-            shit.at(0);
-            shit.shade();
+            TriGrid<PosNormalMat>* grid = new TriGrid<PosNormalMat>;
+            return grid;
         }
     };
 }

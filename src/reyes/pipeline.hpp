@@ -1,5 +1,6 @@
 #pragma once
 
+#include "mem.hpp"
 #include "vecmx.hpp"
 #include "shape.hpp"
 #include "grid.hpp"
@@ -17,7 +18,24 @@ namespace reyes
     3. shade
     4. sample
     */
-    template<class ImageTy> void render(std::list<Shape> scene, camera camera, ImageTy& image)
+    template<class ImageTy> void render(mem::ObjectStack<Shape>& scene, camera camera, ImageTy& image)
+    {
+        mem::ObjectStack<GridI<PosColor>> shadedGrids;
+
+        // BOUND-SPLIT
+        // (pass-through)
+
+        // DICE-SHADE
+        while (split_shapes)
+        {
+            Shape* shape = scene.pop();                                         // get shape
+            GridI<PosNormalMat>* grid = shape.dice();                           // dice it (transform it in world space)
+            grid->shade();
+            uGrids.push_back(grid);                                             // push the data
+        }
+    }
+
+    template<class ImageTy> void render_list(std::list<Shape> scene, camera camera, ImageTy& image)
     {
         std::list<Shape> unsplit_shapes = scene;
         std::list<Shape> split_shapes;

@@ -6,9 +6,8 @@ using namespace reyes;
 void appMain()
 {
     // scene setup
-    std::list<Shape> scene;
-    Rectangle r({ 0, 0, 0 }, { 5, 5 });
-    scene.push_back(r);
+    mem::ObjectStack<Shape> scene(1024);
+    Rectangle* r = new(scene.alloc(sizeof(Rectangle))) Rectangle({ 0, 0, 0 }, { 5, 5 });
 
     // camera setup
     camera camera;

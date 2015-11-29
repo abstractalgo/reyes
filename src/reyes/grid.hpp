@@ -7,59 +7,59 @@
 
 namespace reyes
 {
-    template<class GridDataTy>
-    /* Template struct for grid data. */
-    struct Grid
-    {
-        GridDataTy* data;
-        uint16_t count;
+    //template<class GridDataTy>
+    ///* Template struct for grid data. */
+    //struct Grid
+    //{
+    //    GridDataTy* data;
+    //    uint16_t count;
 
-        // used for other primitives (TODO later)
-        uint16_t* indices;
-        uint8_t size;
+    //    // used for other primitives (TODO later)
+    //    uint16_t* indices;
+    //    uint8_t size;
 
-        void project(camera& camera)
-        {
-            // TODO
-        }
-    };
+    //    void project(camera& camera)
+    //    {
+    //        // TODO
+    //    }
+    //};
 
-    template<>
-    /* Grid with only positions. */
-    struct Grid<position>
-    {
-        bool visible(camera& camera)
-        {
-            // TODO
-            return false;
-        }
+    //template<>
+    ///* Grid with only positions. */
+    //struct Grid<position>
+    //{
+    //    bool visible(camera& camera)
+    //    {
+    //        // TODO
+    //        return false;
+    //    }
 
-        vec2 rasterEstimate()
-        {
-            // TODO
-            return{ 0, 0 };
-        }
-    };
+    //    vec2 rasterEstimate()
+    //    {
+    //        // TODO
+    //        return{ 0, 0 };
+    //    }
+    //};
 
-    template<>
-    /* Grid with information required for shading. */
-    struct Grid<PosNormalMat>
-    {
-        Grid<PosColor> shade(void)
-        {
-            // TODO
-            return Grid<PosColor>{};
-        }
-    };
+    //template<>
+    ///* Grid with information required for shading. */
+    //struct Grid<PosNormalMat>
+    //{
+    //    Grid<PosColor> shade(void)
+    //    {
+    //        // TODO
+    //        return Grid<PosColor>{};
+    //    }
+    //};
 
-    template<>
-    /* All in one grid structure (consumes more data, but no reallocations). */
-    struct Grid<PosNormalMatColor>
-    {
-        
-    };
+    //template<>
+    ///* All in one grid structure (consumes more data, but no reallocations). */
+    //struct Grid<PosNormalMatColor>
+    //{
+    //    
+    //};
 
-    template<class DataTy, class PrimTy>
+    template<class DataTy>
     struct GridI
     {
         DataTy* data;
@@ -70,7 +70,7 @@ namespace reyes
     };
 
     template<class DataTy>
-    struct Grid<DataTy, reyes::Triangle>
+    struct TriGrid : public GridI<DataTy>
     {
         Triangle at(uint16_t idx)
         {
@@ -86,7 +86,7 @@ namespace reyes
     };
 
     template<class DataTy>
-    struct Grid<DataTy, reyes::Quadrilateral>
+    struct QuadGrid : public GridI<DataTy>
     {
         Quadrilateral at(uint16_t idx)
         {
@@ -104,7 +104,7 @@ namespace reyes
     };
 
     template<class DataTy>
-    struct Grid<DataTy, reyes::Polygon>
+    struct PolyGrid<DaraTy> : public GridI<DataTy>
     {
         Polygon at(uint16_t idx)
         {
@@ -123,13 +123,13 @@ namespace reyes
         }
     };
 
-    template<class PrimTy>
-    struct _shit : public GridI<PosNormalMat, PrimTy>
+    template<>
+    struct GridI<PosNormalMat>
     {
-        Grid<PosColor> shade(void)
+        GridI<PosColor> shade(void)
         {
             // TODO
-            return Grid<PosColor>{};
+            return GridI<PosColor>{};
         }
     };
 

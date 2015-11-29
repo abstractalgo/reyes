@@ -210,5 +210,100 @@ namespace reyes
                 allocator.free(mem);
             }
         };
+
+        //class ShapeStack
+        //{
+        //    // [ Shape_n-1 ][ size_n-1 ][ Shape_n ][ size_n ]
+        //    // .............................................^ top
+
+        //    size_t capacity;
+        //    char* data;
+        //    char* top;
+        //public:
+        //    ShapeStack(size_t cap)
+        //        : capacity(cap)
+        //        , data(new char[cap])
+        //        , top(data)
+        //    {}
+        //    void* alloc(size_t size)
+        //    {
+        //        if (size + sizeof(size_t) > data + capacity - top)
+        //            return nullptr;
+
+        //        void* mem = static_cast<void*>(top);
+        //        size_t* sz_ptr = (size_t*)(top += size);
+        //        *sz_ptr = size;
+        //        top += sizeof(size_t);
+        //        return mem;
+        //    }
+        //    Shape* pop(void)
+        //    {
+        //        if (!size()) return 0;
+        //        size_t size = *(size_t*)(top -= sizeof(size_t));
+        //        top -= size;
+        //        return (Shape*)(top);
+        //    }
+        //    size_t size() const
+        //    {
+        //        return top - data;
+        //    }
+        //    operator bool(void) const
+        //    {
+        //        return size() > 0;
+        //    }
+        //    ~ShapeStack()
+        //    {
+        //        assert(data == top);
+        //        delete[] data;
+        //    }
+        //};
+
+        template<class ObjTy>
+        class ObjectStack
+        {
+            // [ Object_n-1 ][ size_n-1 ][ Object_n ][ size_n ]
+            // ...............................................^ top
+
+            size_t capacity;
+            char* data;
+            char* top;
+        public:
+            ObjectStack(size_t cap=1024)
+                : capacity(cap)
+                , data(new char[cap])
+                , top(data)
+            {}
+            void* alloc(size_t size)
+            {
+                if (size + sizeof(size_t) > data + capacity - top)
+                    return nullptr;
+
+                void* mem = static_cast<void*>(top);
+                size_t* sz_ptr = (size_t*)(top += size);
+                *sz_ptr = size;
+                top += sizeof(size_t);
+                return mem;
+            }
+            ObjTy* pop(void)
+            {
+                if (!size()) return 0;
+                size_t size = *(size_t*)(top -= sizeof(size_t));
+                top -= size;
+                return (ObjTy*)(top);
+            }
+            size_t size() const
+            {
+                return top - data;
+            }
+            operator bool(void) const
+            {
+                return size() > 0;
+            }
+            ~ObjectStack()
+            {
+                assert(data == top);
+                delete[] data;
+            }
+        };
     }
 }
