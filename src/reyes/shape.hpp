@@ -81,10 +81,12 @@ namespace reyes
         }
 
         
-        GridI<PosNormalMat>* dice(void)
+        GridI<PosNormalMat>* dice(mem::ObjectStack<GridI<PosNormalMat>>& grids)
         {
-            TriGrid<PosNormalMat>* grid = new TriGrid<PosNormalMat>;
-            return grid;
+            size_t size = sizeof(TriGrid<PosNormalMat>);
+            void* mem = grids.alloc(size);
+            TriGrid<PosNormalMat>* grid = new(mem) TriGrid<PosNormalMat>;
+            return (GridI<PosNormalMat>*)grid;
         }
     };
 }

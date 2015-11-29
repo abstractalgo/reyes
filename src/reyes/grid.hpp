@@ -7,58 +7,6 @@
 
 namespace reyes
 {
-    //template<class GridDataTy>
-    ///* Template struct for grid data. */
-    //struct Grid
-    //{
-    //    GridDataTy* data;
-    //    uint16_t count;
-
-    //    // used for other primitives (TODO later)
-    //    uint16_t* indices;
-    //    uint8_t size;
-
-    //    void project(camera& camera)
-    //    {
-    //        // TODO
-    //    }
-    //};
-
-    //template<>
-    ///* Grid with only positions. */
-    //struct Grid<position>
-    //{
-    //    bool visible(camera& camera)
-    //    {
-    //        // TODO
-    //        return false;
-    //    }
-
-    //    vec2 rasterEstimate()
-    //    {
-    //        // TODO
-    //        return{ 0, 0 };
-    //    }
-    //};
-
-    //template<>
-    ///* Grid with information required for shading. */
-    //struct Grid<PosNormalMat>
-    //{
-    //    Grid<PosColor> shade(void)
-    //    {
-    //        // TODO
-    //        return Grid<PosColor>{};
-    //    }
-    //};
-
-    //template<>
-    ///* All in one grid structure (consumes more data, but no reallocations). */
-    //struct Grid<PosNormalMatColor>
-    //{
-    //    
-    //};
-
     template<class VertexTy>
     struct GridI
     {
@@ -79,6 +27,10 @@ namespace reyes
     template<class VertexTy>
     struct TriGrid : public GridI<VertexTy>
     {
+        TriGrid()
+            : GridI(dataCout, indicesCount, primitiveCount)
+        {}
+
         Triangle<VertexTy>* at(uint16_t idx)
         {
             Triangle<VertexTy>& t = *(new Triangle<VertexTy>);
@@ -127,7 +79,7 @@ namespace reyes
         void shade(mem::ObjectStack<GridI<PosColor>>& stack)
         {
             // TODO
-            GridI<PosColor>* gr = new(stack.alloc(sizeof(GridI<PosColor>))) TriGrid<PosColor>;
+            GridI<PosColor>* gr = new(stack.alloc(sizeof(TriGrid<PosColor>))) TriGrid<PosColor>(0, 0, 0);
         }
     };
 
