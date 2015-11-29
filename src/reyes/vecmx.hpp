@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <cstdint>
 
 #define M_E 2.71828182845904523536
 #define M_LOG2E 1.44269504088896340736
@@ -19,18 +20,6 @@
 
 namespace reyes
 {
-    /* Axis-algined boundig box (2D). */
-    struct AABB2
-    {
-        vec2 min, max;
-    };
-
-    /* Axis-aligned bounding box (3D). */
-    struct AABB3
-    {
-        vec3 min, max;
-    };
-
     struct color
     {
         float r, g, b, a;
@@ -364,7 +353,7 @@ namespace reyes
             vec3 x = cross(up, z).normalize();
 
             if (x.len() == 0) {
-                z.x += 0.0001;
+                z.x += 0.0001f;
                 x = cross(up, z).normalize();
             }
 
@@ -375,6 +364,18 @@ namespace reyes
             e[1] = x.y; e[5] = y.y; e[9] = z.y;
             e[2] = x.z; e[6] = y.z; e[10] = z.z;
         }
+    };
+
+    /* Axis-algined boundig box (2D). */
+    struct AABB2
+    {
+        vec2 min, max;
+    };
+
+    /* Axis-aligned bounding box (3D). */
+    struct AABB3
+    {
+        vec3 min, max;
     };
 
     typedef vec3 position;

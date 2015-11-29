@@ -10,17 +10,21 @@ namespace reyes
     struct Grid
     {
         T* data;
-        uint8_t width, height;
+        uint16_t count;
+
+        // used for other primitives (TODO later)
+        uint16_t* indices;
+        uint8_t size;
+
+        void project(camera& camera)
+        {
+            // TODO
+        }
     };
 
     template<>
     struct Grid<position>
     {
-        void project(camera& camera)
-        {
-            // TODO
-        }
-
         bool visible(camera& camera)
         {
             // TODO
@@ -37,11 +41,6 @@ namespace reyes
     template<>
     struct Grid<PosNormalMat>
     {
-        void project(camera& camera)
-        {
-            // TODO
-        }
-
         Grid<PosColor> shade(void)
         {
             // TODO
