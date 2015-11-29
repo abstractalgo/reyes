@@ -11,14 +11,13 @@ namespace reyes
 {
     //const vec2 RASTER_THRESHOLD = { 0, 0 };
 
-    template<class ImageTy>
     /* Main rendering functions that goes through all the rendering stages:
     1. bound-split
     2. dice
     3. shade
     4. sample
     */
-    void render(std::list<Shape> scene, camera camera, ImageTy& image)
+    template<class ImageTy> void render(std::list<Shape> scene, camera camera, ImageTy& image)
     {
         std::list<Shape> unsplit_shapes = scene;
         std::list<Shape> split_shapes;
@@ -64,8 +63,6 @@ namespace reyes
             grid.project(camera);                                               // project it (transform it from world space to view space) 
             image.rasterize(grid);                                              // rasterize and inject into buffer
         }
-
-        
     }
 }
 

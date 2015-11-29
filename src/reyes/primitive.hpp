@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include "vecmx.hpp"
+#include "grid.hpp"
 
 namespace reyes
 {

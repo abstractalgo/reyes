@@ -20,16 +20,7 @@
 
 namespace reyes
 {
-    struct color
-    {
-        float r, g, b, a;
-        color(float _r = 0, float _g = 0, float _b = 0, float _a = 0)
-            : r(_r)
-            , g(_g)
-            , b(_b)
-            , a(_a)
-        {}
-    };
+    
 
     struct vec2
     {
@@ -364,33 +355,5 @@ namespace reyes
             e[1] = x.y; e[5] = y.y; e[9] = z.y;
             e[2] = x.z; e[6] = y.z; e[10] = z.z;
         }
-    };
-
-    /* Axis-algined boundig box (2D). */
-    struct AABB2
-    {
-        vec2 min, max;
-    };
-
-    /* Axis-aligned bounding box (3D). */
-    struct AABB3
-    {
-        vec3 min, max;
-    };
-
-    typedef vec3 position;
-    typedef vec3 normal;
-    typedef uint8_t material;
-
-    struct PosNormalMat
-    {
-        position position;
-        normal normal;
-        material material;
-    };
-    struct PosColor
-    {
-        position position;
-        color color;
     };
 }

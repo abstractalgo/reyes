@@ -13,6 +13,9 @@
       <Filter>reyes\core</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="misc.hpp">
+      <Filter>reyes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mem.hpp">

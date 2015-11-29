@@ -30,8 +30,9 @@ namespace reyes
     struct ParametricSurface : public Shape
     {
         float start_u, start_v, end_u, end_v;
+
+        // TODO move part of the split() and dice() here
     };
-    typedef ParametricSurface UVSurface;
 
     /* Rectangular shape inherited from UVSurface */
     struct Rectangle : public ParametricSurface
@@ -75,13 +76,16 @@ namespace reyes
                 halves[1].start_v = start_v;
                 halves[1].end_v = end_v;
             }
-            *child_a = halves+0;
+            *child_a = halves + 0;
             *child_b = halves + 1;
         }
 
+        
         void dice(Grid<PosNormalMat>& grid)
         {
-
+            _shit<Triangle> shit;
+            shit.at(0);
+            shit.shade();
         }
     };
 }

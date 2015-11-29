@@ -7,7 +7,7 @@ void appMain()
 {
     // scene setup
     std::list<Shape> scene;
-    Rectangle r({ 0, 0, 0 }, { 1, 1 });
+    Rectangle r({ 0, 0, 0 }, { 5, 5 });
     scene.push_back(r);
 
     // camera setup
