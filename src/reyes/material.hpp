@@ -17,7 +17,7 @@ namespace reyes
         {}
     };
 
-    template<class... InputTys>
+    /*template<class... InputTys>
     struct shader
     {
         color shade(InputTys... inputs);
@@ -41,14 +41,34 @@ namespace reyes
         }
     };
 
-    struct material_factory
+    template<class ShaderTy>
+    static void make(shader<>*& shdr)
     {
-        template<class ShaderTy>
-        static void make(ShaderTy*& shdr)
-        {
-            shdr = new ShaderTy;
-        }
+        shdr = (shader<>*)(new ShaderTy);
+    }
+    typedef shader<> material;*/
+
+    template<class ShaderInputTy>
+    struct shader
+    {
+        ShaderInputTy input;
+        virtual color shade(ShaderInputTy) = 0;
     };
-    typedef shader<> material;
+
+    struct PN_inp
+    {
+        position p;
+        normal n;
+    };
+
+    struct SolidColorShader : public shader<void>
+    {
+        color shade() { return{ 0, 0, 0, 1 }; }
+    };
+    struct LambertShader : public shader<PN_inp>
+    {
+        color shade(PN_inp) { return{ 1, 0, 0, 1 }; }
+    };
+
 }
 // material descriptor + color(p,n)

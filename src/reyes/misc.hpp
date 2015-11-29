@@ -5,11 +5,16 @@
 
 namespace reyes
 {
+    struct PosNormal
+    {
+        position p;
+        normal n;
+    };
     struct PosNormalMat
     {
         position p;
         normal n;
-        material mat;
+        uint8_t mat;
 
         inline operator position() const { return p; }
         //inline operator PosColor() const { return{ p, { 0, 0, 0, 1 } }; }

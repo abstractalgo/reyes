@@ -10,12 +10,14 @@ namespace reyes
     template<class VertexTy>
     struct GridI
     {
-        VertexTy* data;
-        uint16_t* indices;
-        uint16_t cnt;
+        VertexTy data[dataCount];
+        uint16_t indices[indicesCount];
         virtual PrimitiveI<VertexTy>* at(uint16_t idx) = 0;
-        void shade();
-        uint16_t count() { return cnt; }
+        uint16_t count() { return primitiveCount; }
+        void shade()
+        {
+
+        }
 
         GridI(uint16_t dataCount, uint16_t indicesCount, uint16_t primitiveCount)
             : data(new VertexTy[dataCount])
@@ -24,13 +26,11 @@ namespace reyes
         {}
     };
 
+    // -----------------------------------------------------------------------------------------------
+
     template<class VertexTy>
     struct TriGrid : public GridI<VertexTy>
     {
-        TriGrid()
-            : GridI(dataCout, indicesCount, primitiveCount)
-        {}
-
         Triangle<VertexTy>* at(uint16_t idx)
         {
             Triangle<VertexTy>& t = *(new Triangle<VertexTy>);
@@ -73,15 +73,7 @@ namespace reyes
         }
     };
 
-    template<>
-    struct TriGrid<PosNormalMat>
-    {
-        void shade(mem::ObjectStack<GridI<PosColor>>& stack)
-        {
-            // TODO
-            GridI<PosColor>* gr = new(stack.alloc(sizeof(TriGrid<PosColor>))) TriGrid<PosColor>(0, 0, 0);
-        }
-    };
+    GridI<position> extract()
 
-    
+    // -----------------------------------------------------------------------------------------------------
 }

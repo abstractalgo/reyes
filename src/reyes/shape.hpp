@@ -19,9 +19,10 @@ namespace reyes
     struct Shape
     {
         mx4 transform;
+        // material
 
         virtual void split(SplitDir direction, mem::ObjectStack<Shape>& stack) {}
-        virtual GridI<PosNormalMat>* dice(mem::ObjectStack<GridI<PosNormalMat>>& grids) {}
+        virtual GridI<PosNormal>* dice(mem::ObjectStack<GridI<PosNormal>>& grids) {}
 
         virtual vec3 N(float u, float v) { return{ 0, 0, 0 }; }
         virtual vec3 P(float u, float v) { return{ 0, 0, 0 }; }
@@ -80,13 +81,12 @@ namespace reyes
             }
         }
 
-        
-        GridI<PosNormalMat>* dice(mem::ObjectStack<GridI<PosNormalMat>>& grids)
+        GridI<PosNormal>* dice(mem::ObjectStack<GridI<PosNormal>>& grids)
         {
-            size_t size = sizeof(TriGrid<PosNormalMat>);
+            size_t size = sizeof(TriGrid<PosNormal>);
             void* mem = grids.alloc(size);
-            TriGrid<PosNormalMat>* grid = new(mem) TriGrid<PosNormalMat>;
-            return (GridI<PosNormalMat>*)grid;
+            TriGrid<PosNormal>* grid = new(mem)TriGrid<PosNormal>;
+            return (GridI<PosNormal>*)grid;
         }
     };
 }
