@@ -45,5 +45,8 @@
     <ClInclude Include="primitive.hpp">
       <Filter>reyes</Filter>
     </ClInclude>
+    <ClInclude Include="material.hpp">
+      <Filter>reyes</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,6 +4,7 @@
 #include "vecmx.hpp"
 #include "shape.hpp"
 #include "grid.hpp"
+#include "material.hpp"
 #include "camera.hpp"
 #include "image.hpp"
 #include <list>
@@ -20,16 +21,18 @@ namespace reyes
     */
     template<class ImageTy> void render(mem::ObjectStack<Shape>& scene, camera camera, ImageTy& image)
     {
+        mem::ObjectStack<GridI<PosNormalMat>> grids;
         mem::ObjectStack<GridI<PosColor>> shadedGrids;
 
         // BOUND-SPLIT
         // (pass-through)
 
         // DICE-SHADE
-        while (split_shapes)
+        while (scene)
         {
             Shape* shape = scene.pop();                                         // get shape
-            GridI<PosNormalMat>* grid = shape.dice();                           // dice it (transform it in world space)
+            shape->dice(grids);                           // dice it (transform it in world space)
+            GridI<PosNormalMat>* grid = grids.pop();
             grid->shade();
             uGrids.push_back(grid);                                             // push the data
         }

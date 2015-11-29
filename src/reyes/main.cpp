@@ -17,6 +17,10 @@ void appMain()
     // image setup
     GBuffer image(10,10);
 
-    // render 
+    LambertianShader<>* lambertMat;
+    material_factory::make(lambertMat);
+    color a = lambertMat->shade({ 0, 0, 0 }, {1,1,1});
+
+    // render
     reyes::render(scene, camera, image);
 }

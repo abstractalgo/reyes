@@ -1,18 +1,21 @@
 #pragma once
 
 #include <cstdint>
+#include "misc.hpp"
 #include "vecmx.hpp"
 #include "grid.hpp"
 
 namespace reyes
 {
+    template<class VertexTy>
     struct PrimitiveI
     {
         virtual color get(position position) const = 0;
         virtual AABB2 aabb(void) const = 0;
     };
 
-    struct Quadrilateral : public PrimitiveI
+    template<class VertexTy>
+    struct Quadrilateral : public PrimitiveI<VertexTy>
     {
         PosColor a, b, c, d;
 
@@ -26,13 +29,14 @@ namespace reyes
         AABB2 aabb(void) const
         {
             AABB2 bb;
-            bb.min = vec2(fminf(a.position.x, fminf(b.position.x, fminf(c.position.x, d.position.x))), fminf(a.position.y, fminf(b.position.y, fminf(c.position.y, d.position.y))));
-            bb.max = vec2(fmaxf(a.position.x, fmaxf(b.position.x, fmaxf(c.position.x, d.position.x))), fmaxf(a.position.y, fmaxf(b.position.y, fmaxf(c.position.y, d.position.y))));
+            bb.min = vec2(fminf(a.p.x, fminf(b.p.x, fminf(c.p.x, d.p.x))), fminf(a.p.y, fminf(b.p.y, fminf(c.p.y, d.p.y))));
+            bb.max = vec2(fmaxf(a.p.x, fmaxf(b.p.x, fmaxf(c.p.x, d.p.x))), fmaxf(a.p.y, fmaxf(b.p.y, fmaxf(c.p.y, d.p.y))));
             return bb;
         }
     };
 
-    struct Triangle : public PrimitiveI
+    template<class VertexTy>
+    struct Triangle : public PrimitiveI<VertexTy>
     {
         PosColor a, b, c;
 
@@ -46,16 +50,17 @@ namespace reyes
         AABB2 aabb(void) const
         {
             AABB2 bb;
-            bb.min = vec2(fminf(a.position.x, fminf(b.position.x, c.position.x)), fminf(a.position.y, fminf(b.position.y, c.position.y)));
-            bb.max = vec2(fmaxf(a.position.x, fmaxf(b.position.x, c.position.x)), fmaxf(a.position.y, fmaxf(b.position.y, c.position.y)));
+            bb.min = vec2(fminf(a.p.x, fminf(b.p.x, c.p.x)), fminf(a.p.y, fminf(b.p.y, c.p.y)));
+            bb.max = vec2(fmaxf(a.p.x, fmaxf(b.p.x, c.p.x)), fmaxf(a.p.y, fmaxf(b.p.y, c.p.y)));
             return bb;
         }
     };
 
-    struct Polygon : public PrimitiveI
+    template<class VertexTy>
+    struct Polygon : public PrimitiveI<VertexTy>
     {
         PosColor* vertices;
-        uint8_t count;
+        uint16_t count;
 
         color get(position position) const
         {
@@ -71,12 +76,12 @@ namespace reyes
             if (count == 0)
                 return bb;
 
-            bb.min = vec2(vertices[0].position.x, vertices[0].position.y);
-            bb.max = vec2(vertices[0].position.x, vertices[0].position.y);
+            bb.min = vec2(vertices[0].p.x, vertices[0].p.y);
+            bb.max = vec2(vertices[0].p.x, vertices[0].p.y);
             for (uint8_t i = 1; i < count; i++)
             {
-                bb.min = vec2(fminf(bb.min.x, vertices[i].position.x), fminf(bb.min.y, vertices[i].position.y));
-                bb.max = vec2(fmaxf(bb.max.x, vertices[i].position.x), fmaxf(bb.max.y, vertices[i].position.y));
+                bb.min = vec2(fminf(bb.min.x, vertices[i].p.x), fminf(bb.min.y, vertices[i].p.y));
+                bb.max = vec2(fmaxf(bb.max.x, vertices[i].p.x), fmaxf(bb.max.y, vertices[i].p.y));
             }
             return bb;
         }

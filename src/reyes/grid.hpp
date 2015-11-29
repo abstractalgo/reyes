@@ -59,77 +59,75 @@ namespace reyes
     //    
     //};
 
-    template<class DataTy>
+    template<class VertexTy>
     struct GridI
     {
-        DataTy* data;
+        VertexTy* data;
         uint16_t* indices;
         uint16_t cnt;
-        PrimTy at(uint16_t idx) = 0;
+        virtual PrimitiveI<VertexTy>* at(uint16_t idx) = 0;
+        void shade();
         uint16_t count() { return cnt; }
+
+        GridI(uint16_t dataCount, uint16_t indicesCount, uint16_t primitiveCount)
+            : data(new VertexTy[dataCount])
+            , indices(new uint16_t[indicesCount])
+            , cnt(primitiveCount)
+        {}
     };
 
-    template<class DataTy>
-    struct TriGrid : public GridI<DataTy>
+    template<class VertexTy>
+    struct TriGrid : public GridI<VertexTy>
     {
-        Triangle at(uint16_t idx)
+        Triangle<VertexTy>* at(uint16_t idx)
         {
-            Triangle t;
-            t.a.color       = data[indices[3 * idx + 0]].color;
-            t.a.position    = data[indices[3 * idx + 0]].position;
-            t.b.color       = data[indices[3 * idx + 1]].color;
-            t.b.position    = data[indices[3 * idx + 1]].position;
-            t.c.color       = data[indices[3 * idx + 2]].color;
-            t.c.position    = data[indices[3 * idx + 2]].position;
-            return t;
+            Triangle<VertexTy>& t = *(new Triangle<VertexTy>);
+            t.a = (VertexTy)data[indices[3 * idx + 0]];
+            t.b = (VertexTy)data[indices[3 * idx + 1]];
+            t.c = (VertexTy)data[indices[3 * idx + 2]];
+            return &t;
         }
     };
 
-    template<class DataTy>
-    struct QuadGrid : public GridI<DataTy>
+    template<class VertexTy>
+    struct QuadGrid : public GridI<VertexTy>
     {
-        Quadrilateral at(uint16_t idx)
+        Quadrilateral<VertexTy>* at(uint16_t idx)
         {
-            Quadrilateral q;
-            q.a.color       = data[indices[4 * idx + 0]].color;
-            q.a.position    = data[indices[4 * idx + 0]].position;
-            q.b.color       = data[indices[4 * idx + 1]].color;
-            q.b.position    = data[indices[4 * idx + 1]].position;
-            q.c.color       = data[indices[4 * idx + 2]].color;
-            q.c.position    = data[indices[4 * idx + 2]].position;
-            q.d.color       = data[indices[4 * idx + 3]].color;
-            q.d.position    = data[indices[4 * idx + 3]].position;
-            return q;
+            Quadrilateral<VertexTy>& q = *(new Quadrilateral<VertexTy>);
+            q.a = data[indices[4 * idx + 0]];
+            q.b = data[indices[4 * idx + 1]];
+            q.c = data[indices[4 * idx + 2]];
+            q.d = data[indices[4 * idx + 3]];
+            return &q;
         }
     };
 
-    template<class DataTy>
-    struct PolyGrid<DaraTy> : public GridI<DataTy>
+    template<class VertexTy>
+    struct PolyGrid : public GridI<VertexTy>
     {
-        Polygon at(uint16_t idx)
+        Polygon<VertexTy>* at(uint16_t idx)
         {
-            Polygon p;
+            Polygon<VertexTy>& p = *(new Polygon<VertexTy>);
             uint16_t offset = indices[2 * idx + 0];
             uint16_t size   = indices[2 * idx + 1];
             p.count = size;
-            p.vertices = new PosColor[size];
+            p.vertices = new VertexTy[size];
             for (uint16_t i = 0; i < size; i++)
             {
-                DataTy vertex           = data[indeices[offset + i]];
-                p.vertices[i].position  = vertex.position;
-                p.vertices[i].color     = vertex.color;
+                p.vertices[i] = data[indices[offset + i]];
             }
-            return p;
+            return &p;
         }
     };
 
     template<>
-    struct GridI<PosNormalMat>
+    struct TriGrid<PosNormalMat>
     {
-        GridI<PosColor> shade(void)
+        void shade(mem::ObjectStack<GridI<PosColor>>& stack)
         {
             // TODO
-            return GridI<PosColor>{};
+            GridI<PosColor>* gr = new(stack.alloc(sizeof(GridI<PosColor>))) TriGrid<PosColor>;
         }
     };
 

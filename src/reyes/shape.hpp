@@ -3,7 +3,6 @@
 #include "mem.hpp"
 #include "vecmx.hpp"
 #include "grid.hpp"
-#include <cassert>
 
 namespace reyes
 {
@@ -63,15 +62,15 @@ namespace reyes
                 child_b.end_u = end_u;
 
                 child_a.start_v = start_v;
-                child_a.end_v = start_v + (end_v - start_v) / 2.0;
-                child_b.start_v = start_v + (end_v - start_v) / 2.0;
+                child_a.end_v = start_v + (end_v - start_v) / 2.0f;
+                child_b.start_v = start_v + (end_v - start_v) / 2.0f;
                 child_b.end_v = end_v;
             }
             else if (V == direction)
             {
                 child_a.start_u = start_u;
-                child_a.end_u = start_u + (end_u - start_u) / 2.0;
-                child_b.start_u = start_u + (end_u - start_u) / 2.0;
+                child_a.end_u = start_u + (end_u - start_u) / 2.0f;
+                child_b.start_u = start_u + (end_u - start_u) / 2.0f;
                 child_b.end_u = end_u;
 
                 child_a.start_v = start_v;

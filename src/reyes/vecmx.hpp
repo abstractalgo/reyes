@@ -356,4 +356,19 @@ namespace reyes
             e[2] = x.z; e[6] = y.z; e[10] = z.z;
         }
     };
+
+	/* Axis-algined boundig box (2D). */
+	struct AABB2
+	{
+		vec2 min, max;
+	};
+
+	/* Axis-aligned bounding box (3D). */
+	struct AABB3
+	{
+		vec3 min, max;
+	};
+
+	typedef vec3 position;
+	typedef vec3 normal;
 }

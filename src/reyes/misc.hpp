@@ -1,53 +1,35 @@
 #pragma once
 
+#include "material.hpp"
 #include "vecmx.hpp"
 
 namespace reyes
 {
-    /* Axis-algined boundig box (2D). */
-    struct AABB2
-    {
-        vec2 min, max;
-    };
-
-    /* Axis-aligned bounding box (3D). */
-    struct AABB3
-    {
-        vec3 min, max;
-    };
-
-    /* RGBA32F color struct. */
-    struct color
-    {
-        float r, g, b, a;
-        color(float _r = 0, float _g = 0, float _b = 0, float _a = 0)
-            : r(_r)
-            , g(_g)
-            , b(_b)
-            , a(_a)
-        {}
-    };
-
-    typedef vec3 position;
-    typedef vec3 normal;
-    typedef uint8_t material;
-
     struct PosNormalMat
     {
-        position position;
-        normal normal;
-        material material;
+        position p;
+        normal n;
+        material mat;
+
+        inline operator position() const { return p; }
+        //inline operator PosColor() const { return{ p, { 0, 0, 0, 1 } }; }
     };
     struct PosColor
     {
-        position position;
-        color color;
+        position p;
+        color col;
+
+        inline operator position() const { return p; }
+        inline operator color() const { return col; }
+        PosColor& operator=(PosNormalMat& v) { this->p = v.p; this->col = { 0, 0, 0, 1 }; }
     };
-    struct PosNormalMatColor
+    
+    
+    /*struct PosNormalMatColor
     {
         position position;
         normal normal;
         material material;
         color color;
-    };
+    };*/
 }
