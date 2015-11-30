@@ -19,10 +19,9 @@ namespace reyes
     3. shade
     4. sample
     */
-    template<class ImageTy> void render(mem::ObjectStack<Shape>& scene, camera camera, ImageTy& image)
+    template<class ImageTy> void render(mem::ObjectStack<ShapeI>& scene, camera camera, ImageTy& image)
     {
-        mem::ObjectStack<GridI<PosNormalMat>> grids;
-        mem::ObjectStack<GridI<PosColor>> shadedGrids;
+        mem::ObjectStack<GridI> shadedGrids;
 
         // BOUND-SPLIT
         // (pass-through)
@@ -30,59 +29,10 @@ namespace reyes
         // DICE-SHADE
         while (scene)
         {
-            Shape* shape = scene.pop();                                         // get shape
-            shape->dice(grids);                           // dice it (transform it in world space)
-            GridI<PosNormalMat>* grid = grids.pop();
-            grid->shade();
-            uGrids.push_back(grid);                                             // push the data
-        }
-    }
-
-    template<class ImageTy> void render_list(std::list<Shape> scene, camera camera, ImageTy& image)
-    {
-        std::list<Shape> unsplit_shapes = scene;
-        std::list<Shape> split_shapes;
-        std::list<Grid<PosNormalMat>> uGrids;
-        std::list<Grid<PosColor>> shadedGrids;
-
-        // BOUND-SPLIT
-        // get all shapes under some limit size
-        while (unsplit_shapes.size() > 0)
-        {
-            Shape shape = unsplit_shapes.front();
-            unsplit_shapes.pop_front();
-            split_shapes.push_back(shape);
-        }
-
-        // DICE
-        // get all small shapes and dice them
-        while (split_shapes.size() > 0)
-        {
-            Shape shape = split_shapes.front();                                 // get shape
-            split_shapes.pop_front();
-            Grid<PosNormalMat> grid;
-            shape.dice(grid);                                                   // dice it (transform it in world space)
-            uGrids.push_back(grid);                                             // push the data
-        }
-
-        // SHADE
-        // run shader on grid points
-        while (uGrids.size() > 0)
-        {
-            Grid<PosNormalMat> grid = uGrids.front();                           // get grid
-            uGrids.pop_front();
-            Grid<PosColor> shadedGrid = grid.shade();                           // shade points in it
-            shadedGrids.push_back(shadedGrid);                                  // pust the data
-        }
-
-        // SAMPLE
-        // sample shaded points and get samples to be injected into a color buffer
-        while (shadedGrids.size() > 0)
-        {
-            Grid<PosColor> grid = shadedGrids.front();                          // get the shaded grid
-            shadedGrids.pop_front();
-            grid.project(camera);                                               // project it (transform it from world space to view space) 
-            image.rasterize(grid);                                              // rasterize and inject into buffer
+            ShapeI* shape = scene.pop();                                         // get shape
+            //shape->dice(grids);                           // dice it (transform it in world space)
+            //GridI* grid = grids.pop();
+            GridI* shadedGrid = shape->shade();
         }
     }
 }

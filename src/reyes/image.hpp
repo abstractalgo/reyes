@@ -9,7 +9,7 @@ namespace reyes
     struct Image
     {
         Image(uint16_t _width, uint16_t _height) {}
-        void rasterize(GridI<PosColor>& grid) {}
+        void rasterize(GridI* grid) {}
     };
 
     struct GBuffer : public Image
@@ -27,7 +27,5 @@ namespace reyes
             , height(_height)
             , data(new GBufferPixel[width*height])
         {}
-
-        void rasterize(GridI<PosColor>& grid) {}
     };
 }

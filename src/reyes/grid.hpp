@@ -7,42 +7,41 @@
 
 namespace reyes
 {
-    template<class VertexTy>
     struct GridI
+    {};
+
+    template <class VertexTy>
+    struct GridVertexTy : public GridI
     {
-        VertexTy data[dataCount];
+        
+    };
+
+    template<class VertexTy, uint16_t dataSize, uint16_t indicesCount, uint16_t primitiveCount>
+    struct GridGeometry : public GridVertexTy<VertexTy>
+    {
+        VertexTy data[dataSize];
         uint16_t indices[indicesCount];
         virtual PrimitiveI<VertexTy>* at(uint16_t idx) = 0;
         uint16_t count() { return primitiveCount; }
-        void shade()
-        {
-
-        }
-
-        GridI(uint16_t dataCount, uint16_t indicesCount, uint16_t primitiveCount)
-            : data(new VertexTy[dataCount])
-            , indices(new uint16_t[indicesCount])
-            , cnt(primitiveCount)
-        {}
     };
 
-    // -----------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
-    template<class VertexTy>
-    struct TriGrid : public GridI<VertexTy>
+    template<class VertexTy, uint16_t dataSize, uint16_t indicesCount, uint16_t primitiveCount>
+    struct TriGrid : public GridGeometry<VertexTy, dataSize, indicesCount, primitiveCount>
     {
         Triangle<VertexTy>* at(uint16_t idx)
         {
             Triangle<VertexTy>& t = *(new Triangle<VertexTy>);
-            t.a = (VertexTy)data[indices[3 * idx + 0]];
-            t.b = (VertexTy)data[indices[3 * idx + 1]];
-            t.c = (VertexTy)data[indices[3 * idx + 2]];
+            t.a = data[indices[3 * idx + 0]];
+            t.b = data[indices[3 * idx + 1]];
+            t.c = data[indices[3 * idx + 2]];
             return &t;
         }
     };
 
-    template<class VertexTy>
-    struct QuadGrid : public GridI<VertexTy>
+    template<class VertexTy, uint16_t dataSize, uint16_t indicesCount, uint16_t primitiveCount>
+    struct QuadGrid : public GridGeometry<VertexTy, dataSize, indicesCount, primitiveCount>
     {
         Quadrilateral<VertexTy>* at(uint16_t idx)
         {
@@ -55,8 +54,8 @@ namespace reyes
         }
     };
 
-    template<class VertexTy>
-    struct PolyGrid : public GridI<VertexTy>
+    template<class VertexTy, uint16_t dataSize, uint16_t indicesCount, uint16_t primitiveCount>
+    struct PolyGrid : public GridGeometry<VertexTy, dataSize, indicesCount, primitiveCount>
     {
         Polygon<VertexTy>* at(uint16_t idx)
         {
@@ -73,5 +72,6 @@ namespace reyes
         }
     };
 
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+
 }

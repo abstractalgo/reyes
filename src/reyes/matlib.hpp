@@ -12,13 +12,18 @@ namespace reyes
 {
     namespace matlib
     {
-        typedef PosNormal LambertAtt;
+        struct EmptyMaterial {};
+        struct LambertAtt
+        {
+            position p;
+            normal n;
+        };
         struct LambertUnif {};
         MATERIAL(Lambert)
         {
             DISPLACE(Lambert)
             {
-                return{ 0, 0, 0};
+                return{ vertex.p.x, 0, 0};
             }
 
             SHADE(Lambert)
