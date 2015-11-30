@@ -1,8 +1,15 @@
 #include <cstdio>
 //#include "pipeline.hpp"
-#include "material.hpp"
+#include "matlib.hpp"
 
 using namespace reyes;
+
+template<class VertexTy, class MaterialTy>
+struct Grid
+{
+    VertexTy data[2];
+    MaterialTy material;
+};
 
 void appMain()
 {
@@ -23,8 +30,8 @@ void appMain()
     // 
     //
 
-    Grid<Pos, Lambert> grid;
-    grid.material.pShdr();
+    Grid<usemat(matlib::Lambert)> grid;
+    grid.material.pShdr(grid.data[0]);
 
 
     //GridI<PosNormalMat>* gridA = new TriGrid<PosNormalMat>;
