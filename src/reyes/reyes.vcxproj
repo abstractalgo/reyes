@@ -81,6 +81,7 @@
     <ClInclude Include="grid.hpp" />
     <ClInclude Include="image.hpp" />
     <ClInclude Include="material.hpp" />
+    <ClInclude Include="matlib.hpp" />
     <ClInclude Include="mem.hpp" />
     <ClInclude Include="pipeline.hpp" />
     <ClInclude Include="primitive.hpp" />

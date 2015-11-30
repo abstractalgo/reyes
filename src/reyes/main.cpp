@@ -1,5 +1,5 @@
 #include <cstdio>
-#include "pipeline.hpp"
+//#include "pipeline.hpp"
 #include "material.hpp"
 
 using namespace reyes;
@@ -18,16 +18,18 @@ void appMain()
     //// image setup
     //GBuffer image(10,10);
 
-    /*material* lambertMat;
-    material_factory::make<LambertianShader>(lambertMat);
-    color a = lambertMat->shade({ 0, 0, 0 }, {1,1,1});*/
+    // Rectangle<VertexTy, Lambert> rectangle...
+    // rectangle.material = new Lambert
+    // 
+    //
 
-    LambertShader& lambshdr = *new LambertShader;
-    SolidColorShader& scshdr = *new SolidColorShader;
+    Grid<Pos, Lambert> grid;
+    grid.material.pShdr();
 
-    GridI<PosNormalMat>* gridA = new TriGrid<PosNormalMat>;
-    GridI<position>* gridB; // from gridA
-    GridI<PosColor>* gridC = new TriGrid<PosColor>;
+
+    //GridI<PosNormalMat>* gridA = new TriGrid<PosNormalMat>;
+    //GridI<position>* gridB; // from gridA
+    //GridI<PosColor>* gridC = new TriGrid<PosColor>;
 
     // render
     //reyes::render(scene, camera, image);

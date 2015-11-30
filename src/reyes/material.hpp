@@ -1,74 +1,54 @@
 #pragma once
 
 #include <cstdint>
-#include "vecmx.hpp"
+#include "misc.hpp"
 
 namespace reyes
 {
-    /* RGBA32F color struct. */
-    struct color
+    struct MaterialI
     {
-        float r, g, b, a;
-        color(float _r = 0, float _g = 0, float _b = 0, float _a = 0)
-            : r(_r)
-            , g(_g)
-            , b(_b)
-            , a(_a)
-        {}
+        virtual position pShdr(void) = 0;
+        virtual color cShdr(void) = 0;
     };
 
-    /*template<class... InputTys>
-    struct shader
+    // DYNAMIC VERSION
+    /*template<class InputTy>
+    struct Material : public MaterialI
     {
-        color shade(InputTys... inputs);
+        InputTy vertex;
+        virtual position pShdr(void) = 0;
+        virtual color cShdr(void) = 0;
+    };*/
+
+    // STATIC VERSION (tru later)
+    template<class AttributeTy, class UniformTy>
+    struct Material : public MaterialI
+    {
+        AttributeTy uniform;
+        virtual position pShdr() = 0;
+        virtual color cShdr() = 0;
     };
 
-    template<class... InputTys>
-    struct SolidColorShader : public shader<>
+    struct LambertBlock
+    {};
+    
+    struct Lambert : public Material<PosNormal, LambertBlock>
     {
-        color shade()
+        position pShdr()
         {
-            return{ 1, 0, 0, 1 };
+            return{ 0, 0, 0 };
         }
-    };
 
-    template<class... InputTys>
-    struct LambertianShader : public shader<position, normal>
-    {
-        color shade(position p, normal n)
+        color cShdr()
         {
             return{ 0, 0, 0, 1 };
         }
     };
 
-    template<class ShaderTy>
-    static void make(shader<>*& shdr)
+    template<class VertexTy, class MaterialTy>
+    struct Grid
     {
-        shdr = (shader<>*)(new ShaderTy);
-    }
-    typedef shader<> material;*/
-
-    template<class ShaderInputTy>
-    struct shader
-    {
-        ShaderInputTy input;
-        virtual color shade(ShaderInputTy) = 0;
+        VertexTy data[2];
+        MaterialTy material;
     };
-
-    struct PN_inp
-    {
-        position p;
-        normal n;
-    };
-
-    struct SolidColorShader : public shader<void>
-    {
-        color shade() { return{ 0, 0, 0, 1 }; }
-    };
-    struct LambertShader : public shader<PN_inp>
-    {
-        color shade(PN_inp) { return{ 1, 0, 0, 1 }; }
-    };
-
 }
-// material descriptor + color(p,n)

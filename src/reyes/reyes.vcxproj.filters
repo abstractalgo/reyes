@@ -48,5 +48,8 @@
     <ClInclude Include="material.hpp">
       <Filter>reyes</Filter>
     </ClInclude>
+    <ClInclude Include="matlib.hpp">
+      <Filter>reyes</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
