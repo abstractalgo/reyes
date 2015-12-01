@@ -1,7 +1,7 @@
 # reyes
 reyes renderer
 
-current version v0.1
+current version v0.5
 
 ###TODO
 
@@ -10,17 +10,19 @@ current version v0.1
 - ~~G-buffer + z-buffer (1 sample per pixel)~~
 - ~~no bucketing~~
 - ~~orthographic camera~~
-- no splitting and bounding (dice entire primitives, each and every)
+- ~~no splitting and bounding (dice entire primitives, each and every)~~
 - basic pipeline
 
 ####v2.0
 
 - perspective camera
-- bounding and splitting
+- bounding and ~~splitting~~
 
 ####v3.0
 
 - multiple samples per pixel (antialiasing)
+- rasterizer
+- profiling
 
 ####v4.0
 
@@ -29,20 +31,21 @@ current version v0.1
 ####v5.0
 
 - A-buffer (transparency support + optimizations)
-- additional primitives
+- ~~additional primitives~~
 
 ####v6.0
 
 - fix cracks
-- multithreaded/jobified
+- task (job) manager
 
 ####v7.0
 
 - (GP)GPU implementation
+- job affinity selection
 
 ####v7.0
 
-- shading language
+- ~~shading language~~
 
 ####v113A
 
