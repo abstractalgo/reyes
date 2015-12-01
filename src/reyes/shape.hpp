@@ -19,7 +19,7 @@ namespace reyes
     struct ShapeI
     {
         virtual void split(SplitDir direction, mem::ObjectStack<ShapeI>& stack) = 0;
-        virtual GridI* dice() = 0;
+        virtual GridI* dice(mem::ObjectStack<GridI>& dicedGrids) = 0;
         virtual GridI* shade(mem::ObjectStack<GridVertexTy<color>>& shadedGrids) = 0;
     };
 
@@ -29,10 +29,6 @@ namespace reyes
     {
         mx4 transform;
         MaterialTy material;
-
-        virtual void split(SplitDir direction, mem::ObjectStack<ShapeI>& stack) = 0;
-        virtual GridI* dice() = 0;
-        virtual GridI* shade(mem::ObjectStack<GridVertexTy<color>>& shadedGrids) = 0;
     };
 
     template<class VertexTy, class MaterialTy>
@@ -40,7 +36,7 @@ namespace reyes
     struct ParametricSurface : public Shape<VertexTy, MaterialTy>
     {
         float start_u, start_v, end_u, end_v;
-        ParametricSurface(float su = 0f, float sv = 0f, flaot eu = 1f, float ev = 1f)
+        ParametricSurface(float su = 0.0f, float sv = 0.0f, float eu = 1.0f, float ev = 1.0f)
             : start_u(su)
             , start_v(sv)
             , end_u(eu)
@@ -73,10 +69,6 @@ namespace reyes
                 b.end_v = end_v;
             }
         }
-
-        virtual void split(SplitDir direction, mem::ObjectStack<ShapeI>& stack) = 0;
-        virtual GridI* dice() = 0;
-        virtual GridI* shade(mem::ObjectStack<GridVertexTy<color>>& shadedGrids) = 0;
     };
 
     template<class VertexTy, class MaterialTy>
@@ -93,29 +85,34 @@ namespace reyes
 
         void split(SplitDir direction, mem::ObjectStack<ShapeI>& stack)
         {
-            Rectangle& child_a = *(Rectangle<VertexTy, MaterialTy>*)stack.alloc(sizeof(Rectangle<VertexTy, MaterialTy>));
-            Rectangle& child_b = *(Rectangle<VertexTy, MaterialTy>*)stack.alloc(sizeof(Rectangle<VertexTy, MaterialTy>));
-            child_a.center = center;
-            child_a.size = size;
-            child_b.center = center;
-            child_b.size = size;
-            uv_split(direction, child_a, child_b);
+            Rectangle& a = *(Rectangle*)stack.alloc(sizeof(Rectangle));
+            Rectangle& b = *(Rectangle*)stack.alloc(sizeof(Rectangle));
+            a.center = b.center = center;
+            a.size = b.size = size;
+            uv_split(direction, a, b);
         }
 
-        GridI* dice()
+        GridI* dice(mem::ObjectStack<GridI>& dicedGrids)
         {
-            return 0;
-            //QuadGrid<Pos, 4, 4, 1> grid;
+            // TODO: fill VertexTy data and get ready for shading
 
+            // grid
+            QuadGrid<VertexTy, 4, 4, 1>& grid = *new(dicedGrids.alloc(sizeof(QuadGrid<VertexTy, 4, 4, 1>))) QuadGrid<VertexTy, 4, 4, 1>;
+            // vertices
+
+            // indices
+            grid.indices[0] = 0;
+            grid.indices[1] = 1;
+            grid.indices[2] = 2;
+            grid.indices[3] = 3;
+
+            return &grid;
         }
 
         GridI* shade(mem::ObjectStack<GridVertexTy<color>>& shadedGrids)
         {
             QuadGrid<VertexTy, 4, 4, 1> grid;
-            grid.indices[0] = 0;
-            grid.indices[1] = 1;
-            grid.indices[2] = 2;
-            grid.indices[3] = 3;
+            
 
             QuadGrid<color, 4, 4, 1>& color_grid = *new(shadedGrids.alloc(sizeof(QuadGrid<color, 4, 4, 1>))) QuadGrid<color, 4, 4, 1>;
             // data
@@ -129,9 +126,18 @@ namespace reyes
 
     // TODO
     //template<class VertexTy, class MaterialTy>
+    ///* Sphere shape inherited from UVSurface */
+    //struct Sphere : public ParametricSurface<VertexTy, MaterialTy>
+    //{
+        
+    //};
+
+    //template<class VertexTy, class MaterialTy>
     ///* QUadrilateral shape inherited from UVSurface */
     //struct Quadriliteral : public ParametricSurface<VertexTy, MaterialTy>
     //{
 
     //};
+
+    // TODO template grid size
 }

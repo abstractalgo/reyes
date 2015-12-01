@@ -1,13 +1,15 @@
 #include <cstdio>
 #include "pipeline.hpp"
 
+#define MAKE_SHAPE(_alloc, _shp, _mat) new(_alloc.alloc(sizeof(_shp<usemat(_mat)>))) _shp<usemat(_mat)>
+
 using namespace reyes;
 
 void appMain()
 {
     // scene setup
     mem::ObjectStack<ShapeI> scene(1024);
-    ShapeI& rectangle = *new(scene.alloc(sizeof(Rectangle<usemat(matlib::Lambert)>))) Rectangle<usemat(matlib::Lambert)>({ 0, 0, 0 }, { 5, 5 });
+    MAKE_SHAPE(scene, Rectangle, matlib::Lambert)({ 0, 0, 0 }, { 5, 5 });
 
     // camera setup
     camera camera;

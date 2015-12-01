@@ -19,7 +19,6 @@ namespace reyes
         {}
         void writePPM(const char* filename)
         {
-
             FILE* ppm_file = fopen(filename, "wb");
             if (!ppm_file)
                 return;

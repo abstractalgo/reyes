@@ -29,10 +29,8 @@ namespace reyes
         // DICE-SHADE
         while (scene)
         {
-            Rectangle<usemat(matlib::Lambert)>& shape = *(Rectangle<usemat(matlib::Lambert)>*)scene.pop();                                         // get shape
-            //shape->dice(grids);                           // dice it (transform it in world space)
-            //GridI* grid = grids.pop();
-            QuadGrid<color, 4, 4, 1>& sh = *(QuadGrid<color, 4, 4, 1>*)shape.shade(shadedGrids);
+            ShapeI* shape = (Rectangle<usemat(matlib::Lambert)>*)scene.pop();
+            QuadGrid<color, 4, 4, 1>& sh = *(QuadGrid<color, 4, 4, 1>*)shape->shade(shadedGrids);
             int i = 0;
         }
 
