@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <cassert>
 #include <cstdlib>
+#include <cstdlib>
 
 #ifndef __FUNCTION_NAME__
 #   ifdef WIN32   //WINDOWS

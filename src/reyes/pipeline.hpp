@@ -19,9 +19,9 @@ namespace reyes
     3. shade
     4. sample
     */
-    template<class ImageTy> void render(mem::ObjectStack<ShapeI>& scene, camera camera, ImageTy& image)
+    void render(mem::ObjectStack<ShapeI>& scene, camera camera, ImageI& image)
     {
-        mem::ObjectStack<GridI> shadedGrids;
+        mem::ObjectStack<GridVertexTy<color>> shadedGrids;
 
         // BOUND-SPLIT
         // (pass-through)
@@ -29,11 +29,15 @@ namespace reyes
         // DICE-SHADE
         while (scene)
         {
-            ShapeI* shape = scene.pop();                                         // get shape
+            Rectangle<usemat(matlib::Lambert)>& shape = *(Rectangle<usemat(matlib::Lambert)>*)scene.pop();                                         // get shape
             //shape->dice(grids);                           // dice it (transform it in world space)
             //GridI* grid = grids.pop();
-            GridI* shadedGrid = shape->shade();
+            QuadGrid<color, 4, 4, 1>& sh = *(QuadGrid<color, 4, 4, 1>*)shape.shade(shadedGrids);
+            int i = 0;
         }
+
+        // SAMPLE
+
     }
 }
 

@@ -23,7 +23,7 @@ namespace reyes
         {
             DISPLACE(Lambert)
             {
-                return{ vertex.p.x, 0, 0};
+                return{ 0, 0, 0};
             }
 
             SHADE(Lambert)

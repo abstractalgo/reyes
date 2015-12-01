@@ -1,9 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include "camera.hpp"
 #include "primitive.hpp"
-#include "misc.hpp"
 
 namespace reyes
 {
@@ -12,9 +10,7 @@ namespace reyes
 
     template <class VertexTy>
     struct GridVertexTy : public GridI
-    {
-        
-    };
+    {};
 
     template<class VertexTy, uint16_t dataSize, uint16_t indicesCount, uint16_t primitiveCount>
     struct GridGeometry : public GridVertexTy<VertexTy>
@@ -24,8 +20,6 @@ namespace reyes
         virtual PrimitiveI<VertexTy>* at(uint16_t idx) = 0;
         uint16_t count() { return primitiveCount; }
     };
-
-    // -------------------------------------------------------------------------
 
     template<class VertexTy, uint16_t dataSize, uint16_t indicesCount, uint16_t primitiveCount>
     struct TriGrid : public GridGeometry<VertexTy, dataSize, indicesCount, primitiveCount>
@@ -71,7 +65,4 @@ namespace reyes
             return &p;
         }
     };
-
-    // -------------------------------------------------------------------------
-
 }

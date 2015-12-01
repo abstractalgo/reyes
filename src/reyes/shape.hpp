@@ -20,7 +20,7 @@ namespace reyes
     {
         virtual void split(SplitDir direction, mem::ObjectStack<ShapeI>& stack) = 0;
         virtual GridI* dice() = 0;
-        virtual GridI* shade(void) = 0;
+        virtual GridI* shade(mem::ObjectStack<GridVertexTy<color>>& shadedGrids) = 0;
     };
 
     template<class VertexTy, class MaterialTy>
@@ -32,7 +32,7 @@ namespace reyes
 
         virtual void split(SplitDir direction, mem::ObjectStack<ShapeI>& stack) = 0;
         virtual GridI* dice() = 0;
-        virtual GridI* shade(void) = 0;
+        virtual GridI* shade(mem::ObjectStack<GridVertexTy<color>>& shadedGrids) = 0;
     };
 
     template<class VertexTy, class MaterialTy>
@@ -40,6 +40,12 @@ namespace reyes
     struct ParametricSurface : public Shape<VertexTy, MaterialTy>
     {
         float start_u, start_v, end_u, end_v;
+        ParametricSurface(float su = 0f, float sv = 0f, flaot eu = 1f, float ev = 1f)
+            : start_u(su)
+            , start_v(sv)
+            , end_u(eu)
+            , end_v(ev)
+        {}
         void uv_split(SplitDir direction, ParametricSurface& a, ParametricSurface& b)
         {
             if (U == direction)
@@ -70,7 +76,7 @@ namespace reyes
 
         virtual void split(SplitDir direction, mem::ObjectStack<ShapeI>& stack) = 0;
         virtual GridI* dice() = 0;
-        virtual GridI* shade(void) = 0;
+        virtual GridI* shade(mem::ObjectStack<GridVertexTy<color>>& shadedGrids) = 0;
     };
 
     template<class VertexTy, class MaterialTy>
@@ -103,13 +109,29 @@ namespace reyes
 
         }
 
-        GridI* shade(void)
+        GridI* shade(mem::ObjectStack<GridVertexTy<color>>& shadedGrids)
         {
-            QuadGrid<color, 4, 4, 1>& color_grid = *new QuadGrid<color, 4, 4, 1>;
             QuadGrid<VertexTy, 4, 4, 1> grid;
-            this->material.pShdr(grid.data[0]);
-            return 0;
-            //;
+            grid.indices[0] = 0;
+            grid.indices[1] = 1;
+            grid.indices[2] = 2;
+            grid.indices[3] = 3;
+
+            QuadGrid<color, 4, 4, 1>& color_grid = *new(shadedGrids.alloc(sizeof(QuadGrid<color, 4, 4, 1>))) QuadGrid<color, 4, 4, 1>;
+            // data
+            for (uint8_t i = 0; i < 4; i++)
+                color_grid.data[i] = material.cShdr(grid.data[i]);
+            // indices
+            memcpy(color_grid.indices, grid.indices, sizeof(grid.indices));
+            return &color_grid;
         }
     };
+
+    // TODO
+    //template<class VertexTy, class MaterialTy>
+    ///* QUadrilateral shape inherited from UVSurface */
+    //struct Quadriliteral : public ParametricSurface<VertexTy, MaterialTy>
+    //{
+
+    //};
 }

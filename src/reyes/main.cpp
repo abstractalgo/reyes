@@ -1,7 +1,5 @@
 #include <cstdio>
 #include "pipeline.hpp"
-#include "grid.hpp"
-#include "matlib.hpp"
 
 using namespace reyes;
 
