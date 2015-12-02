@@ -16,8 +16,7 @@ namespace reyes
         {}
     };
 
-    typedef position Pos;
-    typedef normal Normal;
+    typedef vec2 uv;
 
     struct PosNormal
     {
@@ -34,5 +33,11 @@ namespace reyes
         position p;
         normal n;
         color col;
+    };
+    struct PosNormalUV
+    {
+        position p;
+        normal n;
+        uv uv;
     };
 }

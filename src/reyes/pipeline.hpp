@@ -29,7 +29,7 @@ namespace reyes
         // DICE-SHADE
         while (scene)
         {
-            ShapeI* shape = (Rectangle<usemat(matlib::Lambert)>*)scene.pop();
+            ShapeI* shape = (Rectangle<matlib::Lambert>*)scene.pop();
             QuadGrid<color, 4, 4, 1>& sh = *(QuadGrid<color, 4, 4, 1>*)shape->shade(shadedGrids);
             int i = 0;
         }

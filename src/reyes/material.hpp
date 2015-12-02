@@ -13,12 +13,12 @@ namespace reyes
         virtual color cShdr(void) = 0;
     };*/
 
-    template<class AttributeTy, class UniformTy>
+    template<class UniformBlockTy>
     struct Material
     {
-        UniformTy uniform;
-        virtual position pShdr(AttributeTy& a) = 0;
-        virtual color cShdr(AttributeTy& a) = 0;
+        UniformBlockTy uniform;
+        virtual position pShdr(PosNormalUV& a) = 0;
+        virtual color cShdr(PosNormalUV& a) = 0;
     };
     
 }

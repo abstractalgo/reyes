@@ -1,7 +1,7 @@
 #include <cstdio>
 #include "pipeline.hpp"
 
-#define MAKE_SHAPE(_alloc, _shp, _mat) new(_alloc.alloc(sizeof(_shp<usemat(_mat)>))) _shp<usemat(_mat)>
+#define MAKE_SHAPE(_alloc, _shp, _mat) new(_alloc.alloc(sizeof(_shp<_mat>))) _shp<_mat>
 
 using namespace reyes;
 

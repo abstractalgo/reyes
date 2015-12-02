@@ -4,44 +4,37 @@
 
 #define usemat(matName) matName##Att,matName
 
-#define MATERIAL(matName) struct matName : public Material<matName##Att, matName##Unif>
-#define DISPLACE(name) position pShdr(name##Att& vertex)
-#define SHADE(name) color cShdr(name##Att& vertex)
+#define MATERIAL(matName) struct matName : public Material<matName##UnifBlk>
+#define DISPLACE position pShdr(PosNormalUV& vertex)
+#define SHADE color cShdr(PosNormalUV& vertex)
 
 namespace reyes
 {
     namespace matlib
     {
-        struct EmptyMaterial {};
-        struct LambertAtt
-        {
-            position p;
-            normal n;
-        };
-        struct LambertUnif {};
+        struct LambertUnifBlk {};
         MATERIAL(Lambert)
         {
-            DISPLACE(Lambert)
+            DISPLACE
             {
                 return{ 0, 0, 0};
             }
 
-            SHADE(Lambert)
+            SHADE
             {
                 return{ 0, 0, 0, 1 };
             }
         };
 
-        typedef Pos SolidColorAtt;
-        struct SolidColorUnif {};
+        struct SolidColorUnifBlk {};
         MATERIAL(SolidColor)
         {
-            DISPLACE(SolidColor)
+            DISPLACE
             {
                 return{ 0, 0, 0 };
             }
 
-            SHADE(SolidColor)
+            SHADE
             {
                 return{ 1, 0, 0, 1 };
             }

@@ -23,7 +23,7 @@ namespace reyes
         virtual GridI* shade(mem::ObjectStack<GridVertexTy<color>>& shadedGrids) = 0;
     };
 
-    template<class VertexTy, class MaterialTy>
+    template<class MaterialTy>
     /* Abstract class for shapes. */
     struct Shape : public ShapeI
     {
@@ -31,9 +31,9 @@ namespace reyes
         MaterialTy material;
     };
 
-    template<class VertexTy, class MaterialTy>
+    template<class MaterialTy>
     /* Base class for all the parametric (UV) surfaces. */
-    struct ParametricSurface : public Shape<VertexTy, MaterialTy>
+    struct ParametricSurface : public Shape<MaterialTy>
     {
         float start_u, start_v, end_u, end_v;
         ParametricSurface(float su = 0.0f, float sv = 0.0f, float eu = 1.0f, float ev = 1.0f)
@@ -71,9 +71,9 @@ namespace reyes
         }
     };
 
-    template<class VertexTy, class MaterialTy>
+    template<class MaterialTy>
     /* Rectangular shape inherited from UVSurface */
-    struct Rectangle : public ParametricSurface<VertexTy, MaterialTy>
+    struct Rectangle : public ParametricSurface<MaterialTy>
     {
         position center;
         vec2 size;
@@ -97,7 +97,7 @@ namespace reyes
             // TODO: fill VertexTy data and get ready for shading
 
             // grid
-            QuadGrid<VertexTy, 4, 4, 1>& grid = *new(dicedGrids.alloc(sizeof(QuadGrid<VertexTy, 4, 4, 1>))) QuadGrid<VertexTy, 4, 4, 1>;
+            QuadGrid<PosNormalUV, 4, 4, 1>& grid = *new(dicedGrids.alloc(sizeof(QuadGrid<PosNormalUV, 4, 4, 1>))) QuadGrid<PosNormalUV, 4, 4, 1>;
             // vertices
 
             // indices
@@ -111,7 +111,7 @@ namespace reyes
 
         GridI* shade(mem::ObjectStack<GridVertexTy<color>>& shadedGrids)
         {
-            QuadGrid<VertexTy, 4, 4, 1> grid;
+            QuadGrid<PosNormalUV, 4, 4, 1> grid;
             
 
             QuadGrid<color, 4, 4, 1>& color_grid = *new(shadedGrids.alloc(sizeof(QuadGrid<color, 4, 4, 1>))) QuadGrid<color, 4, 4, 1>;
