@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include "primitive.hpp"
+#include "camera.hpp"
 
 namespace reyes
 {
@@ -21,8 +22,35 @@ namespace reyes
         uint16_t count() { return primitiveCount; }
     };
 
-    template<class VertexTy, uint16_t dataSize, uint16_t indicesCount, uint16_t primitiveCount>
-    struct TriGrid : public GridGeometry<VertexTy, dataSize, indicesCount, primitiveCount>
+    // --- additional functions for pipeline -----------------------------------
+
+    template<uint16_t dataSize, uint16_t indicesCount, uint16_t primitiveCount>
+    struct GridGeometry<PosNormalUV, dataSize, indicesCount, primitiveCount>
+    {
+        vec2 rasterEstimate(void)
+        {
+            // TODO
+        }
+
+        void transform(mx4& mx)
+        {
+            for (uint16_t i = 0; i < dataSize; i++)
+            {
+                // TODO
+            }
+        }
+
+        void project(camera& camera)
+        {
+            transform(camera.view);
+            transform(camera.projection);
+        }
+    };
+
+    // --- primitive-typed grids -----------------------------------------------
+
+    template<class VertexTy, uint16_t dataSize, uint16_t indicesCount>
+    struct TriGrid : public GridGeometry<VertexTy, dataSize, indicesCount, indicesCount/3>
     {
         Triangle<VertexTy>* at(uint16_t idx)
         {
@@ -34,8 +62,8 @@ namespace reyes
         }
     };
 
-    template<class VertexTy, uint16_t dataSize, uint16_t indicesCount, uint16_t primitiveCount>
-    struct QuadGrid : public GridGeometry<VertexTy, dataSize, indicesCount, primitiveCount>
+    template<class VertexTy, uint16_t dataSize, uint16_t indicesCount>
+    struct QuadGrid : public GridGeometry<VertexTy, dataSize, indicesCount, indicesCount/4>
     {
         Quadrilateral<VertexTy>* at(uint16_t idx)
         {

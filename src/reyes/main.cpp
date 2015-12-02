@@ -1,5 +1,6 @@
 #include <cstdio>
 #include "pipeline.hpp"
+#include "matlib.hpp"
 
 #define MAKE_SHAPE(_alloc, _shp, _mat) new(_alloc.alloc(sizeof(_shp<_mat>))) _shp<_mat>
 
@@ -9,7 +10,7 @@ void appMain()
 {
     // scene setup
     mem::ObjectStack<ShapeI> scene(1024);
-    MAKE_SHAPE(scene, Sphere, matlib::Lambert)({ 0, 0, 0 }, 5);
+    new(scene.alloc(sizeof(Quadrilateral<matlib::Lambert>))) Quadrilateral<matlib::Lambert>();
 
     // camera setup
     camera camera;

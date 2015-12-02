@@ -1,13 +1,10 @@
 #pragma once
 
 #include "mem.hpp"
-#include "vecmx.hpp"
 #include "shape.hpp"
 #include "grid.hpp"
-#include "material.hpp"
 #include "camera.hpp"
 #include "image.hpp"
-#include <list>
 
 namespace reyes
 {

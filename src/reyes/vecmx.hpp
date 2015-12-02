@@ -355,6 +355,30 @@ namespace reyes
             e[1] = x.y; e[5] = y.y; e[9] = z.y;
             e[2] = x.z; e[6] = y.z; e[10] = z.z;
         }
+
+        vec4 operator*(vec4& v)
+        {
+            float x = v.x;
+            float y = v.y;
+            float z = v.z;
+            float w = v.w;
+
+            vec4 res;
+
+            res.x = e[0] * x + e[4] * y + e[8] * z + e[12] * w;
+            res.y = e[1] * x + e[5] * y + e[9] * z + e[13] * w;
+            res.z = e[2] * x + e[6] * y + e[10] * z + e[14] * w;
+            res.w = e[3] * x + e[7] * y + e[11] * z + e[15] * w;
+
+            transpose();
+
+            return res;
+        }
+
+        vec4 operator*(vec3& v)
+        {
+            return (*this)*vec4({ v.x, v.y, v.z, 1.0f });
+        }
     };
 
 	/* Axis-algined boundig box (2D). */
