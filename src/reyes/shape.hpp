@@ -19,8 +19,11 @@ namespace reyes
     struct ShapeI
     {
         virtual void split(SplitDir direction, mem::ObjectStack<ShapeI>& stack) = 0;
-        virtual GridI* dice(mem::ObjectStack<GridI>& dicedGrids) = 0;
-        virtual GridI* shade(mem::ObjectStack<GridVertexTy<color>>& shadedGrids) = 0;
+        virtual GridVertexTy<PosNormalUV>* dice(mem::ObjectStack<GridVertexTy<PosNormalUV>>& dicedGrids) = 0;
+        virtual GridVertexTy<color>* shade(mem::ObjectStack<GridVertexTy<color>>& shadedGrids) = 0;
+        virtual position P(uint16_t idx) = 0;
+        virtual normal N(uint16_t idx) = 0;
+        virtual uv UV(uint16_t idx) = 0;
     };
 
     template<class MaterialTy>
@@ -71,66 +74,135 @@ namespace reyes
         }
     };
 
+    //template<class MaterialTy>
+    ///* Rectangular shape inherited from UVSurface */
+    //struct Rectangle : public ParametricSurface<MaterialTy>
+    //{
+    //    position center;
+    //    vec2 size;
+
+    //    Rectangle(position _center = { 0, 0, 0 }, vec2 _size = { 0, 0 })
+    //        : center(_center)
+    //        , size(_size)
+    //    {}
+
+    //    void split(SplitDir direction, mem::ObjectStack<ShapeI>& stack)
+    //    {
+    //        Rectangle& a = *(Rectangle*)stack.alloc(sizeof(Rectangle));
+    //        Rectangle& b = *(Rectangle*)stack.alloc(sizeof(Rectangle));
+    //        a.center = b.center = center;
+    //        a.size = b.size = size;
+    //        uv_split(direction, a, b);
+    //    }
+
+    //    GridI* dice(mem::ObjectStack<GridI>& dicedGrids)
+    //    {
+    //        // TODO: fill VertexTy data and get ready for shading
+
+    //        // grid
+    //        QuadGrid<PosNormalUV, 4, 4, 1>& grid = *new(dicedGrids.alloc(sizeof(QuadGrid<PosNormalUV, 4, 4, 1>))) QuadGrid<PosNormalUV, 4, 4, 1>;
+    //        // vertices
+
+    //        // indices
+    //        grid.indices[0] = 0;
+    //        grid.indices[1] = 1;
+    //        grid.indices[2] = 2;
+    //        grid.indices[3] = 3;
+
+    //        return &grid;
+    //    }
+
+    //    GridI* shade(mem::ObjectStack<GridVertexTy<color>>& shadedGrids)
+    //    {
+    //        QuadGrid<PosNormalUV, 4, 4, 1> grid;
+    //        
+
+    //        QuadGrid<color, 4, 4, 1>& color_grid = *new(shadedGrids.alloc(sizeof(QuadGrid<color, 4, 4, 1>))) QuadGrid<color, 4, 4, 1>;
+    //        // data
+    //        for (uint8_t i = 0; i < 4; i++)
+    //            color_grid.data[i] = material.cShdr(grid.data[i]);
+    //        // indices
+    //        memcpy(color_grid.indices, grid.indices, sizeof(grid.indices));
+    //        return &color_grid;
+    //    }
+
+    //    position P(uint16_t idx) { return{ 0, 0, 1 }; }
+    //    norm
+    //};
+
+    // TODO
     template<class MaterialTy>
-    /* Rectangular shape inherited from UVSurface */
-    struct Rectangle : public ParametricSurface<MaterialTy>
+    /* Sphere shape inherited from UVSurface */
+    struct Sphere : public ParametricSurface<MaterialTy>
     {
         position center;
-        vec2 size;
+        float R;
 
-        Rectangle(position _center = { 0, 0, 0 }, vec2 _size = { 0, 0 })
-            : center(_center)
-            , size(_size)
+        Sphere(position _c = { 0, 0, 0 }, float _R = 1.0f)
+            : center(_c)
+            , R(_R)
         {}
 
         void split(SplitDir direction, mem::ObjectStack<ShapeI>& stack)
         {
-            Rectangle& a = *(Rectangle*)stack.alloc(sizeof(Rectangle));
-            Rectangle& b = *(Rectangle*)stack.alloc(sizeof(Rectangle));
+            Sphere& a = *(Sphere*)stack.alloc(sizeof(Sphere));
+            Sphere& b = *(Sphere*)stack.alloc(sizeof(Sphere));
             a.center = b.center = center;
-            a.size = b.size = size;
+            a.R = b.R = R;
             uv_split(direction, a, b);
         }
 
-        GridI* dice(mem::ObjectStack<GridI>& dicedGrids)
+        GridVertexTy<PosNormalUV>* dice(mem::ObjectStack<GridVertexTy<PosNormalUV>>& dicedGrids)
         {
-            // TODO: fill VertexTy data and get ready for shading
-
             // grid
-            QuadGrid<PosNormalUV, 4, 4, 1>& grid = *new(dicedGrids.alloc(sizeof(QuadGrid<PosNormalUV, 4, 4, 1>))) QuadGrid<PosNormalUV, 4, 4, 1>;
+            TriGrid<PosNormalUV, 3, 3, 1>& grid = *new(dicedGrids.alloc(sizeof(TriGrid<PosNormalUV, 3, 3, 1>))) TriGrid<PosNormalUV, 3, 3, 1>;
             // vertices
-
+            for (uint16_t idx = 0; idx < 3; idx++)
+            {
+                grid.data[idx].p = P(idx);
+                grid.data[idx].n = N(idx);
+                grid.data[idx].uv = UV(idx);
+                grid.data[idx].p = material.pShdr(grid.data[idx]);
+            }
             // indices
             grid.indices[0] = 0;
             grid.indices[1] = 1;
             grid.indices[2] = 2;
-            grid.indices[3] = 3;
 
             return &grid;
         }
 
-        GridI* shade(mem::ObjectStack<GridVertexTy<color>>& shadedGrids)
+        GridVertexTy<color>* shade(mem::ObjectStack<GridVertexTy<color>>& shadedGrids)
         {
-            QuadGrid<PosNormalUV, 4, 4, 1> grid;
-            
+            // dice grid
+            TriGrid<PosNormalUV, 3, 3, 1> grid;
+            // vertices
+            for (uint16_t idx = 0; idx < 3; idx++)
+            {
+                grid.data[idx].p = P(idx);
+                grid.data[idx].n = N(idx);
+                grid.data[idx].uv = UV(idx);
+                grid.data[idx].p = material.pShdr(grid.data[idx]);
+            }
+            // indices
+            grid.indices[0] = 0;
+            grid.indices[1] = 1;
+            grid.indices[2] = 2;
 
-            QuadGrid<color, 4, 4, 1>& color_grid = *new(shadedGrids.alloc(sizeof(QuadGrid<color, 4, 4, 1>))) QuadGrid<color, 4, 4, 1>;
+            // color grid
+            TriGrid<color, 3, 3, 1>& color_grid = *new(shadedGrids.alloc(sizeof(TriGrid<color, 3, 3, 1>))) TriGrid<color, 3, 3, 1>;
             // data
-            for (uint8_t i = 0; i < 4; i++)
+            for (uint8_t i = 0; i < 3; i++)
                 color_grid.data[i] = material.cShdr(grid.data[i]);
             // indices
             memcpy(color_grid.indices, grid.indices, sizeof(grid.indices));
             return &color_grid;
         }
-    };
 
-    // TODO
-    //template<class VertexTy, class MaterialTy>
-    ///* Sphere shape inherited from UVSurface */
-    //struct Sphere : public ParametricSurface<VertexTy, MaterialTy>
-    //{
-        
-    //};
+        position P(uint16_t idx) { return{ 0, 0, 1 }; }
+        normal N(uint16_t idx) { return{ 0, 0, 1 }; }
+        uv UV(uint16_t idx) { return{ 0, 0 }; }
+    };
 
     //template<class VertexTy, class MaterialTy>
     ///* QUadrilateral shape inherited from UVSurface */

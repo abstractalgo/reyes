@@ -4,6 +4,7 @@
 
 #define usemat(matName) matName##Att,matName
 
+#define UNIFORM(matName) struct matName##UnifBlk
 #define MATERIAL(matName) struct matName : public Material<matName##UnifBlk>
 #define DISPLACE position pShdr(PosNormalUV& vertex)
 #define SHADE color cShdr(PosNormalUV& vertex)
@@ -12,7 +13,10 @@ namespace reyes
 {
     namespace matlib
     {
-        struct LambertUnifBlk {};
+        UNIFORM(Lambert)
+        {
+            // no uniforms
+        };
         MATERIAL(Lambert)
         {
             DISPLACE
@@ -26,7 +30,10 @@ namespace reyes
             }
         };
 
-        struct SolidColorUnifBlk {};
+        UNIFORM(SolidColor)
+        {
+            // no uniforms
+        };
         MATERIAL(SolidColor)
         {
             DISPLACE
@@ -42,6 +49,7 @@ namespace reyes
     }
 }
 
+#undef UNIFORM
 #undef MATERIAL
 #undef DISPLACE
 #undef SHADE

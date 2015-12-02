@@ -9,7 +9,7 @@ void appMain()
 {
     // scene setup
     mem::ObjectStack<ShapeI> scene(1024);
-    MAKE_SHAPE(scene, Rectangle, matlib::Lambert)({ 0, 0, 0 }, { 5, 5 });
+    MAKE_SHAPE(scene, Sphere, matlib::Lambert)({ 0, 0, 0 }, 5);
 
     // camera setup
     camera camera;
