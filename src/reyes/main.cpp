@@ -2,7 +2,7 @@
 #include "pipeline.hpp"
 #include "matlib.hpp"
 
-#define MAKE_SHAPE(_alloc, _shp, _mat) new(_alloc.alloc(sizeof(_shp<_mat>))) _shp<_mat>
+#define MAKE_SHAPE(_alloc, _shp) ::new(_alloc.alloc(sizeof(_shp))) _shp
 
 using namespace reyes;
 
@@ -10,7 +10,7 @@ void appMain()
 {
     // scene setup
     mem::ObjectStack<ShapeI> scene(1024);
-    new(scene.alloc(sizeof(Quadrilateral<matlib::Lambert>))) Quadrilateral<matlib::Lambert>();
+    MAKE_SHAPE(scene, Quadrilateral<matlib::Lambert>);
 
     // camera setup
     camera camera;

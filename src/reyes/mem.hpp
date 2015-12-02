@@ -4,6 +4,7 @@
 #include <cassert>
 #include <cstdlib>
 #include <cstdlib>
+#include <new>
 
 #ifndef __FUNCTION_NAME__
 #   ifdef WIN32   //WINDOWS

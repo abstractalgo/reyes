@@ -2,6 +2,7 @@
 
 #include "vecmx.hpp"
 #include "grid.hpp"
+#include "misc.hpp"
 #include <cstring>
 #include <cstdint>
 
@@ -28,6 +29,12 @@ namespace reyes
             char* rgbdata = getRGB();
             size_t cnt = fwrite(rgbdata, sizeof(char), size, ppm_file);
             fclose(ppm_file);
+        }
+        vec2 rasterEstimate(vec2 dist)
+        {
+            static float half_width = width / 2.0f;
+            static float half_height = height / 2.0f;
+            return vec2(dist.x*half_width, dist.y*half_height);
         }
     };
 

@@ -3,7 +3,7 @@
 #include "mem.hpp"
 #include "vecmx.hpp"
 #include "grid.hpp"
-#include "matlib.hpp"
+#include "misc.hpp"
 
 namespace reyes
 {
@@ -16,6 +16,7 @@ namespace reyes
             : SplitDir::V);
     }
 
+    /* Abstract class for shapes. */
     struct ShapeI
     {
         virtual void split(SplitDir direction, mem::ObjectStack<ShapeI>& stack) = 0;
@@ -27,7 +28,7 @@ namespace reyes
     };
 
     template<class MaterialTy>
-    /* Abstract class for shapes. */
+    /* Material-typed abstract class for shapes. */
     struct Shape : public ShapeI
     {
         mx4 transform;
