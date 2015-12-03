@@ -1,6 +1,7 @@
 #include <cstdio>
 #include "pipeline.hpp"
 #include "matlib.hpp"
+#include "shape.hpp"
 
 #define MAKE_SHAPE(_alloc, _shp) ::new(_alloc.alloc(sizeof(_shp))) _shp
 
