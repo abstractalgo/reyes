@@ -28,26 +28,6 @@ namespace reyes
         uint16_t count() { return primitiveCount; }
     };
 
-    // --- additional functions for pipeline -----------------------------------
-
-    //template<uint16_t dataSize, uint16_t indicesCount, uint16_t primitiveCount>
-    //struct GridGeometry<PosNormalUV, dataSize, indicesCount, primitiveCount>
-    //{
-    //    void transform(mx4& mx)
-    //    {
-    //        for (uint16_t i = 0; i < dataSize; i++)
-    //        {
-    //            // TODO
-    //        }
-    //    }
-
-    //    void project(camera& camera)
-    //    {
-    //        transform(camera.view);
-    //        transform(camera.projection);
-    //    }
-    //};
-
     // --- primitive-typed grids -----------------------------------------------
 
     template<class VertexTy, uint16_t dataSize, uint16_t indicesCount>

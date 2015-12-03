@@ -153,7 +153,7 @@ namespace reyes
             grid.indices[0] = 0;
             grid.indices[1] = 1;
             grid.indices[2] = 2;
-            grid.indices[3] = 2;
+            grid.indices[3] = 3;
 
             // color grid
             QuadGrid<PosColor, 4, 4>& color_grid = *new(shadedGrids.alloc(sizeof(QuadGrid<PosColor, 4, 4>))) QuadGrid<PosColor, 4, 4>;
@@ -169,11 +169,20 @@ namespace reyes
             color_grid.indices[0] = 0;
             color_grid.indices[1] = 1;
             color_grid.indices[2] = 2;
-            color_grid.indices[3] = 2;
+            color_grid.indices[3] = 3;
             return &color_grid;
         }
 
-        position P(uint16_t idx) { return{ 0, 0, 1 }; /*diced grid entry*/ }
+        position P(uint16_t idx) {
+            if (idx == 0)
+                return a * 5;
+            if (idx == 1)
+                return b * 5;
+            if (idx == 2)
+                return c * 5;
+            if (idx == 3)
+                return d * 5;
+        }
         normal N(uint16_t idx) { return{ 0, 0, 1 }; }
         uv UV(uint16_t idx) { return{ 0, 0 }; /*calc xy-coord and return normalized uv*/ }
     };

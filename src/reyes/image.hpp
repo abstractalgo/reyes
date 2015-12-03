@@ -8,6 +8,8 @@
 
 namespace reyes
 {
+    // TODO: move Image to Camera
+
     /* Image interface. */
     struct ImageI
     {
@@ -55,18 +57,55 @@ namespace reyes
 
         void rasterize(GridVertexTy<PosColor>& grid)
         {
+            // TODO
+        }
+
+        char* getRGB(void)
+        {
+            // TODO
+            return 0;
+        }
+    };
+
+    /* Primitive RGB rasterizer. */
+    struct RGB8Image : public ImageI
+    {
+        struct RGB8Pixel
+        {
+            char r, g, b;
+        } *data;
+
+        RGB8Image(uint16_t _width, uint16_t _height)
+            : ImageI(_width, _height)
+            , data(new RGB8Pixel[_width*_height])
+        {
+            for (uint16_t x = 0; x < height; x++)
+                for (uint16_t y = 0; y < width; y++)
+                        data[x*width + y] = { 255, 0, 255 };
+        }
+
+        void rasterize(GridVertexTy<PosColor>& grid)
+        {
             uint16_t p_cnt = grid.count();
             for (uint16_t pidx = 0; pidx < p_cnt; pidx++)
             {
-                primitive::PrimitiveI<PosColor>* p = grid.at(pidx);
-                primitive::Quadrilateral<PosColor>* _shiet = (primitive::Quadrilateral<PosColor>*)p;
-                int i = 0;
+                primitive::Quadrilateral<PosColor> * q = (primitive::Quadrilateral<PosColor>*)grid.at(pidx);
+                for (uint16_t x = 0; x < height; x++)
+                {
+                    for (uint16_t y = 0; y < width; y++)
+                    {
+                        if (primitive::inQuad(*q, vec3(x, y, 0)))
+                        {
+                            data[x*width + y] = { 0, 0, 255 };
+                        }
+                    }
+                }
             }
         }
 
         char* getRGB(void)
         {
-            return 0;
+            return (char*)data;
         }
     };
 }

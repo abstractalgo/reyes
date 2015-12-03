@@ -4,11 +4,18 @@
 
 namespace reyes
 {
+    // TODO: move Image to Camera
+
     /* Camera struct (POD type). */
     struct camera
     {
         mx4 view;
         mx4 projection;
+
+        position project(position p)
+        {
+            return{ 0, 0, 0 };
+        }
 
         /* Mark perspective frustum. */
         void perspective(float fov, float aspect, float near, float far)
