@@ -12,7 +12,12 @@ namespace reyes
 
     template <class VertexTy>
     struct GridVertexTy : public GridI
-    {};
+    {
+        VertexTy* data;
+        uint16_t* indices;
+        virtual primitive::PrimitiveI<VertexTy>* at(uint16_t idx) = 0;
+        virtual uint16_t count() = 0;
+    };
 
     template<class VertexTy, uint16_t dataSize, uint16_t indicesCount, uint16_t primitiveCount>
     struct GridGeometry : public GridVertexTy<VertexTy>

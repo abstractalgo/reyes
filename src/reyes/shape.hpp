@@ -21,7 +21,7 @@ namespace reyes
     {
         virtual void split(SplitDir direction, mem::ObjectStack<ShapeI>& stack) = 0;
         virtual GridVertexTy<PosNormalUV>* dice(mem::ObjectStack<GridVertexTy<PosNormalUV>>& dicedGrids) = 0;
-        virtual GridVertexTy<color>* shade(mem::ObjectStack<GridVertexTy<color>>& shadedGrids) = 0;
+        virtual GridVertexTy<PosColor>* shade(mem::ObjectStack<GridVertexTy<PosColor>>& shadedGrids) = 0;
         virtual position P(uint16_t idx) = 0;
         virtual normal N(uint16_t idx) = 0;
         virtual uv UV(uint16_t idx) = 0;
@@ -137,7 +137,7 @@ namespace reyes
             return 0;
         }
 
-        GridVertexTy<color>* shade(mem::ObjectStack<GridVertexTy<color>>& shadedGrids)
+        GridVertexTy<PosColor>* shade(mem::ObjectStack<GridVertexTy<PosColor>>& shadedGrids)
         {
             // dice
             QuadGrid<PosNormalUV, 4, 4> grid;
@@ -156,11 +156,15 @@ namespace reyes
             grid.indices[3] = 2;
 
             // color grid
-            QuadGrid<color, 4, 4>& color_grid = *new(shadedGrids.alloc(sizeof(QuadGrid<color, 4, 4>))) QuadGrid<color, 4, 4>;
+            QuadGrid<PosColor, 4, 4>& color_grid = *new(shadedGrids.alloc(sizeof(QuadGrid<PosColor, 4, 4>))) QuadGrid<PosColor, 4, 4>;
             // data
             for (uint8_t i = 0; i < 4; i++)
+            {
                 //color_grid.data[i] = material.cShdr(grid.data[i]);
-                color_grid.data[i] = {1,0,0,1};
+                color_grid.data[i].col = { 1, 0, 0, 1 };
+                color_grid.data[i].p = grid.data[i].p;
+                color_grid.data[i].p.z = 0;
+            }
             // indices
             color_grid.indices[0] = 0;
             color_grid.indices[1] = 1;

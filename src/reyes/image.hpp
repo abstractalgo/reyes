@@ -14,7 +14,7 @@ namespace reyes
         uint16_t width, height;
         float half_width, half_height;
         virtual char* getRGB(void) = 0;
-        virtual void rasterize(GridVertexTy<color>& grid) = 0;
+        virtual void rasterize(GridVertexTy<PosColor>& grid) = 0;
         ImageI(uint16_t _width, uint16_t _height)
             : width(_width)
             , height(_height)
@@ -53,9 +53,15 @@ namespace reyes
             , data(new GBufferPixel[_width*_height])
         {}
 
-        void rasterize(GridVertexTy<color>& grid)
+        void rasterize(GridVertexTy<PosColor>& grid)
         {
-            
+            uint16_t p_cnt = grid.count();
+            for (uint16_t pidx = 0; pidx < p_cnt; pidx++)
+            {
+                primitive::PrimitiveI<PosColor>* p = grid.at(pidx);
+                primitive::Quadrilateral<PosColor>* _shiet = (primitive::Quadrilateral<PosColor>*)p;
+                int i = 0;
+            }
         }
 
         char* getRGB(void)

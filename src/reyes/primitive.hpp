@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-//#include "misc.hpp"
+#include "misc.hpp"
 //#include "vecmx.hpp"
 
 namespace reyes
@@ -12,7 +12,17 @@ namespace reyes
 
         template<class VertexTy>
         struct PrimitiveI
-        {};
+        {
+        };
+
+        template<>
+        struct PrimitiveI<PosColor>
+        {
+            color getAt(position pos)
+            {
+
+            }
+        };
 
         template<class VertexTy>
         struct Quadrilateral : public PrimitiveI<VertexTy>
