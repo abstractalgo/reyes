@@ -40,7 +40,7 @@ current version v1.0
 
 - bucketing
 - ~~additional primitives intro (triangles and polygon)~~
-- additional shapes (catmull-clark?)
+- additional shapes (catmull-clark subdiv, bezier, nurbs, b-spline, loop subdiv)
 
 ####v6.0
 
