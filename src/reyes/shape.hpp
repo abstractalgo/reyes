@@ -20,8 +20,8 @@ namespace reyes
     struct ShapeI
     {
         virtual void split(SplitDir direction, mem::ObjectStack<ShapeI>& stack) = 0;
-        virtual Microgrid<PosNormalUV>* dice(mem::ObjectStack<Microgrid<PosNormalUV>>& dicedGrids) = 0;
-        virtual Microgrid<PosColor>* shade(mem::ObjectStack<Microgrid<PosColor>>& shadedGrids) = 0;
+        virtual MicrogridI<PosNormalUV>* dice(mem::ObjectStack<Microgrid>& dicedGrids) = 0;
+        virtual MicrogridI<PosColor>* shade(mem::ObjectStack<MicrogridI<PosColor>>& shadedGrids) = 0;
         virtual position P(uint16_t idx) = 0;
         virtual normal N(uint16_t idx) = 0;
         virtual uv UV(uint16_t idx) = 0;
@@ -73,22 +73,22 @@ namespace reyes
                 two.a = 0.5f*(a + b); two.b = b; two.c = c; two.d = 0.5f*(c + d);
             }
         }
-        Microgrid<PosNormalUV>* dice(mem::ObjectStack<Microgrid<PosNormalUV>>& dicedGrids)
+        MicrogridI<PosNormalUV>* dice(mem::ObjectStack<Microgrid>& dicedGrids)
         {
             return 0;
         }
 
-        Microgrid<PosColor>* shade(mem::ObjectStack<Microgrid<PosColor>>& shadedGrids)
+        MicrogridI<PosColor>* shade(mem::ObjectStack<MicrogridI<PosColor>>& shadedGrids)
         {
-            // dice
+            // grid
             GQuadGrid<4, 4> grid;
             // vertices
             for (uint16_t idx = 0; idx < 4; idx++)
             {
-                grid.data[idx].p    = P(idx);
-                grid.data[idx].n    = N(idx);
-                grid.data[idx].uv   = UV(idx);
-                grid.data[idx].p    = material.pShdr(grid.data[idx]);
+                grid.data[idx].p = P(idx);
+                grid.data[idx].n = N(idx);
+                grid.data[idx].uv = UV(idx);
+                grid.data[idx].p = material.pShdr(grid.data[idx]);
             }
             // indices
             grid.indices[0] = 0;
@@ -109,6 +109,7 @@ namespace reyes
             color_grid.indices[1] = 1;
             color_grid.indices[2] = 3;
             color_grid.indices[3] = 2;
+            shadedGrids.pop();
             return &color_grid;
         }
 

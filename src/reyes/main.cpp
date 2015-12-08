@@ -14,15 +14,12 @@ void appMain()
     MAKE_SHAPE(scene, Quadrilateral<matlib::YellowColor>)();
 
     // camera setup
-    camera camera;
-    camera.orthographic(-10, 10, 10, 10);
-    camera.lookAt(/*eye*/ { 0, 0, -5 }, /*target*/ { 0, 0, 0 } /*up*/);
-
-    // image setup
-    RGB8Image image(50, 50);
+    Camera<RGB8Image, 50, 50> camera;
+    //camera.orthographic(-25, 25, -25, 25);
+    //camera.lookAt(/*eye*/ { 0, 0, -5 }, /*target*/ { 0, 0, 0 } /*up*/);
 
     // render
-    reyes::render(scene, camera, image);
+    reyes::render(scene, camera);
 
-    image.writePPM("test.ppm");
+    camera.image.writePPM("test.ppm");
 }

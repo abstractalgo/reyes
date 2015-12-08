@@ -16,9 +16,10 @@ namespace reyes
     3. shade
     4. sample
     */
-    void render(mem::ObjectStack<ShapeI>& scene, camera camera, ImageI& image)
+    template<class FilmTy, uint16_t width, uint16_t height>
+    void render(mem::ObjectStack<ShapeI>& scene, Camera<FilmTy, width, height> camera)
     {
-        mem::ObjectStack<Microgrid<PosColor>> shadedGrids(1024);
+        mem::ObjectStack<MicrogridI<PosColor>> grids(1024);
 
         // BOUND-SPLIT
         // (pass-through)
@@ -27,8 +28,8 @@ namespace reyes
         while (scene)
         {
             ShapeI* shape = scene.pop();
-            shape->shade(shadedGrids);
-            image.rasterize(*shadedGrids.pop());
+            MicrogridI<PosColor>* shadedGrid = shape->shade(grids);
+            camera.capture(shadedGrid);
         }
     }
 }

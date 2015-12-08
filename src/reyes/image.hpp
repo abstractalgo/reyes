@@ -16,7 +16,7 @@ namespace reyes
         uint16_t width, height;
         float half_width, half_height;
         virtual char* getRGB(void) = 0;
-        virtual void rasterize(Microgrid<PosColor>& grid) = 0;
+        virtual void rasterize(MicrogridI<PosColor>& grid) = 0;
         ImageI(uint16_t _width, uint16_t _height)
             : width(_width)
             , height(_height)
@@ -58,7 +58,7 @@ namespace reyes
                         data[x*width + y] = { 255, 0, 255 };
         }
 
-        void rasterize(Microgrid<PosColor>& grid)
+        void rasterize(MicrogridI<PosColor>& grid)
         {
             uint16_t p_cnt = grid.count();
             SPrimitiveI* prim;
@@ -68,13 +68,13 @@ namespace reyes
                 for (uint16_t x = 0; x < height; x++)
                     for (uint16_t y = 0; y < width; y++)
                     {
-                        vec3 p(x, y, 0);
-                        bool test = prim->in(p);
-                        if (test)
+                        float nx = (float)x / width * 2.0f - 1.0f;
+                        float ny = (float)y / height * 2.0f - 1.0f;
+                        vec3 p(nx, ny, 0);
+                        if (prim->in(p))
                         {
                             color c = prim->at(p);
                             data[x*width + y] = { c.r, c.g, c.b };
-                            //data[x*width + y] = { 0, 0, 255 };
                         }
                     }
             }

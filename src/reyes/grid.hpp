@@ -2,13 +2,15 @@
 
 #include <cstdint>
 #include "primitive.hpp"
-#include "camera.hpp"
 #include "misc.hpp"
 
 namespace reyes
 {
-    template <class VertexTy>
     struct Microgrid
+    {};
+
+    template <class VertexTy>
+    struct MicrogridI
     {
         VertexTy* data;
         uint16_t* indices;
@@ -17,7 +19,7 @@ namespace reyes
     };
 
     template <class VertexTy, size_t verticesCnt, size_t indicesCnt>
-    struct GridI : public Microgrid<VertexTy>
+    struct GridI : public MicrogridI<VertexTy>
     {
         VertexTy data[verticesCnt];
         uint16_t indices[indicesCnt];
@@ -25,22 +27,21 @@ namespace reyes
         virtual uint16_t count() = 0;
     };
 
+    
     /*
     template<size_t verticesCnt, size_t indicesCnt>
-    struct GGridI : public GridI<PosNormalUV, Primitive, verticesCnt, indicesCnt>
-    {
+    struct GGridI : public GridI<PosNormalUV, verticesCnt, indicesCnt>
+    {};
+    */
 
-    };
-
+    /*
     template<size_t verticesCnt, size_t indicesCnt>
     struct SGridI : public GridI<PosColor, Primitive, verticesCnt, indicesCnt>
-    {
-
-    };
+    {};
     */
 
     template<size_t verticesCnt, size_t indicesCnt>
-    struct GTriGrid : public GridI<PosNormalUV, verticesCnt, indicesCnt> /*, public GGridI */
+    struct GTriGrid : public GridI<PosNormalUV, verticesCnt, indicesCnt> //, public GGridI<verticesCnt, indicesCnt>
     {
         GTriangle* at(uint16_t idx)
         {
@@ -68,7 +69,7 @@ namespace reyes
     };
 
     template<size_t verticesCnt, size_t indicesCnt>
-    struct GQuadGrid : public GridI<PosNormalUV, verticesCnt, indicesCnt> /*, public GGridI */
+    struct GQuadGrid : public GridI<PosNormalUV, verticesCnt, indicesCnt> //, public GGridI<verticesCnt, indicesCnt>
     {
         GQuad* at(uint16_t idx)
         {

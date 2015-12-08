@@ -1,20 +1,45 @@
 #pragma once
 
 #include "vecmx.hpp"
+#include "image.hpp"
+#include "grid.hpp"
 
 namespace reyes
 {
-    // TODO: move Image to Camera
-
-    /* Camera struct (POD type). */
-    struct camera
+    template<class FilmTy, uint16_t width, uint16_t height>
+    /* Camera and its film. */
+    struct Camera
     {
         mx4 view;
         mx4 projection;
+        FilmTy image;
+
+        Camera()
+            : image(width, height)
+        {}
+
+        void capture(MicrogridI<PosColor>* grid)
+        {
+            // transform
+            // TODO
+
+            // project
+            // TODO
+            float aspect = width / height;
+
+            /*for (uint16_t i = 0; i < 4; i++)
+            {
+                grid->data[i].p.x = (grid->data[i].p.x / width * 2.0f - 1.0f);
+                grid->data[i].p.y = (grid->data[i].p.y / height * 2.0f - 1.0f);
+            }*/
+
+            // rasterize
+            image.rasterize(*grid);
+        }
 
         position project(position p)
         {
-            return{ 0, 0, 0 };
+            return p;
         }
 
         /* Mark perspective frustum. */
