@@ -16,7 +16,7 @@ namespace reyes
         uint16_t width, height;
         float half_width, half_height;
         virtual char* getRGB(void) = 0;
-        virtual void rasterize(GridVertexTy<PosColor>& grid) = 0;
+        virtual void rasterize(Microgrid<PosColor>& grid) = 0;
         ImageI(uint16_t _width, uint16_t _height)
             : width(_width)
             , height(_height)
@@ -41,32 +41,6 @@ namespace reyes
         }
     };
 
-    /* G-Buffer storage. */
-    struct GBuffer : public ImageI
-    {
-        struct GBufferPixel
-        {
-            color color;
-            float z;
-        } *data;
-
-        GBuffer(uint16_t _width, uint16_t _height)
-            : ImageI(_width, _height)
-            , data(new GBufferPixel[_width*_height])
-        {}
-
-        void rasterize(GridVertexTy<PosColor>& grid)
-        {
-            // TODO
-        }
-
-        char* getRGB(void)
-        {
-            // TODO
-            return 0;
-        }
-    };
-
     /* Primitive RGB rasterizer. */
     struct RGB8Image : public ImageI
     {
@@ -84,17 +58,19 @@ namespace reyes
                         data[x*width + y] = { 255, 0, 255 };
         }
 
-        void rasterize(GridVertexTy<PosColor>& grid)
+        void rasterize(Microgrid<PosColor>& grid)
         {
             uint16_t p_cnt = grid.count();
             for (uint16_t pidx = 0; pidx < p_cnt; pidx++)
             {
-                primitive::Quadrilateral<PosColor> * q = (primitive::Quadrilateral<PosColor>*)grid.at(pidx);
+                SQuad* q = (SQuad*)grid.at(pidx);
                 for (uint16_t x = 0; x < height; x++)
                 {
                     for (uint16_t y = 0; y < width; y++)
                     {
-                        if (primitive::inQuad(*q, vec3(x, y, 0)))
+                        vec3 p(x, y, 0);
+                        bool test = q->in(p);
+                        if (test)
                         {
                             data[x*width + y] = { 0, 0, 255 };
                         }
@@ -109,3 +85,29 @@ namespace reyes
         }
     };
 }
+
+///* G-Buffer storage. */
+//struct GBuffer : public ImageI
+//{
+//    struct GBufferPixel
+//    {
+//        color color;
+//        float z;
+//    } *data;
+//
+//    GBuffer(uint16_t _width, uint16_t _height)
+//        : ImageI(_width, _height)
+//        , data(new GBufferPixel[_width*_height])
+//    {}
+//
+//    void rasterize(Microgrid& grid)
+//    {
+//        // TODO
+//    }
+//
+//    char* getRGB(void)
+//    {
+//        // TODO
+//        return 0;
+//    }
+//};

@@ -8,14 +8,17 @@
 
 namespace reyes
 {
+    struct Primitive
+    {};
+
     /* Geometrical primitive. Has position, normal and UV. */
-    struct GPrimitiveI
+    struct GPrimitiveI : public Primitive
     {
         virtual AABB2 aabb(void) const = 0;
     };
 
     /* Shaded primitive. Has (projected) position and color attributes. */
-    struct SPrimitiveI
+    struct SPrimitiveI : public Primitive
     {
         virtual bool in(vec3 p) const = 0;
         virtual color at(vec3 p) const = 0;
@@ -85,10 +88,11 @@ namespace reyes
         PosColor a, b, c, d;
         bool in(vec3 p) const
         {
-            return  !on_side(p, a.p, b.p) &&
-                    !on_side(p, b.p, c.p) &&
-                    !on_side(p, c.p, d.p) &&
-                    !on_side(p, d.p, a.p);
+            bool ab = !on_side(p, a.p, b.p);
+            bool bc = !on_side(p, b.p, c.p);
+            bool cd = !on_side(p, c.p, d.p);
+            bool da = !on_side(p, d.p, a.p);
+            return ab&&bc&&cd&&da;
         }
         color at(vec3 p) const
         {
@@ -102,14 +106,14 @@ namespace reyes
             float k1 = e.x*f.y - e.y*f.x + h.x*g.y - h.y*g.x;
             float k0 = h.x*e.y - h.y*e.x;
 
-            float w = k1*k1 - 4.0*k0*k2;
+            float w = k1*k1 - 4.0f*k0*k2;
 
             if (!(w < 0.0))
             {
                 w = sqrt(w);
 
-                float v1 = (-k1 - w) / (2.0*k2);
-                float v2 = (-k1 + w) / (2.0*k2);
+                float v1 = (-k1 - w) / (2.0f*k2);
+                float v2 = (-k1 + w) / (2.0f*k2);
                 float u1 = (h.x - f.x*v1) / (e.x + g.x*v1);
                 float u2 = (h.x - f.x*v2) / (e.x + g.x*v2);
                 bool  b1 = v1>0.0 && v1<1.0 && u1>0.0 && u1<1.0;
