@@ -49,6 +49,7 @@ namespace reyes
         {
             return on_side(p, a.p, b.p) && on_side(p, b.p, c.p) && on_side(p, c.p, a.p);
         }
+        /* https://www.shadertoy.com/view/4d3GDH */
         color at(vec3 p) const
         {
             vec3 bxc = CROSS(b.p, c.p);
@@ -94,34 +95,50 @@ namespace reyes
             bool da = !on_side(p, d.p, a.p);
             return ab&&bc&&cd&&da;
         }
+        /* https://www.shadertoy.com/view/ldt3Wr */
         color at(vec3 p) const
         {
             vec2 uv;
-            vec3 e = b.p - a.p;
-            vec3 f = d.p - a.p;
-            vec3 g = a.p - b.p + c.p - d.p;
-            vec3 h = p - a.p;
+            vec2 _a = { a.p.x, a.p.y };
+            vec2 _b = { b.p.x, b.p.y };
+            vec2 _c = { c.p.x, c.p.y };
+            vec2 _d = { d.p.x, d.p.y };
+
+            vec2 e = _b - _a;
+            vec2 f = _d - _a;
+            vec2 g = _a - _b + _c - _d;
+            vec2 h = vec2(p.x,p.y) -_a;
 
             float k2 = g.x*f.y - g.y*f.x;
             float k1 = e.x*f.y - e.y*f.x + h.x*g.y - h.y*g.x;
             float k0 = h.x*e.y - h.y*e.x;
 
-            float w = k1*k1 - 4.0f*k0*k2;
-
-            if (!(w < 0.0))
+            if (k2 == 0)
             {
-                w = sqrt(w);
-
-                float v1 = (-k1 - w) / (2.0f*k2);
-                float v2 = (-k1 + w) / (2.0f*k2);
-                float u1 = (h.x - f.x*v1) / (e.x + g.x*v1);
-                float u2 = (h.x - f.x*v2) / (e.x + g.x*v2);
-                bool  b1 = v1>0.0 && v1<1.0 && u1>0.0 && u1<1.0;
-                bool  b2 = v2>0.0 && v2<1.0 && u2>0.0 && u2 < 1.0;
-
-                if (b1 && !b2) uv = vec2(u1, v1);
-                if (!b1 &&  b2) uv = vec2(u2, v2);
+                uv.x = 1.0f-(-k0 / k1);
+                uv.y = 1.0f-(-(h.x*f.y - h.y*f.x) / k1);
             }
+            else
+            {
+                float w = k1*k1 - 4.0f*k0*k2;
+
+                if (!(w < 0.0))
+                {
+                    w = sqrt(w);
+
+                    float v1 = (-k1 - w) / (2.0f*k2);
+                    float v2 = (-k1 + w) / (2.0f*k2);
+                    float u1 = (h.x - f.x*v1) / (e.x + g.x*v1);
+                    float u2 = (h.x - f.x*v2) / (e.x + g.x*v2);
+                    bool  b1 = v1>0.0 && v1<1.0 && u1>0.0 && u1<1.0;
+                    bool  b2 = v2>0.0 && v2<1.0 && u2>0.0 && u2 < 1.0;
+
+                    if (b1 && !b2) uv = vec2(u1, v1);
+                    if (!b1 &&  b2) uv = vec2(u2, v2);
+                }
+            }
+
+            return color(uv.x*255.0f, uv.y*255.0f);
 
             return color(
                 (a.col.r*(1.0f - uv.x) + b.col.r*uv.x)*(1.0f - uv.y) + (d.col.r*(1.0f - uv.x) + c.col.r*uv.x)*uv.y,   // R

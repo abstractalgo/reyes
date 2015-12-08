@@ -2,52 +2,46 @@
 
 #include "material.hpp"
 
-//#define UNIFORM(matName) struct matName##UnifBlk
-//#define MATERIAL(matName) struct matName : public Material<matName##UnifBlk>
-//#define DISPLACE position pShdr(PosNormalUV& vertex)
-//#define SHADE color cShdr(PosNormalUV& vertex)
+#define UNIFORM(matName) struct matName##UnifBlk
+#define MATERIAL(matName) struct matName : public Material<matName##UnifBlk>
+#define DISPLACE position pShdr(PosNormalUV& vertex)
+#define SHADE color cShdr(PosNormalUV& vertex)
 
 namespace reyes
 {
     namespace matlib
     {
-        struct LambertUnifBlk
+        UNIFORM(Lambert) {};
+        MATERIAL(Lambert)
         {
-            // no uniforms
-        };
-        struct Lambert : public Material<LambertUnifBlk>
-        {
-            position pShdr(PosNormalUV& vertex)
+            DISPLACE
             {
                 return{ 0, 0, 0};
             }
 
-            color cShdr(PosNormalUV& vertex)
+            SHADE
             {
                 return{ 0, 0, 0, 1 };
             }
         };
 
-        //UNIFORM(SolidColor)
-        //{
-        //    // no uniforms
-        //};
-        //MATERIAL(SolidColor)
-        //{
-        //    DISPLACE
-        //    {
-        //        return{ 0, 0, 0 };
-        //    }
+        UNIFORM(YellowColor) {};
+        MATERIAL(YellowColor)
+        {
+            DISPLACE
+            {
+                return vertex.p;
+            }
 
-        //    SHADE
-        //    {
-        //        return{ 1, 0, 0, 1 };
-        //    }
-        //};
+            SHADE
+            {
+                return{ 1, 1, 0, 1 };
+            }
+        };
     }
 }
 
-//#undef UNIFORM
-//#undef MATERIAL
-//#undef DISPLACE
-//#undef SHADE
+#undef UNIFORM
+#undef MATERIAL
+#undef DISPLACE
+#undef SHADE

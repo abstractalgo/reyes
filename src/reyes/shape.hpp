@@ -85,10 +85,10 @@ namespace reyes
             // vertices
             for (uint16_t idx = 0; idx < 4; idx++)
             {
-                grid.data[idx].p = P(idx);
-                grid.data[idx].n = N(idx);
-                grid.data[idx].uv = UV(idx);
-                //grid.data[idx].p = material.pShdr(grid.data[idx]);
+                grid.data[idx].p    = P(idx);
+                grid.data[idx].n    = N(idx);
+                grid.data[idx].uv   = UV(idx);
+                grid.data[idx].p    = material.pShdr(grid.data[idx]);
             }
             // indices
             grid.indices[0] = 0;
@@ -99,12 +99,10 @@ namespace reyes
             // color grid
             SQuadGrid<4, 4>& color_grid = *new(shadedGrids.alloc(sizeof(SQuadGrid<4, 4>))) SQuadGrid<4, 4>;
             // data
-            for (uint8_t i = 0; i < 4; i++)
+            for (uint16_t i = 0; i < 4; i++)
             {
-                //color_grid.data[i] = material.cShdr(grid.data[i]);
-                color_grid.data[i].col = { 1, 0, 0, 1 };
-                color_grid.data[i].p = grid.data[i].p;
-                color_grid.data[i].p.z = 0;
+                color_grid.data[i].col  = material.cShdr(grid.data[i]);
+                color_grid.data[i].p    = grid.data[i].p;
             }
             // indices
             color_grid.indices[0] = 0;
@@ -119,7 +117,7 @@ namespace reyes
             uint16_t w = 2, h = 2;
             uv.x = (float)(idx%w)/(w-1);
             uv.y = (float)(idx/2)/(h-1);
-            return ((a*(1.0f - uv.x) + b*uv.x)*(1.0f - uv.y) + (d*(1.0f-uv.x)+c*uv.x)*uv.y)*5;
+            return ((a*(1.0f - uv.x) + b*uv.x)*(1.0f - uv.y) + (d*(1.0f-uv.x)+c*uv.x)*uv.y)*5+vec3(5,5);
         }
         normal N(uint16_t idx) { return{ 0, 0, 1 }; }
         uv UV(uint16_t idx)

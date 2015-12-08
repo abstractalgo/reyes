@@ -11,7 +11,7 @@ void appMain()
 {
     // scene setup
     mem::ObjectStack<ShapeI> scene(1024);
-    MAKE_SHAPE(scene, Quadrilateral<matlib::Lambert>);
+    MAKE_SHAPE(scene, Quadrilateral<matlib::YellowColor>)();
 
     // camera setup
     camera camera;
@@ -19,7 +19,7 @@ void appMain()
     camera.lookAt(/*eye*/ { 0, 0, -5 }, /*target*/ { 0, 0, 0 } /*up*/);
 
     // image setup
-    RGB8Image image(10, 10);
+    RGB8Image image(50, 50);
 
     // render
     reyes::render(scene, camera, image);

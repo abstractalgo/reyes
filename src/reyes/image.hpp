@@ -61,21 +61,22 @@ namespace reyes
         void rasterize(Microgrid<PosColor>& grid)
         {
             uint16_t p_cnt = grid.count();
+            SPrimitiveI* prim;
             for (uint16_t pidx = 0; pidx < p_cnt; pidx++)
             {
-                SQuad* q = (SQuad*)grid.at(pidx);
+                prim = static_cast<SPrimitiveI*>(grid.at(pidx));
                 for (uint16_t x = 0; x < height; x++)
-                {
                     for (uint16_t y = 0; y < width; y++)
                     {
                         vec3 p(x, y, 0);
-                        bool test = q->in(p);
+                        bool test = prim->in(p);
                         if (test)
                         {
-                            data[x*width + y] = { 0, 0, 255 };
+                            color c = prim->at(p);
+                            data[x*width + y] = { c.r, c.g, c.b };
+                            //data[x*width + y] = { 0, 0, 255 };
                         }
                     }
-                }
             }
         }
 

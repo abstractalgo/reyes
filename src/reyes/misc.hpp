@@ -8,7 +8,7 @@ namespace reyes
     struct color
     {
         float r, g, b, a;
-        color(float _r = 0, float _g = 0, float _b = 0, float _a = 0)
+        color(float _r = 0, float _g = 0, float _b = 0, float _a = 1)
             : r(_r)
             , g(_g)
             , b(_b)
