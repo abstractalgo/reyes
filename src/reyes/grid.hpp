@@ -7,71 +7,93 @@
 
 namespace reyes
 {
-    struct GridI
-    {};
-
     template <class VertexTy>
-    struct GridVertexTy : public GridI
+    struct Microgrid
     {
         VertexTy* data;
         uint16_t* indices;
-        virtual primitive::PrimitiveI<VertexTy>* at(uint16_t idx) = 0;
+        virtual Primitive* at(uint16_t idx) = 0;
         virtual uint16_t count() = 0;
     };
 
-    template<class VertexTy, uint16_t dataSize, uint16_t indicesCount, uint16_t primitiveCount>
-    struct GridGeometry : public GridVertexTy<VertexTy>
+    template <class VertexTy, size_t verticesCnt, size_t indicesCnt>
+    struct GridI : public Microgrid<VertexTy>
     {
-        VertexTy data[dataSize];
-        uint16_t indices[indicesCount];
-        virtual primitive::PrimitiveI<VertexTy>* at(uint16_t idx) = 0;
-        uint16_t count() { return primitiveCount; }
+        VertexTy data[verticesCnt];
+        uint16_t indices[indicesCnt];
+        virtual Primitive* at(uint16_t idx) = 0;
+        virtual uint16_t count() = 0;
     };
 
-    // --- primitive-typed grids -----------------------------------------------
-
-    template<class VertexTy, uint16_t dataSize, uint16_t indicesCount>
-    struct TriGrid : public GridGeometry<VertexTy, dataSize, indicesCount, indicesCount/3>
+    /*
+    template<size_t verticesCnt, size_t indicesCnt>
+    struct GGridI : public GridI<PosNormalUV, Primitive, verticesCnt, indicesCnt>
     {
-        primitive::Triangle<VertexTy>* at(uint16_t idx)
-        {
-            primitive::Triangle<VertexTy>& t = *(new primitive::Triangle<VertexTy>);
-            t.a = data[indices[3 * idx + 0]];
-            t.b = data[indices[3 * idx + 1]];
-            t.c = data[indices[3 * idx + 2]];
-            return &t;
-        }
+
     };
 
-    template<class VertexTy, uint16_t dataSize, uint16_t indicesCount>
-    struct QuadGrid : public GridGeometry<VertexTy, dataSize, indicesCount, indicesCount/4>
+    template<size_t verticesCnt, size_t indicesCnt>
+    struct SGridI : public GridI<PosColor, Primitive, verticesCnt, indicesCnt>
     {
-        primitive::Quadrilateral<VertexTy>* at(uint16_t idx)
+
+    };
+    */
+
+    template<size_t verticesCnt, size_t indicesCnt>
+    struct GTriGrid : public GridI<PosNormalUV, verticesCnt, indicesCnt> /*, public GGridI */
+    {
+        GTriangle* at(uint16_t idx)
         {
-            primitive::Quadrilateral<VertexTy>& q = *(new primitive::Quadrilateral<VertexTy>);
-            q.a = data[indices[4 * idx + 0]];
-            q.b = data[indices[4 * idx + 1]];
-            q.c = data[indices[4 * idx + 2]];
-            q.d = data[indices[4 * idx + 3]];
-            return &q;
+            GTriangle* t = new GTriangle;
+            t->a = data[indices[3 * idx + 0]];
+            t->b = data[indices[3 * idx + 1]];
+            t->c = data[indices[3 * idx + 2]];
+            return t;
         }
+        uint16_t count() { return indicesCnt / 3; }
     };
 
-    template<class VertexTy, uint16_t dataSize, uint16_t indicesCount, uint16_t primitiveCount>
-    struct PolyGrid : public GridGeometry<VertexTy, dataSize, indicesCount, primitiveCount>
+    template<size_t verticesCnt, size_t indicesCnt>
+    struct STriGrid : public GridI<PosColor, verticesCnt, indicesCnt> /*, public SGridI */
     {
-        primitive::Polygon<VertexTy>* at(uint16_t idx)
+        STriangle* at(uint16_t idx)
         {
-            primitive::Polygon<VertexTy>& p = *(new primitive::Polygon<VertexTy>);
-            uint16_t offset = indices[2 * idx + 0];
-            uint16_t size   = indices[2 * idx + 1];
-            p.count = size;
-            p.vertices = new VertexTy[size];
-            for (uint16_t i = 0; i < size; i++)
-            {
-                p.vertices[i] = data[indices[offset + i]];
-            }
-            return &p;
+            STriangle* t = new STriangle;
+            t->a = data[indices[3 * idx + 0]];
+            t->b = data[indices[3 * idx + 1]];
+            t->c = data[indices[3 * idx + 2]];
+            return t;
         }
+        uint16_t count() { return indicesCnt / 3; }
+    };
+
+    template<size_t verticesCnt, size_t indicesCnt>
+    struct GQuadGrid : public GridI<PosNormalUV, verticesCnt, indicesCnt> /*, public GGridI */
+    {
+        GQuad* at(uint16_t idx)
+        {
+            GQuad* q = new GQuad;
+            q->a = data[indices[4 * idx + 0]];
+            q->b = data[indices[4 * idx + 1]];
+            q->c = data[indices[4 * idx + 2]];
+            q->d = data[indices[4 * idx + 3]];
+            return q;
+        }
+        uint16_t count() { return indicesCnt / 4; }
+    };
+
+    template<size_t verticesCnt, size_t indicesCnt>
+    struct SQuadGrid : public GridI<PosColor, verticesCnt, indicesCnt> /*, public SGridI */
+    {
+        SQuad* at(uint16_t idx)
+        {
+            SQuad* q = new SQuad;
+            q->a = data[indices[4 * idx + 0]];
+            q->b = data[indices[4 * idx + 1]];
+            q->c = data[indices[4 * idx + 2]];
+            q->d = data[indices[4 * idx + 3]];
+            return q;
+        }
+        uint16_t count() { return indicesCnt / 4; }
     };
 }

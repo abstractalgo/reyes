@@ -20,8 +20,8 @@ namespace reyes
     struct ShapeI
     {
         virtual void split(SplitDir direction, mem::ObjectStack<ShapeI>& stack) = 0;
-        virtual GridVertexTy<PosNormalUV>* dice(mem::ObjectStack<GridVertexTy<PosNormalUV>>& dicedGrids) = 0;
-        virtual GridVertexTy<PosColor>* shade(mem::ObjectStack<GridVertexTy<PosColor>>& shadedGrids) = 0;
+        virtual Microgrid<PosNormalUV>* dice(mem::ObjectStack<Microgrid<PosNormalUV>>& dicedGrids) = 0;
+        virtual Microgrid<PosColor>* shade(mem::ObjectStack<Microgrid<PosColor>>& shadedGrids) = 0;
         virtual position P(uint16_t idx) = 0;
         virtual normal N(uint16_t idx) = 0;
         virtual uv UV(uint16_t idx) = 0;
@@ -36,48 +36,8 @@ namespace reyes
     };
 
     template<class MaterialTy>
-    /* Base class for all the parametric (UV) surfaces. */
-    struct ParametricSurface : public Shape<MaterialTy>
-    {
-        float start_u, start_v, end_u, end_v;
-        ParametricSurface(float su = 0.0f, float sv = 0.0f, float eu = 1.0f, float ev = 1.0f)
-            : start_u(su)
-            , start_v(sv)
-            , end_u(eu)
-            , end_v(ev)
-        {}
-        void uv_split(SplitDir direction, ParametricSurface& a, ParametricSurface& b)
-        {
-            if (U == direction)
-            {
-                a.start_u = start_u;
-                a.end_u = end_u;
-                b.start_u = start_u;
-                b.end_u = end_u;
-
-                a.start_v = start_v;
-                a.end_v = start_v + (end_v - start_v) / 2.0f;
-                b.start_v = start_v + (end_v - start_v) / 2.0f;
-                b.end_v = end_v;
-            }
-            else if (V == direction)
-            {
-                a.start_u = start_u;
-                a.end_u = start_u + (end_u - start_u) / 2.0f;
-                b.start_u = start_u + (end_u - start_u) / 2.0f;
-                b.end_u = end_u;
-
-                a.start_v = start_v;
-                a.end_v = end_v;
-                b.start_v = start_v;
-                b.end_v = end_v;
-            }
-        }
-    };
-
-    template<class MaterialTy>
-    /* Quadrilateral shape inherited from UVSurface */
-    struct Quadrilateral : public ParametricSurface<MaterialTy>
+    /* Quadrilateral shape. */
+    struct Quadrilateral : public Shape<MaterialTy>
     {
         /*
 
@@ -112,35 +72,16 @@ namespace reyes
                 one.a = a; one.b = 0.5f*(a + b); one.c = 0.5f*(c + d); one.d = d;
                 two.a = 0.5f*(a + b); two.b = b; two.c = c; two.d = 0.5f*(c + d);
             }
-            uv_split(direction, one, two);
         }
-
-        GridVertexTy<PosNormalUV>* dice(mem::ObjectStack<GridVertexTy<PosNormalUV>>& dicedGrids)
+        Microgrid<PosNormalUV>* dice(mem::ObjectStack<Microgrid<PosNormalUV>>& dicedGrids)
         {
-            //// grid
-            //QuadGrid<PosNormalUV, 4, 4>& grid = *new(dicedGrids.alloc(sizeof(QuadGrid<PosNormalUV, 4, 4>))) QuadGrid<PosNormalUV, 4, 4>;
-            //// vertices
-            //for (uint16_t idx = 0; idx < 4; idx++)
-            //{
-            //    grid.data[idx].p = P(idx);
-            //    grid.data[idx].n = N(idx);
-            //    grid.data[idx].uv = UV(idx);
-            //    //grid.data[idx].p = material.pShdr(grid.data[idx]);
-            //}
-            //// indices
-            //grid.indices[0] = 0;
-            //grid.indices[1] = 1;
-            //grid.indices[2] = 2;
-            //grid.indices[3] = 2;
-
-            //return &grid;
             return 0;
         }
 
-        GridVertexTy<PosColor>* shade(mem::ObjectStack<GridVertexTy<PosColor>>& shadedGrids)
+        Microgrid<PosColor>* shade(mem::ObjectStack<Microgrid<PosColor>>& shadedGrids)
         {
             // dice
-            QuadGrid<PosNormalUV, 4, 4> grid;
+            GQuadGrid<4, 4> grid;
             // vertices
             for (uint16_t idx = 0; idx < 4; idx++)
             {
@@ -152,11 +93,11 @@ namespace reyes
             // indices
             grid.indices[0] = 0;
             grid.indices[1] = 1;
-            grid.indices[2] = 2;
-            grid.indices[3] = 3;
+            grid.indices[2] = 3;
+            grid.indices[3] = 2;
 
             // color grid
-            QuadGrid<PosColor, 4, 4>& color_grid = *new(shadedGrids.alloc(sizeof(QuadGrid<PosColor, 4, 4>))) QuadGrid<PosColor, 4, 4>;
+            SQuadGrid<4, 4>& color_grid = *new(shadedGrids.alloc(sizeof(SQuadGrid<4, 4>))) SQuadGrid<4, 4>;
             // data
             for (uint8_t i = 0; i < 4; i++)
             {
@@ -168,25 +109,68 @@ namespace reyes
             // indices
             color_grid.indices[0] = 0;
             color_grid.indices[1] = 1;
-            color_grid.indices[2] = 2;
-            color_grid.indices[3] = 3;
+            color_grid.indices[2] = 3;
+            color_grid.indices[3] = 2;
             return &color_grid;
         }
 
         position P(uint16_t idx) {
-            if (idx == 0)
-                return a * 5;
-            if (idx == 1)
-                return b * 5;
-            if (idx == 2)
-                return c * 5;
-            if (idx == 3)
-                return d * 5;
+            uv uv;
+            uint16_t w = 2, h = 2;
+            uv.x = (float)(idx%w)/(w-1);
+            uv.y = (float)(idx/2)/(h-1);
+            return ((a*(1.0f - uv.x) + b*uv.x)*(1.0f - uv.y) + (d*(1.0f-uv.x)+c*uv.x)*uv.y)*5;
         }
         normal N(uint16_t idx) { return{ 0, 0, 1 }; }
-        uv UV(uint16_t idx) { return{ 0, 0 }; /*calc xy-coord and return normalized uv*/ }
+        uv UV(uint16_t idx)
+        {
+            uv uv;
+            uv.x = (float)(idx % 2);
+            uv.y = (float)(idx / 2);
+            return uv;
+        }
     };
 }
+
+//template<class MaterialTy>
+///* Base class for all the parametric (UV) surfaces. */
+//struct ParametricSurface : public Shape<MaterialTy>
+//{
+//    float start_u, start_v, end_u, end_v;
+//    ParametricSurface(float su = 0.0f, float sv = 0.0f, float eu = 1.0f, float ev = 1.0f)
+//        : start_u(su)
+//        , start_v(sv)
+//        , end_u(eu)
+//        , end_v(ev)
+//    {}
+//    void uv_split(SplitDir direction, ParametricSurface& a, ParametricSurface& b)
+//    {
+//        if (U == direction)
+//        {
+//            a.start_u = start_u;
+//            a.end_u = end_u;
+//            b.start_u = start_u;
+//            b.end_u = end_u;
+//
+//            a.start_v = start_v;
+//            a.end_v = start_v + (end_v - start_v) / 2.0f;
+//            b.start_v = start_v + (end_v - start_v) / 2.0f;
+//            b.end_v = end_v;
+//        }
+//        else if (V == direction)
+//        {
+//            a.start_u = start_u;
+//            a.end_u = start_u + (end_u - start_u) / 2.0f;
+//            b.start_u = start_u + (end_u - start_u) / 2.0f;
+//            b.end_u = end_u;
+//
+//            a.start_v = start_v;
+//            a.end_v = end_v;
+//            b.start_v = start_v;
+//            b.end_v = end_v;
+//        }
+//    }
+//};
 
 //template<class MaterialTy>
 ///* Rectangular shape inherited from UVSurface */

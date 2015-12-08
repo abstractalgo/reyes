@@ -18,7 +18,7 @@ namespace reyes
     */
     void render(mem::ObjectStack<ShapeI>& scene, camera camera, ImageI& image)
     {
-        mem::ObjectStack<GridVertexTy<PosColor>> shadedGrids(1024);
+        mem::ObjectStack<Microgrid<PosColor>> shadedGrids(1024);
 
         // BOUND-SPLIT
         // (pass-through)
