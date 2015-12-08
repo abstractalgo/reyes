@@ -2,13 +2,12 @@
 
 #include <cstdint>
 #include "misc.hpp"
-//#include "vecmx.hpp"
 
 namespace reyes
 {
     namespace primitive
     {
-        // --- primitives ----------------------------------------------------------
+        // --- primitives ------------------------------------------------------
         inline float v2x(vec3 a, vec3 b)
         {
             return (a.x*b.y - a.y*b.x);
@@ -25,11 +24,38 @@ namespace reyes
             
         };
 
+        // --- quadrilateral ---------------------------------------------------
+
         template<class VertexTy>
         struct Quadrilateral : public PrimitiveI<VertexTy>
         {
             VertexTy a, b, c, d;
         };
+
+        template<>
+        struct Quadrilateral<PosNormalUV> : public PrimitiveI<PosNormalUV>
+        {
+            AABB2 aabb(void) const
+            {
+                AABB2 bb;
+                bb.min = vec2(fminf(a.p.x, fminf(b.p.x, fminf(c.p.x, d.p.x))), fminf(a.p.y, fminf(b.p.y, fminf(c.p.y, d.p.y))));
+                bb.max = vec2(fmaxf(a.p.x, fmaxf(b.p.x, fmaxf(c.p.x, d.p.x))), fmaxf(a.p.y, fmaxf(b.p.y, fmaxf(c.p.y, d.p.y))));
+                return bb;
+            }
+        };
+
+        struct PNUQuadrilateral : public Quadrilateral<PosNormalUV>
+        {
+            AABB2 aabb(void) const
+            {
+                AABB2 bb;
+                bb.min = vec2(fminf(a.p.x, fminf(b.p.x, fminf(c.p.x, d.p.x))), fminf(a.p.y, fminf(b.p.y, fminf(c.p.y, d.p.y))));
+                bb.max = vec2(fmaxf(a.p.x, fmaxf(b.p.x, fmaxf(c.p.x, d.p.x))), fmaxf(a.p.y, fmaxf(b.p.y, fmaxf(c.p.y, d.p.y))));
+                return bb;
+            }
+        };
+
+        // --- triangle --------------------------------------------------------
 
         template<class VertexTy>
         struct Triangle : public PrimitiveI<VertexTy>
@@ -37,12 +63,7 @@ namespace reyes
             VertexTy a, b, c;
         };
 
-        template<class VertexTy>
-        struct Polygon : public PrimitiveI<VertexTy>
-        {
-            VertexTy* vertices;
-            uint16_t count;
-        };
+        
 
         bool inQuad(Quadrilateral<PosColor> q, vec3 p)
         {
@@ -60,9 +81,9 @@ namespace reyes
             vec3 g = q.a.p - q.b.p + q.c.p - q.d.p;
             vec3 h = p - q.a.p;
 
-            float k2 = v2x(g, f);
-            float k1 = v2x(e, f) + v2x(h, g);
-            float k0 = v2x(h, e);
+            float k2 = g.x*f.y - g.y*f.x;
+            float k1 = e.x*f.y - e.y*f.x + h.x*g.y - h.y*g.x;
+            float k0 = h.x*e.y - h.y*e.x;
 
             float w = k1*k1 - 4.0*k0*k2;
 
@@ -109,6 +130,13 @@ namespace reyes
                 bb.max = vec2(fmaxf(a.p.x, fmaxf(b.p.x, c.p.x)), fmaxf(a.p.y, fmaxf(b.p.y, c.p.y)));
                 return bb;
             }
+        };
+
+        template<class VertexTy>
+        struct Polygon : public PrimitiveI<VertexTy>
+        {
+        VertexTy* vertices;
+        uint16_t count;
         };
 
         template<>
