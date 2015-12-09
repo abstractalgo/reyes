@@ -18,11 +18,11 @@ current version v1.0
 
 - ~~G-buffer~~
 - transformations (translate, rotate, scale, project)
-- matlib
+- ~~matlib (lambert, normal, uv)~~
 - perspective camera
 - bounding and ~~splitting~~
 - dicing
-- finalize ~~quadrilaterals~~ and triangles
+- finalize quadrilaterals and triangles
 
 ####v3.0
 
