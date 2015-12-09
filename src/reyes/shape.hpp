@@ -60,17 +60,27 @@ namespace reyes
 
         void split(SplitDir direction, mem::ObjectStack<ShapeI>& stack)
         {
-            Quadrilateral& one = *(Quadrilateral*)stack.alloc(sizeof(Quadrilateral));
-            Quadrilateral& two = *(Quadrilateral*)stack.alloc(sizeof(Quadrilateral));
+            Quadrilateral<MaterialTy>& one = *this;
+            Quadrilateral<MaterialTy>& two = *(::new(stack.alloc(sizeof(Quadrilateral<MaterialTy>))) Quadrilateral<MaterialTy>);
             if (U == direction)
             {
-                one.a = a; one.b = b; one.c = 0.5f*(b + c); one.d = 0.5f*(a + d);
-                two.a = 0.5f*(a + d); two.b = 0.5f*(b + c); two.c = c; two.d = d;
+                two.a = (a + d)*0.5f;
+                two.b = (b + c)*0.5f;
+                two.c = c;
+                two.d = d;
+
+                one.c = (b + c)*0.5f;
+                one.d = (a + d)*0.5f;
             }
             else
             {
-                one.a = a; one.b = 0.5f*(a + b); one.c = 0.5f*(c + d); one.d = d;
-                two.a = 0.5f*(a + b); two.b = b; two.c = c; two.d = 0.5f*(c + d);
+                two.a = a;
+                two.b = (a + b)*0.5f;
+                two.c = (c + d)*0.5f;
+                two.d = d;
+
+                one.a = (a + b)*0.5f;
+                one.d = (c + d)*0.5f;
             }
         }
         MicrogridI<PosNormalUV>* dice(mem::ObjectStack<Microgrid>& dicedGrids)

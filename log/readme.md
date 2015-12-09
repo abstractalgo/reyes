@@ -56,7 +56,9 @@ After all the hassle, here's the pixel-cracks-free and the-right-UV-mapped quadr
 ---
 
 interesting but wrong #1
+
 ![ibw1](ibw1.png "ibw1")
 
 interesting but wrong #2 (there's an arc in the intersection between two planar shapes)
+
 ![ib2](arcintersect.png "ibw2")

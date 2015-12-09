@@ -28,7 +28,8 @@ namespace reyes
         while (scene)
         {
             ShapeI* shape = scene.pop();
-            MicrogridI<PosColor>* shadedGrid = shape->shade(grids);
+            Quadrilateral<matlib::YellowColor>* sh = (Quadrilateral<matlib::YellowColor>*)shape;
+            MicrogridI<PosColor>* shadedGrid = (sh->shade(grids));
             camera.capture(shadedGrid);
         }
     }
