@@ -16,13 +16,13 @@ current version v1.0
 
 ####v2.0
 
-- G-buffer
-- transformations (translate, rotate, scale)
+- ~~G-buffer~~
+- transformations (translate, rotate, scale, project)
 - matlib
 - perspective camera
 - bounding and ~~splitting~~
 - dicing
-- finalize quadrilaterals and triangles
+- finalize ~~quadrilaterals~~ and triangles
 
 ####v3.0
 
