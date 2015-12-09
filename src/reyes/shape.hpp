@@ -98,7 +98,7 @@ namespace reyes
                 grid.data[idx].p = P(idx);
                 grid.data[idx].n = N(idx);
                 grid.data[idx].uv = UV(idx);
-                //grid.data[idx].p = material.pShdr(grid.data[idx]);
+                grid.data[idx].p = material.pShdr(grid.data[idx]);
             }
             // indices
             grid.indices[0] = 0;
@@ -124,13 +124,21 @@ namespace reyes
         }
 
         position P(uint16_t idx) {
+            
             uv uv;
             uint16_t w = 2, h = 2;
             uv.x = (float)(idx%w)/(w-1);
             uv.y = (float)(idx/2)/(h-1);
             return ((a*(1.0f - uv.x) + b*uv.x)*(1.0f - uv.y) + (d*(1.0f - uv.x) + c*uv.x)*uv.y)*0.5f;
         }
-        normal N(uint16_t idx) { return{ 0, 0, 1 }; }
+        normal N(uint16_t idx)
+        {
+            vec3 a = this->d - this->a;
+            vec3 b = this->b - this->a;
+            return vec3(a.y*b.z - a.z*b.y, a.z*b.x - a.x*b.z, a.x*b.y - a.y*b.x);
+            // TODO
+            return{ 0, 0, 1 };
+        }
         uv UV(uint16_t idx)
         {
             uv uv;

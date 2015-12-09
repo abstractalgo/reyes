@@ -149,7 +149,7 @@ namespace reyes
                             // TODO depth test settings
                             // TODO blending
                             px_z.z = r.p.z;
-                            px_rgb = { r.col.r, r.col.g, r.col.b };
+                            px_rgb = { r.col.r*255.0f, r.col.g*255.0f, r.col.b*255.0f };
                             rgb_data[y*width + x] = px_rgb;
                             z_data[y*width + x] = px_z;
                         }

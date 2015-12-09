@@ -217,8 +217,8 @@ namespace reyes
         template<class ObjTy>
         class ObjectStack
         {
-            // [ Object_n-1 ][ size_n-1 ][ Object_n ][ size_n ]
-            // ...............................................^ top
+            // ....[ Object_n-1 ][ size_n-1 ][ Object_n ][ size_n ]
+            // ....................................................^ top
 
             size_t capacity;
             char* data;

@@ -150,14 +150,12 @@ namespace reyes
                 }
             }
 
-            res.col = color(uv.x*255.0f, uv.y*255.0f);
-
-            //res.col = color(
-            //    (a.col.r*(1.0f - uv.x) + b.col.r*uv.x)*(1.0f - uv.y) + (d.col.r*(1.0f - uv.x) + c.col.r*uv.x)*uv.y,   // R
-            //    (a.col.g*(1.0f - uv.x) + b.col.g*uv.x)*(1.0f - uv.y) + (d.col.g*(1.0f - uv.x) + c.col.g*uv.x)*uv.y,   // G
-            //    (a.col.b*(1.0f - uv.x) + b.col.b*uv.x)*(1.0f - uv.y) + (d.col.b*(1.0f - uv.x) + c.col.b*uv.x)*uv.y,   // B
-            //    (a.col.a*(1.0f - uv.x) + b.col.a*uv.x)*(1.0f - uv.y) + (d.col.a*(1.0f - uv.x) + c.col.a*uv.x)*uv.y    // A
-            //);
+            res.col = color(
+                (a.col.r*(1.0f - uv.x) + b.col.r*uv.x)*(1.0f - uv.y) + (d.col.r*(1.0f - uv.x) + c.col.r*uv.x)*uv.y,   // R
+                (a.col.g*(1.0f - uv.x) + b.col.g*uv.x)*(1.0f - uv.y) + (d.col.g*(1.0f - uv.x) + c.col.g*uv.x)*uv.y,   // G
+                (a.col.b*(1.0f - uv.x) + b.col.b*uv.x)*(1.0f - uv.y) + (d.col.b*(1.0f - uv.x) + c.col.b*uv.x)*uv.y,   // B
+                (a.col.a*(1.0f - uv.x) + b.col.a*uv.x)*(1.0f - uv.y) + (d.col.a*(1.0f - uv.x) + c.col.a*uv.x)*uv.y    // A
+            );
 
             res.p =  position(
                 (a.p.x*(1.0f - uv.x) + b.p.x*uv.x)*(1.0f - uv.y) + (d.p.x*(1.0f - uv.x) + c.p.x*uv.x)*uv.y, // X

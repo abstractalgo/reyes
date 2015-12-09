@@ -11,22 +11,17 @@ namespace reyes
 {
     namespace matlib
     {
-        UNIFORM(Lambert) {};
-        MATERIAL(Lambert)
+        UNIFORM(Lambert)
         {
-            DISPLACE
+            struct Light
             {
-                return{ 0, 0, 0};
-            }
-
-            SHADE
-            {
-                return{ 0, 0, 0, 1 };
-            }
+                // directional light
+                vec3 position;
+                color color;
+            } light;
+            color color;
         };
-
-        UNIFORM(YellowColor) {};
-        MATERIAL(YellowColor)
+        MATERIAL(Lambert)
         {
             DISPLACE
             {
@@ -35,7 +30,45 @@ namespace reyes
 
             SHADE
             {
-                return{ 1, 1, 0, 1 };
+                vec3 ld = uniform.light.position.normalize();
+                vec3 nn = vertex.n.normalize();
+                float k = ld.x*nn.x + ld.y*nn.y + ld.z*nn.z;
+                k = k < 0.0f ? 0.0f : k;
+                return {
+                    uniform.color.r * k * uniform.light.color.r,
+                    uniform.color.g * k * uniform.light.color.g,
+                    uniform.color.b * k * uniform.light.color.b,
+                    1
+                };
+            }
+        };
+
+        UNIFORM(UVColor) {};
+        MATERIAL(UVColor)
+        {
+            DISPLACE
+            {
+                return vertex.p;
+            }
+
+            SHADE
+            {
+                return{ vertex.uv.x, vertex.uv.y, 0, 1 };
+            }
+        };
+
+        UNIFORM(NormalColor) {};
+        MATERIAL(NormalColor)
+        {
+            DISPLACE
+            {
+                return vertex.p;
+            }
+
+            SHADE
+            {
+                vec3 n = vertex.p.normalize();
+                return{ n.x, n.y, n.z, 1 };
             }
         };
     }
