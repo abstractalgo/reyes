@@ -85,7 +85,24 @@ namespace reyes
         }
         MicrogridI<PosNormalUV>* dice(mem::ObjectStack<Microgrid>& dicedGrids)
         {
-            return 0;
+            // grid
+            GQuadGrid<4, 4> grid = *new(dicedGrids.alloc(sizeof(GQuadGrid<4, 4>))) GQuadGrid<4, 4>;
+            // vertices
+            for (uint16_t idx = 0; idx < 4; idx++)
+            {
+                grid.data[idx].p = P(idx);
+                grid.data[idx].n = N(idx);
+                grid.data[idx].uv = UV(idx);
+                grid.data[idx].p = material.pShdr(grid.data[idx]);
+            }
+            // indices
+            grid.indices[0] = 0;
+            grid.indices[1] = 1;
+            grid.indices[2] = 3;
+            grid.indices[3] = 2;
+
+            // transform grid
+            grid.transform(transform);
         }
 
         MicrogridI<PosColor>* shade(mem::ObjectStack<MicrogridI<PosColor>>& shadedGrids)

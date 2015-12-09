@@ -22,16 +22,11 @@ namespace reyes
         {
             // transform
             // TODO
+            //grid->transform(view);
 
             // project
             // TODO
-            float aspect = width / height;
-
-            /*for (uint16_t i = 0; i < 4; i++)
-            {
-                grid->data[i].p.x = (grid->data[i].p.x / width * 2.0f - 1.0f);
-                grid->data[i].p.y = (grid->data[i].p.y / height * 2.0f - 1.0f);
-            }*/
+            //grid->transform(project);
 
             // rasterize
             image.rasterize(*grid);

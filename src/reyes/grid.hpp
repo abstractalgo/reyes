@@ -16,6 +16,7 @@ namespace reyes
         uint16_t* indices;
         virtual Primitive* at(uint16_t idx) = 0;
         virtual uint16_t count() = 0;
+        virtual void transform(mx4 m) = 0;
     };
 
     template <class VertexTy, size_t verticesCnt, size_t indicesCnt>
@@ -25,6 +26,17 @@ namespace reyes
         uint16_t indices[indicesCnt];
         virtual Primitive* at(uint16_t idx) = 0;
         virtual uint16_t count() = 0;
+        void transform(mx4 m)
+        {
+            vec4 p;
+            for (uint16_t i = 0; i < verticesCnt; i++)
+            {
+                p = vec4(data[i].p.x, data[i].p.y, data[i].p.z, 1.0f);
+                // mul p and m
+                // divide with w
+                // store back
+            }
+        }
     };
 
     

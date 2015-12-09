@@ -58,7 +58,7 @@ current version v1.2
 - job affinity selection
 - (pseudo) real-time
 
-####v7.0
+####v8.0
 
 - ~~shading language~~ (***needs to be more flexible***)
 

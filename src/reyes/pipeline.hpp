@@ -19,16 +19,41 @@ namespace reyes
     template<class FilmTy, uint16_t width, uint16_t height>
     void render(mem::ObjectStack<ShapeI>& scene, Camera<FilmTy, width, height> camera)
     {
-        mem::ObjectStack<MicrogridI<PosColor>> grids(1024);
+        mem::ObjectStack<ShapeI> split_shapes(1 << 20);
+        mem::ObjectStack<MicrogridI<PosNormalUV>> diced_grids(1 << 20);
+        mem::ObjectStack<MicrogridI<PosColor>> shaded_grids(1 << 20);
 
         // BOUND-SPLIT
-        // (pass-through)
-
-        // DICE-SHADE-SAMPLE
         while (scene)
         {
             ShapeI* shape = scene.pop();
-            MicrogridI<PosColor>* shadedGrid = (shape->shade(grids));
+            vec2 raster_estimate;
+            // TODO raster estimate
+            //      dice shape
+            //      transform diced grid
+            //      estimate dicedgrid size
+            bool needsSplitting = false;
+            // TODO check if it needs splitting
+            //      check against some threshold
+            if (needsSplitting)
+            {
+                SplitDir dir = split_dir(raster_estimate);
+                shape->split(dir, scene);
+            }
+            else
+            {
+                // TODO push to split shapes
+            }
+        }
+
+        // DICE-SHADE-SAMPLE
+        while (split_shapes)
+        {
+            // dice
+            ShapeI* shape = split_shapes.pop();
+            // shade (TODO pass somehow diced grid to be shaded)
+            MicrogridI<PosColor>* shadedGrid = shape->shade(grids);
+            // rasterize the grid
             camera.capture(shadedGrid);
         }
     }
