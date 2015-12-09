@@ -60,6 +60,8 @@ namespace reyes
         {
             uint16_t p_cnt = grid.count();
             SPrimitiveI* prim;
+            float halfpx_x = 1.0f / width;
+            float halfpx_y = 1.0f / height;
             for (uint16_t pidx = 0; pidx < p_cnt; pidx++)
             {
                 prim = static_cast<SPrimitiveI*>(grid.at(pidx));
@@ -67,8 +69,8 @@ namespace reyes
                     for (uint16_t y = 0; y < height; y++)
                     {
                         // construct pixel location
-                        float px = (float)x / width * 2.0f - 1.0f + 0.5f / width;
-                        float py = -(float)y / height * 2.0f + 1.0f +0.5f / height;
+                        float px = -1.0f + (2 * x + 1)*halfpx_x;
+                        float py = 1.0f - (2 * y + 1)*halfpx_y;
                         vec3 p(px, py, 0);
 
                         // test
@@ -121,6 +123,8 @@ namespace reyes
         {
             uint16_t p_cnt = grid.count();
             SPrimitiveI* prim;
+            float halfpx_x = 1.0f / width;
+            float halfpx_y = 1.0f / height;
             for (uint16_t pidx = 0; pidx < p_cnt; pidx++)
             {
                 prim = static_cast<SPrimitiveI*>(grid.at(pidx));
@@ -128,8 +132,8 @@ namespace reyes
                 for (uint16_t y = 0; y < height; y++)
                 {
                     // construct pixel location
-                    float px = (float)x / width * 2.0f - 1.0f + 0.5f / width;
-                    float py = -(float)y / height * 2.0f + 1.0f + 0.5f / height;
+                    float px = -1.0f + (2*x+1)*halfpx_x;
+                    float py = 1.0f - (2*y+1)*halfpx_y;
                     vec3 p(px, py, 0);
 
                     // test
@@ -140,7 +144,7 @@ namespace reyes
                         Zpixel px_z = z_data[y*width + x];
 
                         // rasterized pixel should overwrite information
-                        if (r.p.z < px_z.z && r.p.z>=0.0f)
+                        if (r.p.z <= px_z.z && r.p.z>=0.0f)
                         {
                             // TODO depth test settings
                             // TODO blending

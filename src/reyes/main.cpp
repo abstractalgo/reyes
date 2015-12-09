@@ -11,8 +11,8 @@ void appMain()
 {
     // scene setup
     mem::ObjectStack<ShapeI> scene(1024);
-    MAKE_SHAPE(scene, Quadrilateral<matlib::YellowColor>) ({ -1, 1, 0 }, { 1, 1, 0 }, { 2, -2, 0 }, { -2, -1, 0 });
-    //MAKE_SHAPE(scene, Quadrilateral<matlib::YellowColor>) ({ -1, 1, 0 }, { 1, 1, 0 }, { 2, -2, 0 }, { -2, -1, 0 });
+    MAKE_SHAPE(scene, Quadrilateral<matlib::YellowColor>) ({ -1, 1, 0.5 }, { 1, 1, 0.5 }, { 2, -2, 0.5 }, { -2, -1, 0.5 });
+    MAKE_SHAPE(scene, Quadrilateral<matlib::YellowColor>) ({0, 2, 1 }, { 1, 2, 1 }, { 2, 0, 1 }, { -1, -1, 0 });
     //ShapeI* shape = scene.pop();
     //shape->split(SplitDir::U, scene);
 
