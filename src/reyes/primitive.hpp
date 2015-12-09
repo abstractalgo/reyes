@@ -126,8 +126,8 @@ namespace reyes
             // rectangle
             if (k2 == 0)
             {
-                uv.x = (-k0 / k1);
-                uv.y = 1.0f-(-(h.x*f.y - h.y*f.x) / k1);
+                uv.x = (p.x - _a.x) / (_b.x - _a.x);
+                uv.y = (p.y - _a.y) / (_d.y - _a.y);
             }
             // any other quadrilateral
             else

@@ -247,6 +247,13 @@ namespace reyes
                 top -= size;
                 return (ObjTy*)(top);
             }
+            ObjTy* get(void* ptr)
+            {
+                if(ptr==data) return 0;
+                size_t size = *(size_t*)(ptr -= sizeof(size_t));
+                ptr -= size;
+                return (ObjTy*)(ptr);
+            }
             size_t size() const
             {
                 return top - data;
