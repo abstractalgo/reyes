@@ -8,8 +8,6 @@
 
 namespace reyes
 {
-    // TODO: move Image to Camera
-
     /* Image interface. */
     struct ImageI
     {
@@ -55,7 +53,7 @@ namespace reyes
         {
             for (uint16_t x = 0; x < height; x++)
                 for (uint16_t y = 0; y < width; y++)
-                        data[x*width + y] = { 255, 0, 255 };
+                        data[x*width + y] = { 127, 127, 127 };
         }
 
         void rasterize(MicrogridI<PosColor>& grid)
@@ -65,16 +63,16 @@ namespace reyes
             for (uint16_t pidx = 0; pidx < p_cnt; pidx++)
             {
                 prim = static_cast<SPrimitiveI*>(grid.at(pidx));
-                for (uint16_t x = 0; x < height; x++)
-                    for (uint16_t y = 0; y < width; y++)
+                for (uint16_t x = 0; x < width; x++)
+                    for (uint16_t y = 0; y < height; y++)
                     {
-                        float nx = (float)x / width * 2.0f - 1.0f;
-                        float ny = (float)y / height * 2.0f - 1.0f;
+                        float nx = (float)x / width * 2.0f - 1.0f + 0.5f / width;
+                        float ny = -(float)y / height * 2.0f + 1.0f +0.5f / height;
                         vec3 p(nx, ny, 0);
                         if (prim->in(p))
                         {
                             color c = prim->at(p);
-                            data[x*width + y] = { c.r, c.g, c.b };
+                            data[y*width + x] = { c.r, c.g, c.b };
                         }
                     }
             }

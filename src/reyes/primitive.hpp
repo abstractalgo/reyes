@@ -113,11 +113,13 @@ namespace reyes
             float k1 = e.x*f.y - e.y*f.x + h.x*g.y - h.y*g.x;
             float k0 = h.x*e.y - h.y*e.x;
 
+            // rectangle
             if (k2 == 0)
             {
-                uv.x = 1.0f-(-k0 / k1);
+                uv.x = (-k0 / k1);
                 uv.y = 1.0f-(-(h.x*f.y - h.y*f.x) / k1);
             }
+            // any other quadrilateral
             else
             {
                 float w = k1*k1 - 4.0f*k0*k2;
