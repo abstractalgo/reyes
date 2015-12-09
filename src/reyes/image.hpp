@@ -66,47 +66,97 @@ namespace reyes
                 for (uint16_t x = 0; x < width; x++)
                     for (uint16_t y = 0; y < height; y++)
                     {
-                        float nx = (float)x / width * 2.0f - 1.0f + 0.5f / width;
-                        float ny = -(float)y / height * 2.0f + 1.0f +0.5f / height;
-                        vec3 p(nx, ny, 0);
+                        // construct pixel location
+                        float px = (float)x / width * 2.0f - 1.0f + 0.5f / width;
+                        float py = -(float)y / height * 2.0f + 1.0f +0.5f / height;
+                        vec3 p(px, py, 0);
+
+                        // test
                         if (prim->in(p))
                         {
-                            color c = prim->at(p);
+                            // color
+                            color c = prim->at(p).col;
                             data[y*width + x] = { c.r, c.g, c.b };
                         }
                     }
             }
         }
-
         char* getRGB(void)
         {
             return (char*)data;
         }
     };
-}
 
-///* G-Buffer storage. */
-//struct GBuffer : public ImageI
-//{
-//    struct GBufferPixel
-//    {
-//        color color;
-//        float z;
-//    } *data;
-//
-//    GBuffer(uint16_t _width, uint16_t _height)
-//        : ImageI(_width, _height)
-//        , data(new GBufferPixel[_width*_height])
-//    {}
-//
-//    void rasterize(Microgrid& grid)
-//    {
-//        // TODO
-//    }
-//
-//    char* getRGB(void)
-//    {
-//        // TODO
-//        return 0;
-//    }
-//};
+    /* G-Buffer storage. */
+    struct GBuffer : public ImageI
+    {
+        struct RGBpixel
+        {
+            char r, g, b;
+        } *rgb_data;
+        struct Apixel
+        {
+            char a;
+        } *a_data;
+        struct Zpixel
+        {
+            float z;
+        } *z_data;
+    
+        GBuffer(uint16_t _width, uint16_t _height)
+            : ImageI(_width, _height)
+            , rgb_data(new RGBpixel[_width*_height])
+            , a_data(new Apixel[_width*_height])
+            , z_data(new Zpixel[_width*_height])
+        {
+            for (uint16_t x = 0; x < width; x++)
+            for (uint16_t y = 0; y < height; y++)
+            {
+                a_data[y*width + x] = { 255 };
+                z_data[y*width + x] = { 1.0f };
+            }
+        }
+    
+        void rasterize(MicrogridI<PosColor>& grid)
+        {
+            uint16_t p_cnt = grid.count();
+            SPrimitiveI* prim;
+            for (uint16_t pidx = 0; pidx < p_cnt; pidx++)
+            {
+                prim = static_cast<SPrimitiveI*>(grid.at(pidx));
+                for (uint16_t x = 0; x < width; x++)
+                for (uint16_t y = 0; y < height; y++)
+                {
+                    // construct pixel location
+                    float px = (float)x / width * 2.0f - 1.0f + 0.5f / width;
+                    float py = -(float)y / height * 2.0f + 1.0f + 0.5f / height;
+                    vec3 p(px, py, 0);
+
+                    // test
+                    if (prim->in(p))
+                    {
+                        PosColor r = prim->at(p);
+                        RGBpixel px_rgb = rgb_data[y*width + x];
+                        Zpixel px_z = z_data[y*width + x];
+
+                        // rasterized pixel should overwrite information
+                        if (r.p.z < px_z.z && r.p.z>=0.0f)
+                        {
+                            // TODO depth test settings
+                            // TODO blending
+                            px_z.z = r.p.z;
+                            px_rgb = { r.col.r, r.col.g, r.col.b };
+                            rgb_data[y*width + x] = px_rgb;
+                            z_data[y*width + x] = px_z;
+                        }
+                    }
+                }
+            }
+        }
+    
+        char* getRGB(void)
+        {
+            return (char*)rgb_data;
+        }
+    };
+}

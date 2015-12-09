@@ -21,7 +21,7 @@ namespace reyes
     struct SPrimitiveI : public Primitive
     {
         virtual bool in(vec3 p) const = 0;
-        virtual color at(vec3 p) const = 0;
+        virtual PosColor at(vec3 p) const = 0;
         inline bool on_side(vec3 test, vec3 v1, vec3 v2) const
         {
             return ((v2.x - v1.x)*(test.y - v1.y) - (v2.y - v1.y)*(test.x - v1.x)) >= 0.0;
@@ -50,8 +50,9 @@ namespace reyes
             return on_side(p, a.p, b.p) && on_side(p, b.p, c.p) && on_side(p, c.p, a.p);
         }
         /* https://www.shadertoy.com/view/4d3GDH */
-        color at(vec3 p) const
+        PosColor at(vec3 p) const
         {
+            PosColor res;
             vec3 bxc = CROSS(b.p, c.p);
             vec3 axb = CROSS(a.p, b.p);
             vec3 cxa = CROSS(c.p, a.p);
@@ -61,12 +62,20 @@ namespace reyes
             float beta = DOT(p, cxa) / denom;
             float gamma = DOT(p, axb) / denom;
 
-            return color(
+            res.col = color(
                 a.col.r*alpha + b.col.r*beta + c.col.r*gamma,   // R
                 a.col.g*alpha + b.col.g*beta + c.col.g*gamma,   // G
                 a.col.b*alpha + b.col.b*beta + c.col.b*gamma,   // B
                 a.col.a*alpha + b.col.a*beta + c.col.a*gamma    // A
             );
+
+            res.p = position(
+                a.p.x*alpha + b.p.x*beta + c.p.x*gamma, // X
+                a.p.y*alpha + b.p.y*beta + c.p.y*gamma, // Y
+                a.p.z*alpha + b.p.z*beta + c.p.z*gamma  // Z
+            );
+
+            return res;
         }
     };
 
@@ -96,8 +105,9 @@ namespace reyes
             return ab&&bc&&cd&&da;
         }
         /* https://www.shadertoy.com/view/ldt3Wr */
-        color at(vec3 p) const
+        PosColor at(vec3 p) const
         {
+            PosColor res;
             vec2 uv;
             vec2 _a = { a.p.x, a.p.y };
             vec2 _b = { b.p.x, b.p.y };
@@ -140,14 +150,22 @@ namespace reyes
                 }
             }
 
-            return color(uv.x*255.0f, uv.y*255.0f);
+            res.col = color(uv.x*255.0f, uv.y*255.0f);
 
-            return color(
-                (a.col.r*(1.0f - uv.x) + b.col.r*uv.x)*(1.0f - uv.y) + (d.col.r*(1.0f - uv.x) + c.col.r*uv.x)*uv.y,   // R
-                (a.col.g*(1.0f - uv.x) + b.col.g*uv.x)*(1.0f - uv.y) + (d.col.g*(1.0f - uv.x) + c.col.g*uv.x)*uv.y,   // G
-                (a.col.b*(1.0f - uv.x) + b.col.b*uv.x)*(1.0f - uv.y) + (d.col.b*(1.0f - uv.x) + c.col.b*uv.x)*uv.y,   // B
-                (a.col.a*(1.0f - uv.x) + b.col.a*uv.x)*(1.0f - uv.y) + (d.col.a*(1.0f - uv.x) + c.col.a*uv.x)*uv.y    // A
-            );
+            //res.col = color(
+            //    (a.col.r*(1.0f - uv.x) + b.col.r*uv.x)*(1.0f - uv.y) + (d.col.r*(1.0f - uv.x) + c.col.r*uv.x)*uv.y,   // R
+            //    (a.col.g*(1.0f - uv.x) + b.col.g*uv.x)*(1.0f - uv.y) + (d.col.g*(1.0f - uv.x) + c.col.g*uv.x)*uv.y,   // G
+            //    (a.col.b*(1.0f - uv.x) + b.col.b*uv.x)*(1.0f - uv.y) + (d.col.b*(1.0f - uv.x) + c.col.b*uv.x)*uv.y,   // B
+            //    (a.col.a*(1.0f - uv.x) + b.col.a*uv.x)*(1.0f - uv.y) + (d.col.a*(1.0f - uv.x) + c.col.a*uv.x)*uv.y    // A
+            //);
+
+            res.p =  position(
+                (a.p.x*(1.0f - uv.x) + b.p.x*uv.x)*(1.0f - uv.y) + (d.p.x*(1.0f - uv.x) + c.p.x*uv.x)*uv.y, // X
+                (a.p.y*(1.0f - uv.x) + b.p.y*uv.x)*(1.0f - uv.y) + (d.p.y*(1.0f - uv.x) + c.p.y*uv.x)*uv.y, // Y
+                (a.p.z*(1.0f - uv.x) + b.p.z*uv.x)*(1.0f - uv.y) + (d.p.z*(1.0f - uv.x) + c.p.z*uv.x)*uv.y  // Z
+                );
+
+            return res;
         }
     };
 }

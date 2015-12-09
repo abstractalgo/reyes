@@ -12,9 +12,12 @@ void appMain()
     // scene setup
     mem::ObjectStack<ShapeI> scene(1024);
     MAKE_SHAPE(scene, Quadrilateral<matlib::YellowColor>) ({ -1, 1, 0 }, { 1, 1, 0 }, { 2, -2, 0 }, { -2, -1, 0 });
+    //MAKE_SHAPE(scene, Quadrilateral<matlib::YellowColor>) ({ -1, 1, 0 }, { 1, 1, 0 }, { 2, -2, 0 }, { -2, -1, 0 });
+    //ShapeI* shape = scene.pop();
+    //shape->split(SplitDir::U, scene);
 
     // camera setup
-    Camera<RGB8Image, 320, 240> camera;
+    Camera<GBuffer, 320, 240> camera;
     //camera.orthographic(-25, 25, -25, 25);
     //camera.lookAt(/*eye*/ { 0, 0, -5 }, /*target*/ { 0, 0, 0 } /*up*/);
 

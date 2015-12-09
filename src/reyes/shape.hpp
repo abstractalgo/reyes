@@ -7,7 +7,7 @@
 
 namespace reyes
 {
-    /* Enum used to determine split direction of the Shape. */
+    /* Enum used to determine split direction of the Shape. U - vertical cut, V - hozirontal cut*/
     enum SplitDir { U, V };
     SplitDir split_dir(vec2 size)
     {
