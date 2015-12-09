@@ -16,10 +16,10 @@ current version v1.0
 
 ####v2.0
 
-- ~~G-buffer~~
+- ~~G-buffer~~ (***z-index arc***)
 - transformations (translate, rotate, scale, project)
 - ~~matlib (lambert, normal, uv)~~
-    - ~~textured material~~ (untested yet)
+    - ~~textured material~~ (***untested yet***)
 - perspective camera
 - bounding and ~~splitting~~
 - dicing
@@ -55,7 +55,7 @@ current version v1.0
 
 ####v7.0
 
-- ~~shading language~~
+- ~~shading language~~ (***needs to be more flexible***)
 
 ####v113A
 
