@@ -19,6 +19,7 @@ current version v1.0
 - ~~G-buffer~~
 - transformations (translate, rotate, scale, project)
 - ~~matlib (lambert, normal, uv)~~
+    - ~~textured material~~ (untested yet)
 - perspective camera
 - bounding and ~~splitting~~
 - dicing
