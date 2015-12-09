@@ -1,7 +1,7 @@
 # reyes
 reyes renderer
 
-current version v1.0
+current version v1.2
 
 ###TODO
 
@@ -30,6 +30,9 @@ current version v1.0
 - multiple samples per pixel (antialiasing)
 - more advanced rasterizer
 - profiling
+- better memory managment
+- dof
+- motion blur
 - A-buffer (transparency support + optimizations)
 
 ####v4.0
@@ -46,12 +49,14 @@ current version v1.0
 ####v6.0
 
 - fix cracks
+- fix elongated micropolygons
 - task (job) manager
 
 ####v7.0
 
 - (GP)GPU implementation
 - job affinity selection
+- (pseudo) real-time
 
 ####v7.0
 
