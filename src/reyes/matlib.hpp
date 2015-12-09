@@ -71,6 +71,23 @@ namespace reyes
                 return{ n.x, n.y, n.z, 1 };
             }
         };
+
+        UNIFORM(TextureMaterial)
+        {
+            Texture2D* tex;
+        };
+        MATERIAL(TextureMaterial)
+        {
+            DISPLACE
+            {
+                return vertex.p;
+            }
+
+            SHADE
+            {
+                return uniform.tex->sampleNearest(vertex.uv);
+            }
+        };
     }
 }
 
