@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <cmath>
 #include "primitive.hpp"
 #include "misc.hpp"
 
@@ -17,6 +18,7 @@ namespace reyes
         virtual Primitive* at(uint16_t idx) = 0;
         virtual uint16_t count() = 0;
         virtual void transform(mx4 m) = 0;
+        virtual AABB2 aabb(void) const = 0;
     };
 
     template <class VertexTy, size_t verticesCnt, size_t indicesCnt>
@@ -28,14 +30,27 @@ namespace reyes
         virtual uint16_t count() = 0;
         void transform(mx4 m)
         {
-            vec4 p;
-            for (uint16_t i = 0; i < verticesCnt; i++)
+            //vec4 p;
+            //for (uint16_t i = 0; i < verticesCnt; i++)
+            //{
+            //    p = vec4(data[i].p.x, data[i].p.y, data[i].p.z, 1.0f);
+            //    // mul p and m
+            //    // divide with w
+            //    // store back
+            //}
+        }
+
+        AABB2 aabb(void) const
+        {
+            AABB2 bb;
+            bb.max = vec2(data[0].p.x, data[0].p.y);
+            bb.min = bb.max;
+            for (uint16_t i = 1; i < verticesCnt; i++)
             {
-                p = vec4(data[i].p.x, data[i].p.y, data[i].p.z, 1.0f);
-                // mul p and m
-                // divide with w
-                // store back
+                bb.min = vec2(fminf(bb.min.x, data[i].p.x), fminf(bb.min.y, data[i].p.y));
+                bb.max = vec2(fmaxf(bb.max.x, data[i].p.x), fmaxf(bb.max.y, data[i].p.y));
             }
+            return bb;
         }
     };
 

@@ -62,3 +62,16 @@ interesting but wrong #1
 interesting but wrong #2 (there's an arc in the intersection between two planar shapes)
 
 ![ib2](arcintersect.png "ibw2")
+
+***Dec 10, 2015***
+---
+
+Pipeline with split-bound, and dicing, and shading, and sampling, is finally there!
+
+![reyes boundsplit](reyes_bs.png "reyes boundsplit")
+
+I had serious problems with memory management, which I think are now fixed. All memory allocations are done through custom allocators, which are tested if they were manually cleared, and everything seems good (even I use malloc() basically, but I keep track of all allocations). Pipeline is tiny bit interleaved, meaning, it's not going one stage at the time, but instead, some data is shared between the stages. Overall, I'm pretty happy with the outcome. :)
+
+One thing that I noticed - it's slow as hell. Like, very slow! One thing that I'm sure I'm not doing well is cache coherency, because there is none. All allocations are still mallocs practically, so I will need to work on that some time in the future, for now, I'm just happy that I don't have memory leaks.
+
+Next in line are transformations. I hate the 3D math and matrices, tbh. Even so, it will be much easier once I enable transformations and cameras.

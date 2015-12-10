@@ -1,7 +1,7 @@
 # reyes
 reyes renderer
 
-current version v1.2
+current version v1.7
 
 ###TODO
 
@@ -18,11 +18,13 @@ current version v1.2
 
 - ~~G-buffer~~ (***z-index arc***)
 - transformations (translate, rotate, scale, project)
+- perspective camera
 - ~~matlib (lambert, normal, uv)~~
     - ~~textured material~~ (***untested yet***)
-- perspective camera
-- bounding and ~~splitting~~
+- ~~bounding and splitting~~
 - dicing
+- ~~improved memorymanagment~~
+- ~~entire reyes pipeline~~
 - finalize quadrilaterals and triangles
 
 ####v3.0
@@ -30,7 +32,7 @@ current version v1.2
 - multiple samples per pixel (antialiasing)
 - more advanced rasterizer
 - profiling
-- better memory managment
+- even better memory managment
 - dof
 - motion blur
 - A-buffer (transparency support + optimizations)

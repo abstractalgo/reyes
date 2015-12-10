@@ -8,7 +8,7 @@
 
 namespace reyes
 {
-    //const vec2 RASTER_THRESHOLD = { 0, 0 };
+    const vec2 RASTER_THRESHOLD = { 80, 80 };
 
     /* Main rendering functions that goes through all the rendering stages:
     1. bound-split
@@ -17,84 +17,42 @@ namespace reyes
     4. sample
     */
     template<class FilmTy, uint16_t width, uint16_t height>
-    void render(mem::ObjectStack<ShapeI>& scene, Camera<FilmTy, width, height> camera)
+    void render(Scene& scene, Camera<FilmTy, width, height>& camera)
     {
-        mem::ObjectStack<ShapeI> split_shapes(1 << 20);
-        mem::ObjectStack<MicrogridI<PosNormalUV>> diced_grids(1 << 20);
-        mem::ObjectStack<MicrogridI<PosColor>> shaded_grids(1 << 20);
+        mem::mAllocator alok;
+        MicrogridI<PosColor>* shadedGrid;
+        MicrogridI<PosNormalUV>* dicedGrid;
 
         // BOUND-SPLIT
         while (scene)
         {
-            ShapeI* shape = scene.pop();
-            vec2 raster_estimate;
-            // TODO raster estimate
-            //      dice shape
-            //      transform diced grid
-            //      estimate dicedgrid size
-            bool needsSplitting = false;
-            // TODO check if it needs splitting
-            //      check against some threshold
-            if (needsSplitting)
-            {
-                SplitDir dir = split_dir(raster_estimate);
-                shape->split(dir, scene);
-            }
+            mem::blk shp_blk = scene.pop();
+            ShapeI* shape = static_cast<ShapeI*>(shp_blk.ptr);
+            
+            mem::blk dg_blk = shape->dice(&alok);                               // DICE
+            dicedGrid = static_cast<MicrogridI<PosNormalUV>*>(dg_blk.ptr);      // |
+            dicedGrid->transform(shape->transform);                             // | transform diced grid
+            dicedGrid->transform(camera.view);                                  // |
+            dicedGrid->transform(camera.projection);                            // |
+
+            AABB2 bb = dicedGrid->aabb();                                       // BOUND
+            vec2 rasSz = camera.image.estimate(bb.max - bb.min);                // | estimate diced grid's raster size
+
+            SplitDir dir = split_dir(rasSz, RASTER_THRESHOLD);                  // SPLIT
+            if (SplitDir::NoSplit != dir)                                       // |
+            {                                                                   // |
+                shape->split(dir, scene);                                       // |
+            }                                                                   // |
             else
             {
-                // TODO push to split shapes
-            }
-        }
+                mem::blk sg_blk = shape->shade(dicedGrid, &alok);               // SHADE
+                shadedGrid = static_cast<MicrogridI<PosColor>*>(sg_blk.ptr);    // |
 
-        // DICE-SHADE-SAMPLE
-        while (split_shapes)
-        {
-            // dice
-            ShapeI* shape = split_shapes.pop();
-            // shade (TODO pass somehow diced grid to be shaded)
-            MicrogridI<PosColor>* shadedGrid = shape->shade(grids);
-            // rasterize the grid
-            camera.capture(shadedGrid);
+                camera.capture(shadedGrid);                                     // SAMPLE
+                alok.free(sg_blk);
+            }
+            alok.free(dg_blk);
+            scene.free(shp_blk);
         }
     }
 }
-
-// ------- FOR LATER USE & NOTES -----------------------------------------------
-
-
-
-// can combine dice and shade and sample
-
-
-
-// optimize memory (don't use list, but rather use some custom stack)
-
-
-
-//while (unsplit_shapes.size()>0)                                               // if there is any big shape
-//{
-//    Shape shape = unsplit_shapes.front();                                     // get next shape from list
-//    unsplit_shapes.pop_front();
-//    Grid<position> grid;
-//    shape.dice(grid, 8, 8);                                                   // coarse uGrid
-//    grid.project(camera);                                                     // project uGrid
-
-//    if (grid.visible(camera))                                                 // try to cull completely
-//    {
-//        vec2 rasterSize = grid.rasterEstimate();                              // estimate rasterized size
-//        if (rasterSize.x > RASTER_THRESHOLD.x
-//          || rasterSize.y > RASTER_THRESHOLD.y)                               // 1. too big, needs splitting
-//        {
-
-//            SplitDir dir = split_dir(rasterSize);                             // determine bigger dimension
-//            Shape halves[2];
-//            shape.split(dir, halves+0, halves+1);                             // split
-//            unsplit_shapes.push_back(halves[0]);
-//            unsplit_shapes.push_back(halves[1]);
-//        }
-//        else                                                                  // 2. small enough
-//        {
-//            split_shapes.push_back(shape);
-//        }
-//    }
-//}

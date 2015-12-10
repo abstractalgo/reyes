@@ -7,21 +7,52 @@
 
 namespace reyes
 {
-    /* Enum used to determine split direction of the Shape. U - vertical cut, V - hozirontal cut*/
-    enum SplitDir { U, V };
-    SplitDir split_dir(vec2 size)
+    struct Scene
     {
+        mem::Stack<mem::blk, 1024> allocations;
+        mem::mAllocator memory;
+
+        mem::blk alloc(size_t size)
+        {
+            mem::blk block = memory.alloc(size);
+            allocations.push(block);
+            return block;
+        }
+
+        mem::blk pop()
+        {
+            return allocations.pop();
+        }
+
+        void free(mem::blk block)
+        {
+            memory.free(block);
+        }
+
+        operator bool()
+        {
+            return allocations.top > 0;
+        }
+    };
+
+    /* Enum used to determine split direction of the Shape. U - vertical cut, V - hozirontal cut*/
+    enum SplitDir { U, V, NoSplit };
+    SplitDir split_dir(vec2 size, vec2 threshold)
+    {
+        if (size.x <= threshold.x && size.y <= threshold.y)
+            return SplitDir::NoSplit;
         return ((size.x > size.y)
-            ? SplitDir::U
-            : SplitDir::V);
+            ? SplitDir::V
+            : SplitDir::U);
     }
 
     /* Abstract class for shapes. */
     struct ShapeI
     {
-        virtual void split(SplitDir direction, mem::ObjectStack<ShapeI>& stack) = 0;
-        virtual MicrogridI<PosNormalUV>* dice(mem::ObjectStack<Microgrid>& dicedGrids) = 0;
-        virtual MicrogridI<PosColor>* shade(mem::ObjectStack<MicrogridI<PosColor>>& shadedGrids) = 0;
+        mx4 transform;
+        virtual void split(SplitDir direction, Scene& scene) = 0;
+        virtual mem::blk dice(mem::AllocatorI* alloc) = 0;
+        virtual mem::blk shade(MicrogridI<PosNormalUV>* dgrid, mem::AllocatorI* alloc) = 0;
         virtual position P(uint16_t idx) = 0;
         virtual normal N(uint16_t idx) = 0;
         virtual uv UV(uint16_t idx) = 0;
@@ -31,7 +62,6 @@ namespace reyes
     /* Material-typed abstract class for shapes. */
     struct Shape : public ShapeI
     {
-        mx4 transform;
         MaterialTy material;
     };
 
@@ -58,10 +88,13 @@ namespace reyes
             , d(_d)
         {}
 
-        void split(SplitDir direction, mem::ObjectStack<ShapeI>& stack)
+        void split(SplitDir direction, Scene& scene)
         {
-            Quadrilateral<MaterialTy>& one = *this;
-            Quadrilateral<MaterialTy>& two = *(::new(stack.alloc(sizeof(Quadrilateral<MaterialTy>))) Quadrilateral<MaterialTy>);
+            mem::blk one_blk = scene.alloc(sizeof(Quadrilateral<MaterialTy>));
+            mem::blk two_blk = scene.alloc(sizeof(Quadrilateral<MaterialTy>));
+            Quadrilateral<MaterialTy>& one = *(::new(one_blk.ptr) Quadrilateral<MaterialTy>);
+            Quadrilateral<MaterialTy>& two = *(::new(two_blk.ptr) Quadrilateral<MaterialTy>);
+
             if (U == direction)
             {
                 two.a = (a + d)*0.5f;
@@ -69,6 +102,8 @@ namespace reyes
                 two.c = c;
                 two.d = d;
 
+                one.a = a;
+                one.b = b;
                 one.c = (b + c)*0.5f;
                 one.d = (a + d)*0.5f;
             }
@@ -80,13 +115,16 @@ namespace reyes
                 two.d = d;
 
                 one.a = (a + b)*0.5f;
+                one.b = b;
+                one.c = c;
                 one.d = (c + d)*0.5f;
             }
         }
-        MicrogridI<PosNormalUV>* dice(mem::ObjectStack<Microgrid>& dicedGrids)
+        mem::blk dice(mem::AllocatorI* alloc)
         {
             // grid
-            GQuadGrid<4, 4> grid = *new(dicedGrids.alloc(sizeof(GQuadGrid<4, 4>))) GQuadGrid<4, 4>;
+            mem::blk grid_blk = alloc->alloc(sizeof(GQuadGrid<4, 4>));
+            GQuadGrid<4, 4>& grid = *(::new(grid_blk.ptr) GQuadGrid<4, 4>);
             // vertices
             for (uint16_t idx = 0; idx < 4; idx++)
             {
@@ -103,28 +141,18 @@ namespace reyes
 
             // transform grid
             grid.transform(transform);
+
+            return grid_blk;
         }
 
-        MicrogridI<PosColor>* shade(mem::ObjectStack<MicrogridI<PosColor>>& shadedGrids)
+        mem::blk shade(MicrogridI<PosNormalUV>* dgrid, mem::AllocatorI* alloc)
         {
-            // grid
-            GQuadGrid<4, 4> grid;
-            // vertices
-            for (uint16_t idx = 0; idx < 4; idx++)
-            {
-                grid.data[idx].p = P(idx);
-                grid.data[idx].n = N(idx);
-                grid.data[idx].uv = UV(idx);
-                grid.data[idx].p = material.pShdr(grid.data[idx]);
-            }
-            // indices
-            grid.indices[0] = 0;
-            grid.indices[1] = 1;
-            grid.indices[2] = 3;
-            grid.indices[3] = 2;
+            GQuadGrid<4, 4>& grid = *(GQuadGrid<4, 4>*)dgrid;
 
             // color grid
-            SQuadGrid<4, 4>& color_grid = *new(shadedGrids.alloc(sizeof(SQuadGrid<4, 4>))) SQuadGrid<4, 4>;
+            mem::blk colg_blk = alloc->alloc(sizeof(SQuadGrid<4, 4>));
+            SQuadGrid<4, 4>& color_grid = *(::new(colg_blk.ptr) SQuadGrid<4, 4>);
+            
             // data
             for (uint16_t i = 0; i < 4; i++)
             {
@@ -136,8 +164,7 @@ namespace reyes
             color_grid.indices[1] = 1;
             color_grid.indices[2] = 3;
             color_grid.indices[3] = 2;
-            shadedGrids.pop();
-            return &color_grid;
+            return colg_blk;
         }
 
         position P(uint16_t idx) {

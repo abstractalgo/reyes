@@ -215,7 +215,7 @@ namespace reyes
 
         // TODO: alignment
         template<class ObjTy>
-        class ObjectStack
+        struct ObjectStack
         {
             // ....[ Object_n-1 ][ size_n-1 ][ Object_n ][ size_n ]
             // ....................................................^ top
@@ -223,7 +223,7 @@ namespace reyes
             size_t capacity;
             char* data;
             char* top;
-        public:
+
             ObjectStack(size_t cap=1024)
                 : capacity(cap)
                 , data(new char[cap])
@@ -247,7 +247,7 @@ namespace reyes
                 top -= size;
                 return (ObjTy*)(top);
             }
-            ObjTy* get(void* ptr)
+            ObjTy* get(char* ptr)
             {
                 if(ptr==data) return 0;
                 size_t size = *(size_t*)(ptr -= sizeof(size_t));
@@ -266,6 +266,34 @@ namespace reyes
             {
                 assert(data == top);
                 delete[] data;
+            }
+        };
+
+        template<class ItemTy, size_t size>
+        struct Stack
+        {
+            ItemTy data[size];
+            size_t top;
+            Stack() : top(0) {}
+            void push(ItemTy item)
+            {
+                data[top] = item;
+                top++;
+                assert(top <= size);
+            }
+            ItemTy pop()
+            {
+                assert(top > 0);
+                top--;
+                return data[top];
+            }
+            ~Stack()
+            {
+                assert(top == 0);
+            }
+            operator bool()
+            {
+                return top > 0;
             }
         };
     }

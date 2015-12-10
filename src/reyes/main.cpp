@@ -3,18 +3,16 @@
 #include "matlib.hpp"
 #include "shape.hpp"
 
-#define MAKE_SHAPE(_alloc, _shp) ::new(_alloc.alloc(sizeof(_shp))) _shp
+#define MAKE_SHAPE(_scene, _shp) ::new(_scene.alloc(sizeof(_shp)).ptr) _shp
 
 using namespace reyes;
 
 void appMain()
 {
     // scene setup
-    mem::ObjectStack<ShapeI> scene(1024);
-    ShapeI* shape = MAKE_SHAPE(scene, Quadrilateral<matlib::UVColor>) ({ -1, 1, 0.5 }, { 1, 1, 0.5 }, { 2, -2, 0.5 }, { -2, -1, 0.5 });
-    shape->split(SplitDir::U, scene);
-    shape = MAKE_SHAPE(scene, Quadrilateral<matlib::UVColor>) ({ 0, 2, 1 }, { 1, 2, 1 }, { 2, 0, 1 }, { -1, -1, 0 });
-    shape->split(SplitDir::V, scene);
+    Scene scene;
+    MAKE_SHAPE(scene, Quadrilateral<matlib::UVColor>) ({ -1, 1, 0.5 }, { 1, 1, 0.5 }, { 2, -2, 0.5 }, { -2, -1, 0.5 });;
+    MAKE_SHAPE(scene, Quadrilateral<matlib::UVColor>) ({ 0, 2, 1 }, { 1, 2, 1 }, { 2, 0, 1 }, { -1, -1, 0 });
 
     // camera setup
     Camera<GBuffer, 320, 240> camera;
