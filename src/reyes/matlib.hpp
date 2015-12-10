@@ -67,8 +67,7 @@ namespace reyes
 
             SHADE
             {
-                vec3 n = vertex.p.normalize();
-                return{ n.x, n.y, n.z, 1 };
+                return{ vertex.n.x, vertex.n.y, vertex.n.z, 1 };
             }
         };
 

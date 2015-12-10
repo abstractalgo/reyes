@@ -19,16 +19,32 @@ current version v1.7
 - ~~G-buffer~~ (***z-index arc***)
 - transformations (translate, rotate, scale, project)
 - perspective camera
-- ~~matlib (lambert, normal, uv)~~
-    - ~~textured material~~ (***untested yet***)
+- ~~matlib~~
+    - ~~lambert~~
+    - ~~normal~~
+    - ~~uv~~
+    - sampling material (and for displ.)
+        - textured
+        - func. eval.
+    - toon
+    - phong
 - ~~bounding and splitting~~
 - dicing
 - ~~improved memorymanagment~~
 - ~~entire reyes pipeline~~
 - finalize quadrilaterals and triangles
+- geometry
+    - plane (aka quad)
+    - sphere
+    - bezier patch (degree 3)
+        - newell teapot
+- lights
+    - directional
+    - point
 
 ####v3.0
 
+- shadow mapping
 - multiple samples per pixel (antialiasing)
 - more advanced rasterizer
 - profiling
@@ -44,9 +60,13 @@ current version v1.7
 
 ####v5.0
 
+- animation
 - bucketing
-- ~~additional primitives intro (triangles and polygon)~~
-- additional shapes (catmull-clark subdiv, bezier, nurbs, b-spline, loop subdiv)
+- additional geoemtry
+    - catmull-clark subdiv
+    - more bezier
+    - nurbs (b-spline)
+    - loop subdiv
 
 ####v6.0
 

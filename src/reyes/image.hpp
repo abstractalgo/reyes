@@ -98,7 +98,7 @@ namespace reyes
         } *rgb_data;
         struct Apixel
         {
-            char a;
+            float a;
         } *a_data;
         struct Zpixel
         {
@@ -114,7 +114,8 @@ namespace reyes
             for (uint16_t x = 0; x < width; x++)
             for (uint16_t y = 0; y < height; y++)
             {
-                a_data[y*width + x] = { 255 };
+                rgb_data[y*width + x] = { 0, 0, 0 };
+                a_data[y*width + x] = { 1.0f };
                 z_data[y*width + x] = { 1.0f };
             }
         }

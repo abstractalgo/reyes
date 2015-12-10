@@ -4,7 +4,7 @@
 #include "misc.hpp"
 
 #define CROSS(a,b) vec3(a.y*b.z-a.z*b.y, a.z*b.x-a.x*b.z, a.x*b.y-a.y*b.x)
-#define DOT(a,b) a.x*b.x+a.y*b.y+a.z*b.z
+#define DOT(a,b) (a.x*b.x+a.y*b.y+a.z*b.z)
 
 namespace reyes
 {
@@ -20,9 +20,9 @@ namespace reyes
     /* Shaded primitive. Has (projected) position and color attributes. */
     struct SPrimitiveI : public Primitive
     {
-        virtual bool in(vec3 p) const = 0;
-        virtual PosColor at(vec3 p) const = 0;
-        inline bool on_side(vec3 test, vec3 v1, vec3 v2) const
+        virtual bool in(vec3 p) = 0;
+        virtual PosColor at(vec3 p) = 0;
+        inline bool on_side(vec3 test, vec3 v1, vec3 v2)
         {
             return ((v2.x - v1.x)*(test.y - v1.y) - (v2.y - v1.y)*(test.x - v1.x)) >= 0.0;
         }
@@ -45,18 +45,24 @@ namespace reyes
     struct STriangle : public SPrimitiveI
     {
         PosColor a, b, c;
-        bool in(vec3 p) const
+        bool in(vec3 p)
         {
             return on_side(p, a.p, b.p) && on_side(p, b.p, c.p) && on_side(p, c.p, a.p);
         }
         /* https://www.shadertoy.com/view/4d3GDH */
-        PosColor at(vec3 p) const
+        PosColor at(vec3 p)
         {
             PosColor res;
-            vec3 bxc = CROSS(b.p, c.p);
-            vec3 axb = CROSS(a.p, b.p);
-            vec3 cxa = CROSS(c.p, a.p);
-            float denom = DOT(a.p, bxc);
+
+            vec3 _a = { a.p.x, a.p.y, 1.0f };
+            vec3 _b = { b.p.x, b.p.y, 1.0f };
+            vec3 _c = { c.p.x, c.p.y, 1.0f };
+            p.z = 1.0f;
+
+            vec3 bxc = CROSS(_b, _c);
+            vec3 axb = CROSS(_a, _b);
+            vec3 cxa = CROSS(_c, _a);
+            float denom = DOT(_a, bxc);
 
             float alpha = DOT(p, bxc) / denom;
             float beta = DOT(p, cxa) / denom;
@@ -96,7 +102,7 @@ namespace reyes
     struct SQuad : public SPrimitiveI
     {
         PosColor a, b, c, d;
-        bool in(vec3 p) const
+        bool in(vec3 p)
         {
             bool ab = !on_side(p, a.p, b.p);
             bool bc = !on_side(p, b.p, c.p);
@@ -105,10 +111,11 @@ namespace reyes
             return ab&&bc&&cd&&da;
         }
         /* https://www.shadertoy.com/view/ldt3Wr */
-        PosColor at(vec3 p) const
+        PosColor at(vec3 p)
         {
             PosColor res;
             vec2 uv;
+
             vec2 _a = { a.p.x, a.p.y };
             vec2 _b = { b.p.x, b.p.y };
             vec2 _c = { c.p.x, c.p.y };
@@ -150,6 +157,45 @@ namespace reyes
                 }
             }
 
+//#define M_ABS(a) (((a) < 0) ? -(a) : (a))
+//
+//            {
+//
+//                vec2  vc1, vc2, vcp1, vcp2;
+//                float vA, vC, vB;
+//                float s, is, t, am2bpc, tdenom_x, tdenom_y;
+//
+//                vc1 = vec2(a.p.x - c.p.x, a.p.y - c.p.y);
+//                vc2 = vec2(b.p.x - d.p.x, b.p.y - d.p.y);
+//
+//                vcp1 = vec2(a.p.x - p.x, a.p.y - p.y);
+//                vcp2 = vec2(b.p.x - p.x, b.p.y - p.y);
+//
+//                vA = vcp1.x * vc1.y - vcp1.y * vc1.x;
+//                vC = vcp2.x * vc2.y - vcp2.y * vc2.x;
+//                vB = ((vcp1.x * vc2.y - vcp1.y * vc2.x) +
+//                    (vcp2.x * vc1.y - vcp2.y * vc1.x)) * 0.5f;
+//
+//                am2bpc = vA - 2.0f * vB + vC;
+//
+//                if (am2bpc > -0.0001f && am2bpc < 0.0001f)
+//                    s = vA / (vA - vC);
+//                else
+//                    s = ((vA - vB) + sqrtf(vB * vB - vA * vC)) / am2bpc;
+//
+//                is = 1.0f - s;
+//                tdenom_x = is * vc1.x + s * vc2.x;
+//                tdenom_y = is * vc1.y + s * vc2.y;
+//
+//                if (M_ABS(tdenom_x) > M_ABS(tdenom_y))
+//                    t = (is * vcp1.x + s * vcp2.x) / tdenom_x;
+//                else
+//                    t = (is * vcp1.y + s * vcp2.y) / tdenom_y;
+//
+//                uv = vec2(is, t);
+//            }
+//#undef M_ABS
+
             res.col = color(
                 (a.col.r*(1.0f - uv.x) + b.col.r*uv.x)*(1.0f - uv.y) + (d.col.r*(1.0f - uv.x) + c.col.r*uv.x)*uv.y,   // R
                 (a.col.g*(1.0f - uv.x) + b.col.g*uv.x)*(1.0f - uv.y) + (d.col.g*(1.0f - uv.x) + c.col.g*uv.x)*uv.y,   // G
@@ -157,11 +203,7 @@ namespace reyes
                 (a.col.a*(1.0f - uv.x) + b.col.a*uv.x)*(1.0f - uv.y) + (d.col.a*(1.0f - uv.x) + c.col.a*uv.x)*uv.y    // A
             );
 
-            res.p =  position(
-                (a.p.x*(1.0f - uv.x) + b.p.x*uv.x)*(1.0f - uv.y) + (d.p.x*(1.0f - uv.x) + c.p.x*uv.x)*uv.y, // X
-                (a.p.y*(1.0f - uv.x) + b.p.y*uv.x)*(1.0f - uv.y) + (d.p.y*(1.0f - uv.x) + c.p.y*uv.x)*uv.y, // Y
-                (a.p.z*(1.0f - uv.x) + b.p.z*uv.x)*(1.0f - uv.y) + (d.p.z*(1.0f - uv.x) + c.p.z*uv.x)*uv.y  // Z
-                );
+            res.p = (a.p*(1.0f - uv.x) + b.p*uv.x)*(1.0f - uv.y) + (d.p*(1.0f - uv.x) + c.p*uv.x)*uv.y;
 
             return res;
         }

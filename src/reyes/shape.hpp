@@ -177,11 +177,10 @@ namespace reyes
         }
         normal N(uint16_t idx)
         {
-            vec3 a = this->d - this->a;
-            vec3 b = this->b - this->a;
-            return vec3(a.y*b.z - a.z*b.y, a.z*b.x - a.x*b.z, a.x*b.y - a.y*b.x);
             // TODO
-            return{ 0, 0, 1 };
+            vec3 q = c-a;
+            vec3 w = b-d;
+            return vec3(q.y*w.z - q.z*w.y, q.z*w.x - q.x*w.z, q.x*w.y - q.y*w.x).normalize();
         }
         uv UV(uint16_t idx)
         {
