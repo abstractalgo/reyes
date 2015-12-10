@@ -45,10 +45,10 @@
     <ClInclude Include="primitive.hpp">
       <Filter>reyes</Filter>
     </ClInclude>
-    <ClInclude Include="material.hpp">
+    <ClInclude Include="shading.hpp">
       <Filter>reyes</Filter>
     </ClInclude>
-    <ClInclude Include="matlib.hpp">
+    <ClInclude Include="shadinglib.hpp">
       <Filter>reyes</Filter>
     </ClInclude>
   </ItemGroup>

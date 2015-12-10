@@ -16,31 +16,33 @@ current version v1.7
 
 ####v2.0
 
-- ~~G-buffer~~ (***z-index arc***)
 - transformations (translate, rotate, scale, project)
 - perspective camera
-- ~~matlib~~
-    - ~~lambert~~
-    - ~~normal~~
-    - ~~uv~~
-    - sampling material (and for displ.)
-        - textured
-        - func. eval.
-    - toon
-    - phong
-- ~~bounding and splitting~~
 - dicing
+- finalize quadrilaterals and triangles
+- ~~G-buffer~~ (***z-index arc***)
+- ~~bounding and splitting~~
 - ~~improved memorymanagment~~
 - ~~entire reyes pipeline~~
-- finalize quadrilaterals and triangles
 - geometry
     - plane (aka quad)
     - sphere
     - bezier patch (degree 3)
         - newell teapot
-- lights
-    - directional
-    - point
+- shading
+    - ~~matlib~~
+        - ~~lambert~~
+        - ~~normal~~
+        - ~~uv~~
+        - ~~tex2d~~
+        - toon
+        - phong
+    - resources
+        - ~~texture~~ (***untested yet***)
+        - func. eval. (displacement)
+    - lights
+        - ~~directional~~
+        - ~~point~~
 
 ####v3.0
 
@@ -52,6 +54,7 @@ current version v1.7
 - dof
 - motion blur
 - A-buffer (transparency support + optimizations)
+- SH light
 
 ####v4.0
 
