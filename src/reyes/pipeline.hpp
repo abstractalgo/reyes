@@ -8,7 +8,7 @@
 
 namespace reyes
 {
-    const vec2 RASTER_THRESHOLD = { 32, 32 };
+    const vec2 RASTER_THRESHOLD = { 128, 128 };
 
     /* Main rendering functions that goes through all the rendering stages:
     1. bound-split

@@ -20,15 +20,6 @@ namespace reyes
 
         void capture(MicrogridI<PosColor>* grid)
         {
-            // transform
-            // TODO
-            //grid->transform(view);
-
-            // project
-            // TODO
-            //grid->transform(project);
-
-            // rasterize
             image.rasterize(*grid);
         }
 

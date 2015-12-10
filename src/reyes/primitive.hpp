@@ -9,7 +9,9 @@
 namespace reyes
 {
     struct Primitive
-    {};
+    {
+        virtual AABB2 aabb(void) const = 0;
+    };
 
     /* Geometrical primitive. Has position, normal and UV. */
     struct GPrimitiveI : public Primitive
@@ -82,6 +84,13 @@ namespace reyes
             );
 
             return res;
+        }
+        AABB2 aabb(void) const
+        {
+            AABB2 bb;
+            bb.min = vec2(fminf(a.p.x, fminf(b.p.x, c.p.x)), fminf(a.p.y, fminf(b.p.y, c.p.y)));
+            bb.max = vec2(fmaxf(a.p.x, fmaxf(b.p.x, c.p.x)), fmaxf(a.p.y, fmaxf(b.p.y, c.p.y)));
+            return bb;
         }
     };
 
@@ -206,6 +215,13 @@ namespace reyes
             res.p = (a.p*(1.0f - uv.x) + b.p*uv.x)*(1.0f - uv.y) + (d.p*(1.0f - uv.x) + c.p*uv.x)*uv.y;
 
             return res;
+        }
+        AABB2 aabb(void) const
+        {
+            AABB2 bb;
+            bb.min = vec2(fminf(a.p.x, fminf(b.p.x, fminf(c.p.x, d.p.x))), fminf(a.p.y, fminf(b.p.y, fminf(c.p.y, d.p.y))));
+            bb.max = vec2(fmaxf(a.p.x, fmaxf(b.p.x, fmaxf(c.p.x, d.p.x))), fmaxf(a.p.y, fmaxf(b.p.y, fmaxf(c.p.y, d.p.y))));
+            return bb;
         }
     };
 }
