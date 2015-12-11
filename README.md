@@ -47,11 +47,14 @@ current version v1.7
 
 - shadow mapping
 - ~~more advanced rasterizer~~
-- profiling
+- SH light
+- perf
+    - profiling
+    - progress indicator
+    - progressive (rendering in a window)
 - even better memory managment
 - dof
 - motion blur
-- SH light
 - A-buffer
     - transparency support
     - inject optimizations
@@ -59,36 +62,33 @@ current version v1.7
 - material
     - toon
     - phong
+- extra
+    - additional post-processing effects
 
 ####v4.0
 
-- post-processing
-- rendering in window
-
-####v5.0
-
-- animation
-- bucketing
-- additional geoemtry
+- fix cracks
+- fix elongated micropolygons
+- additional geometry
     - catmull-clark subdiv
     - more bezier
     - nurbs (b-spline)
     - loop subdiv
 
-####v6.0
+####v5.0 
 
-- fix cracks
-- fix elongated micropolygons
+- bucketing
 - task (job) manager
 
-####v7.0
+####v6.0
 
 - (GP)GPU implementation
 - job affinity selection
 - (pseudo) real-time
 
-####v8.0
+####v7.0
 
+- animation
 - ~~shading language~~ (***needs to be more flexible***)
 
 ####v113A
