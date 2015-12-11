@@ -27,7 +27,7 @@ current version v1.7
 - geometry
     - plane (aka quad)
     - sphere
-    - bezier patch (degree 3)
+    - bezier patch (cubic)
         - newell teapot
 - shading
     - ~~matlib~~
@@ -35,26 +35,30 @@ current version v1.7
         - ~~normal~~
         - ~~uv~~
         - ~~tex2d~~
-        - toon
-        - phong
     - resources
         - ~~texture~~ (***untested yet***)
         - func. eval. (displacement)
     - lights
         - ~~directional~~
         - ~~point~~
+- normal-mapped, textured cube
 
 ####v3.0
 
 - shadow mapping
-- multiple samples per pixel (antialiasing)
-- more advanced rasterizer
+- ~~more advanced rasterizer~~
 - profiling
 - even better memory managment
 - dof
 - motion blur
-- A-buffer (transparency support + optimizations)
 - SH light
+- A-buffer
+    - transparency support
+    - inject optimizations
+    - multisample buffer
+- material
+    - toon
+    - phong
 
 ####v4.0
 
