@@ -14,7 +14,7 @@ void appMain()
     MAKE_SHAPE(scene, Quadrilateral<shading::UVColor>) ({ 0, 2, 1 }, { 1, 2, 1 }, { 2, 0, 1 }, { -1, -1, 0 });
 
     // camera setup
-    Camera<GBuffer, 480, 360> camera;
+    Camera<GBuffer, 640, 480> camera;
     //camera.orthographic(-25, 25, -25, 25);
     //camera.lookAt(/*eye*/ { 0, 0, -5 }, /*target*/ { 0, 0, 0 } /*up*/);
 

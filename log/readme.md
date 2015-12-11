@@ -39,7 +39,7 @@ One neat things is bucketing. We can subdivide screen into smaller regions and g
 ***Dec 9, 2015***
 ---
 
-***pixel cracks***: while I was trying out rasterizer and playing with UVs and quads, I noticed these cracks:
+***pixel cracks:*** while I was trying out rasterizer and playing with UVs and quads, I noticed these cracks:
 
 ![pixel cracks](pcracks.png "pixel cracks")
 
@@ -55,13 +55,9 @@ After all the hassle, here's the pixel-cracks-free and the-right-UV-mapped quadr
 
 ---
 
-interesting but wrong #1
+interesting but wrong (notice arced intersection on the right)
 
-![ibw1](ibw1.png "ibw1")
-
-interesting but wrong #2 (there's an arc in the intersection between two planar shapes)
-
-![ib2](arcintersect.png "ibw2")
+![ibw1](ibw1.png "ibw1") ![ib2](arcintersect.png "ibw2")
 
 ***Dec 10, 2015***
 ---
@@ -81,3 +77,7 @@ Next in line are transformations. I hate the 3D math and matrices, tbh. Even so,
 more "interesting but wrong" images during debugging
 
 ![ibw2](ibw2.png "ibw2") ![ibw3](ibw3.png "ibw3")
+
+---
+
+***rasterization:*** I've updated the rasterization code so the primitive doesn't get rasterized over entire image surface, but just the bounding box of it. The speedup is enormous! I put a threshold to 2x2, and it was rendering two quads for several minutes, and with this approach, it is practically just a few <i>waitable</i> second. Great stuff.

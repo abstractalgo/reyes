@@ -132,6 +132,7 @@ namespace reyes
                 // get bounding box
                 AABB2 bb = prim->aabb();
                 uint16_t start_x=0, end_x=width, start_y=0, end_y=height;
+                // calc tight rasterization box
                 for (uint16_t i = 0; i < width; i++)
                 {
                     float px = -1.0f + (2 * i + 1)*halfpx_x;
@@ -158,7 +159,7 @@ namespace reyes
                         start_y = i;
                         for (uint16_t j = 0; j < height; j++)
                         {
-                            py = -1.0f + (2 * j + 1)*halfpx_y;
+                            float py = 1.0f - (2 * j + 1)*halfpx_y;
                             if (py<bb.min.y)
                             {
                                 end_y = j;
@@ -168,32 +169,34 @@ namespace reyes
                         break;
                     }
                 }
+
+                // rasterize
                 for (uint16_t x = start_x; x < end_x; x++)
-                for (uint16_t y = start_y; y < end_y; y++)
-                //for (uint16_t x = 0; x < width; x++)
-                //for (uint16_t y = 0; y < height; y++)
                 {
-                    // construct pixel location
-                    float px = -1.0f + (2*x+1)*halfpx_x;
-                    float py = 1.0f - (2*y+1)*halfpx_y;
-                    vec3 p(px, py, 0);
-
-                    // test
-                    if (prim->in(p))
+                    for (uint16_t y = start_y; y < end_y; y++)
                     {
-                        PosColor r = prim->at(p);
-                        RGBpixel px_rgb = rgb_data[y*width + x];
-                        Zpixel px_z = z_data[y*width + x];
+                        // construct pixel location
+                        float px = -1.0f + (2 * x + 1)*halfpx_x;
+                        float py = 1.0f - (2 * y + 1)*halfpx_y;
+                        vec3 p(px, py, 0);
 
-                        // rasterized pixel should overwrite information
-                        if (r.p.z <= px_z.z && r.p.z>=0.0f)
+                        // test
+                        if (prim->in(p))
                         {
-                            // TODO depth test settings
-                            // TODO blending
-                            px_z.z = r.p.z;
-                            px_rgb = { r.col.r*255.0f, r.col.g*255.0f, r.col.b*255.0f };
-                            rgb_data[y*width + x] = px_rgb;
-                            z_data[y*width + x] = px_z;
+                            PosColor r = prim->at(p);
+                            RGBpixel px_rgb = rgb_data[y*width + x];
+                            Zpixel px_z = z_data[y*width + x];
+
+                            // rasterized pixel should overwrite information
+                            if (r.p.z <= px_z.z && r.p.z >= 0.0f)
+                            {
+                                // TODO depth test settings
+                                // TODO blending
+                                px_z.z = r.p.z;
+                                px_rgb = { r.col.r*255.0f, r.col.g*255.0f, r.col.b*255.0f };
+                                rgb_data[y*width + x] = px_rgb;
+                                z_data[y*width + x] = px_z;
+                            }
                         }
                     }
                 }
