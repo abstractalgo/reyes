@@ -14,6 +14,8 @@ current version v1.7
 - ~~basic pipeline~~
 - ~~basic rasterizer~~
 
+![First render](log/reyes_first.png "First image")
+
 ####v2.0
 
 - transformations (translate, rotate, scale, project)
