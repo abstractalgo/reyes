@@ -43,7 +43,7 @@ current version v1.7
     - lights
         - ~~directional~~
         - ~~point~~
-- normal-mapped, textured cube
+- normal-mapped, textured cube (***!challenge!***)
 
 ####v3.0
 
