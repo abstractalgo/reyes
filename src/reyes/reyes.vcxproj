@@ -85,6 +85,7 @@
     <ClInclude Include="camera.hpp" />
     <ClInclude Include="grid.hpp" />
     <ClInclude Include="image.hpp" />
+    <ClInclude Include="ogl_help.hpp" />
     <ClInclude Include="shading.hpp" />
     <ClInclude Include="shadinglib.hpp" />
     <ClInclude Include="mem.hpp" />

@@ -60,5 +60,8 @@
     <ClInclude Include="backend.hpp">
       <Filter>app\core</Filter>
     </ClInclude>
+    <ClInclude Include="ogl_help.hpp">
+      <Filter>app\core</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -53,7 +53,7 @@ current version v1.7
 - perf
     - profiling
     - progress indicator
-    - progressive (rendering in a window)
+    - progressive (~~rendering in a window~~)
 - even better memory managment
 - dof
 - motion blur
