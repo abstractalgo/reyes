@@ -112,19 +112,11 @@ extern void(*__resizeF)(unsigned int, unsigned int);
 // loading graphics backend libraries
 #include <Windows.h>
 #include <stdio.h>
-#if (RENDER_BACKEND == D3D)
-#   include <d3d11_1.h>
-#   include <d3dcompiler.h>
-#   include <directxmath.h>
-#   include <directxcolors.h>
-using namespace DirectX;
-#elif (RENDER_BACKEND == OGL)
-#   include "glew.h"
-#endif
+#include "thirdparty/glew.h"
 
 // loading perf tracking (nv tools extension)
 #ifdef USE_NVTX_BACKEND
-#   include "nvToolsExt.h"
+#   include "thirdparty/nvToolsExt.h"
 #   define perfMarkerStart(a) nvtxRangePushA(a)
 #   define perfMarkerEnd(a) nvtxRangePop()
 #else
@@ -139,7 +131,7 @@ struct PerfMarker
 
 // loading antTweakBar libraries
 #ifdef USE_ANTTWBAR_BACKEND
-#   include "AntTweakBar.h"
+#   include "thirdparty/AntTweakBar.h"
 #endif
 
 //--------------------------------------------------------------------------------------

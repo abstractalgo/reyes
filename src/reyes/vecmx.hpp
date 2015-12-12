@@ -302,7 +302,7 @@ namespace reyes
 
         void orthographic(float left, float right, float bottom, float top, float near, float far)
         {
-            float w = right - left;
+            /*float w = right - left;
             float h = top - bottom;
             float p = far - near;
 
@@ -313,12 +313,12 @@ namespace reyes
             e[0] = 2 / w;   e[4] = 0;       e[8] = 0;       e[12] = 0;
             e[1] = 0;       e[5] = 2 / h;   e[9] = 0;       e[13] = 0;
             e[2] = 0;       e[6] = 0;       e[10] = -2 / p; e[14] = 0;
-            e[3] = -x;      e[7] = -y;      e[11] = -z;     e[15] = 1;
+            e[3] = -x;      e[7] = -y;      e[11] = -z;     e[15] = 1;*/
         }
 
         void frustum(float left, float right, float bottom, float top, float near, float far)
         {
-            float x = 2 * near / (right - left);
+            /*float x = 2 * near / (right - left);
             float y = 2 * near / (top - bottom);
 
             float a = (right + left) / (right - left);
@@ -331,7 +331,7 @@ namespace reyes
             e[2] = 0; e[6] = 0; e[10] = c;  e[14] = d;
             e[3] = 0; e[7] = 0; e[11] = -1; e[15] = 0;
 
-            transpose();
+            transpose();*/
         }
 
         void lookAt(const vec3 eye, const vec3 target, const vec3 up)
