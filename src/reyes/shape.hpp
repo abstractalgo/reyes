@@ -4,6 +4,7 @@
 #include "vecmx.hpp"
 #include "grid.hpp"
 #include "misc.hpp"
+#include "camera.hpp"
 
 namespace reyes
 {
@@ -51,7 +52,7 @@ namespace reyes
     {
         mx4 transform;
         virtual void split(SplitDir direction, Scene& scene) = 0;
-        virtual mem::blk dice(mem::AllocatorI* alloc) = 0;
+        virtual mem::blk dice(CameraTransform* camera, mem::AllocatorI* alloc) = 0;
         virtual mem::blk shade(MicrogridI<PosNormalUV>* dgrid, mem::AllocatorI* alloc) = 0;
         virtual position P(uint16_t idx) = 0;
         virtual normal N(uint16_t idx) = 0;
@@ -119,8 +120,9 @@ namespace reyes
                 one.c = c;
                 one.d = (c + d)*0.5f;
             }
+            // copy transform
         }
-        mem::blk dice(mem::AllocatorI* alloc)
+        mem::blk dice(CameraTransform* camera, mem::AllocatorI* alloc)
         {
             // grid
             mem::blk grid_blk = alloc->alloc(sizeof(GQuadGrid<4, 4>));
@@ -132,6 +134,7 @@ namespace reyes
                 grid.data[idx].n = N(idx);
                 grid.data[idx].uv = UV(idx);
                 grid.data[idx].p = material.pShdr(grid.data[idx]);
+                // TODO transformations: model, view, projection
             }
             // indices
             grid.indices[0] = 0;
@@ -140,7 +143,7 @@ namespace reyes
             grid.indices[3] = 2;
 
             // transform grid
-            grid.transform(transform);
+            //grid.transform(transform);
 
             return grid_blk;
         }

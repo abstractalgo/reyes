@@ -2,16 +2,18 @@
 
 #include "vecmx.hpp"
 #include "image.hpp"
-#include "grid.hpp"
 
 namespace reyes
 {
-    template<class FilmTy, uint16_t width, uint16_t height>
-    /* Camera and its film. */
-    struct Camera
+    struct CameraTransform
     {
         mx4 view;
         mx4 projection;
+    };
+    template<class FilmTy, uint16_t width, uint16_t height>
+    /* Camera and its film. */
+    struct Camera : public CameraTransform
+    {
         FilmTy image;
 
         Camera()
@@ -21,11 +23,6 @@ namespace reyes
         void capture(MicrogridI<PosColor>* grid)
         {
             image.rasterize(*grid);
-        }
-
-        position project(position p)
-        {
-            return p;
         }
 
         /* Mark perspective frustum. */

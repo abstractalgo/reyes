@@ -133,43 +133,10 @@ namespace reyes
                 AABB2 bb = prim->aabb();
                 uint16_t start_x=0, end_x=width, start_y=0, end_y=height;
                 // calc tight rasterization box
-                for (uint16_t i = 0; i < width; i++)
-                {
-                    float px = -1.0f + (2 * i + 1)*halfpx_x;
-                    if (px >= bb.min.x)
-                    {
-                        start_x = i;
-                        for (uint16_t j = 0; j < width; j++)
-                        {
-                            px = -1.0f + (2 * j + 1)*halfpx_x;
-                            if (px>bb.max.x)
-                            {
-                                end_x = j;
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                }
-                for (uint16_t i = 0; i < height; i++)
-                {
-                    float py = 1.0f - (2 * i + 1)*halfpx_y;
-                    if (py <= bb.max.y)
-                    {
-                        start_y = i;
-                        for (uint16_t j = 0; j < height; j++)
-                        {
-                            float py = 1.0f - (2 * j + 1)*halfpx_y;
-                            if (py<bb.min.y)
-                            {
-                                end_y = j;
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                }
-
+                for (start_x = 0; -1.0f + (2 * start_x + 1)*halfpx_x < bb.min.x; start_x++);
+                for (end_x = start_x; -1.0f + (2 * end_x + 1)*halfpx_x < bb.max.x; end_x++);
+                for (start_y = 0; 1.0f - (2 * start_y + 1)*halfpx_y > bb.max.y; start_y++);
+                for (end_y = start_y; 1.0f - (2 * end_y + 1)*halfpx_y >= bb.min.y; end_y++);
                 // rasterize
                 for (uint16_t x = start_x; x < end_x; x++)
                 {
