@@ -1,55 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="reyes">
+    <Filter Include="app">
       <UniqueIdentifier>{94e09b13-4988-47b9-8eb1-ddbc96d9fa3b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="reyes\core">
+    <Filter Include="app\core">
       <UniqueIdentifier>{e89e5ce4-8f0c-44a4-8b04-3c4883905997}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="app\reyes">
+      <UniqueIdentifier>{bb2fdb06-1b53-4afb-bf99-bfc9945ed30b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="app\reyes\math">
+      <UniqueIdentifier>{19cb3b84-5472-42af-bb77-10a8c5fbe678}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="app\reyes\shading">
+      <UniqueIdentifier>{5f83f76f-e976-4e8c-9648-414ee68fbdb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="app\reyes\camera">
+      <UniqueIdentifier>{04280ec0-5dbe-4259-a361-87e8f8025da8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="core.cpp">
-      <Filter>reyes\core</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="misc.hpp">
-      <Filter>reyes</Filter>
+      <Filter>app\reyes\shading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mem.hpp">
-      <Filter>reyes\core</Filter>
-    </ClInclude>
-    <ClInclude Include="shape.hpp">
-      <Filter>reyes</Filter>
-    </ClInclude>
-    <ClInclude Include="core.h">
-      <Filter>reyes\core</Filter>
-    </ClInclude>
-    <ClInclude Include="camera.hpp">
-      <Filter>reyes</Filter>
-    </ClInclude>
-    <ClInclude Include="vecmx.hpp">
-      <Filter>reyes</Filter>
-    </ClInclude>
-    <ClInclude Include="pipeline.hpp">
-      <Filter>reyes</Filter>
-    </ClInclude>
-    <ClInclude Include="image.hpp">
-      <Filter>reyes</Filter>
+      <Filter>app\core</Filter>
     </ClInclude>
     <ClInclude Include="grid.hpp">
-      <Filter>reyes</Filter>
+      <Filter>app\reyes</Filter>
+    </ClInclude>
+    <ClInclude Include="shape.hpp">
+      <Filter>app\reyes</Filter>
     </ClInclude>
     <ClInclude Include="primitive.hpp">
-      <Filter>reyes</Filter>
+      <Filter>app\reyes</Filter>
+    </ClInclude>
+    <ClInclude Include="pipeline.hpp">
+      <Filter>app\reyes</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.hpp">
+      <Filter>app\reyes\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="image.hpp">
+      <Filter>app\reyes\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="vecmx.hpp">
+      <Filter>app\reyes\math</Filter>
     </ClInclude>
     <ClInclude Include="shading.hpp">
-      <Filter>reyes</Filter>
+      <Filter>app\reyes\shading</Filter>
     </ClInclude>
     <ClInclude Include="shadinglib.hpp">
-      <Filter>reyes</Filter>
+      <Filter>app\reyes\shading</Filter>
+    </ClInclude>
+    <ClInclude Include="backend.hpp">
+      <Filter>app\core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
