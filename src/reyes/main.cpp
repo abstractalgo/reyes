@@ -12,6 +12,14 @@ void InitApp()
 {
     // OPENGL
     glClearColor(0.0f, 0.2f, 0.4f, 1.0f);
+    GLuint tex;
+    glGenTextures(1, &tex);
+    glBindTexture(GL_TEXTURE_2D, tex);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, RES_BACKEND, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 
     // REYES
     printf("REYES renderer v"REYES_VERSION"\n");
@@ -30,6 +38,9 @@ void InitApp()
     reyes::render(scene, camera);
     
     camera.image.writePPM("test.ppm");
+
+    // OPENGL
+    glDeleteTextures(1, &tex);
 }
 
 void RenderApp()
