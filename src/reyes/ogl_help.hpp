@@ -29,6 +29,7 @@ const char* fsquad_fs = GLSL(330,
 
 void opengl_init(GLuint tex, GLuint program, GLuint quad, unsigned int w, unsigned int h, void* data)
 {
+    glClearColor(0.0f, 0.2f, 0.4f, 1.0f);
     // init texture
     {
         glGenTextures(1, &tex);

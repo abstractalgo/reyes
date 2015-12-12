@@ -1,7 +1,7 @@
 # reyes
 reyes renderer
 
-current version v1.7
+current version v1.8
 
 ###TODO
 

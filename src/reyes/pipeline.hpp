@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mem.hpp"
+#include "backend.hpp"
 #include "shape.hpp"
 #include "grid.hpp"
 #include "camera.hpp"
@@ -11,11 +12,13 @@ namespace reyes
     template<class FilmTy, uint16_t width, uint16_t height>
     void render(Scene& scene, Camera<FilmTy, width, height>& camera)
     {
-        static const vec2 RASTER_THRESHOLD = { 16, 16 };
+        static const vec2 RASTER_THRESHOLD = { 32, 32 };
 
         mem::mAllocator alok;
         MicrogridI<PosColor>* shadedGrid;
         MicrogridI<PosNormalUV>* dicedGrid;
+
+        PerfMarker("REYES render");
 
         while (scene)
         {

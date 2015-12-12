@@ -33,17 +33,15 @@ void InitApp()
     }
 
     // OPENGL
-    {
-        glClearColor(0.0f, 0.2f, 0.4f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-        opengl_init(tex, program, quad, 640, 480, camera.image.getRGB());
+    {        
+        opengl_init(tex, program, quad, camera.image.width, camera.image.height, camera.image.getRGB());
     }
 }
 
 void RenderApp()
 {
-    //PerfMarker("Frame
-    opengl_display(tex, 640, 480, camera.image.getRGB());
+    PerfMarker("Frame");
+    opengl_display(tex, camera.image.width, camera.image.height, camera.image.getRGB());
 }
 
 void CleanupApp()
