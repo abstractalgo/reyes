@@ -76,7 +76,7 @@ void opengl_display(GLuint tex, unsigned int w, unsigned int h, void* data)
 {
     //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
     glDrawArrays(GL_TRIANGLES, 0, 6);
-    //SwapBuffersBackend();
+    SwapBuffersBackend();
 }
 
 void opengl_cleanup(GLuint tex, GLuint program, GLuint quad)

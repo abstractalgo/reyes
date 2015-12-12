@@ -5,6 +5,7 @@
 #define USE_CONSOLE_BACKEND
 //#define USE_NVTX_BACKEND
 //#define USE_ANTTWBAR_BACKEND
+//#define ANIMATE_BACKEND
 // </options> --------------------------------------------------------------------------
 
 // <user functions> --------------------------------------------------------------------
@@ -16,9 +17,13 @@
 #define INPUT_f_keyUp(fn)       (__keyUpF=fn)
 #define INPUT_f_resize(fn)      (__resizeF=fn)
 
+#ifdef ANIMATE_BACKEND
 void InitApp();
 void RenderApp();
 void CleanupApp();
+#else
+void mainApp();
+#endif
 // </user functions> -------------------------------------------------------------------
 
 // commonly used keys
@@ -193,7 +198,11 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
     TwInit(TW_OPENGL, NULL);
 #endif
 
+#ifdef ANIMATE_BACKEND
     InitApp();
+#else
+    mainApp();
+#endif
 
     // main loop
     static bool quit = false;
@@ -209,6 +218,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
         {
             quit = true;
         }
+#ifdef ANIMATE_BACKEND
         else
         {
             RenderApp();
@@ -217,10 +227,13 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 #endif
             SwapBuffersBackend();
         }
+#endif
     }
 
     // cleanup
+#ifdef ANIMATE_BACKEND
     CleanupApp();
+#endif
 #ifdef USE_ANTTWBAR_BACKEND
     TwTerminate();
 #endif

@@ -5,19 +5,17 @@
 
 using namespace reyes;
 
-#define REYES_VERSION "1.8"
-
 #define MAKE_SHAPE(_scene, _shp) ::new(_scene.alloc(sizeof(_shp)).ptr) _shp
 
 GLuint tex, program, quad;
 Scene scene;
 Camera<GBuffer, 640, 480> camera;
 
-void InitApp()
+void mainApp()
 {
     // REYES
     {
-        printf("REYES renderer v"REYES_VERSION"\n");
+        printf("REYES renderer v1.82\n");
 
         // scene setup
         MAKE_SHAPE(scene, Quadrilateral<shading::UVColor>) ({ -1, 1, 0.5 }, { 1, 1, 0.5 }, { 2, -2, 0.5 }, { -2, -1, 0.5 });;
@@ -35,16 +33,23 @@ void InitApp()
     // OPENGL
     {        
         opengl_init(tex, program, quad, camera.image.width, camera.image.height, camera.image.getRGB());
+        opengl_display(tex, camera.image.width, camera.image.height, camera.image.getRGB());
+        opengl_cleanup(tex, program, quad);
     }
+}
+
+void InitApp()
+{
+    // init
 }
 
 void RenderApp()
 {
     PerfMarker("Frame");
-    opengl_display(tex, camera.image.width, camera.image.height, camera.image.getRGB());
+    // update & display
 }
 
 void CleanupApp()
 {
-    opengl_cleanup(tex, program, quad);
+    // cleanup
 }
