@@ -207,6 +207,23 @@ namespace reyes
                 return uniform.tex->sample(vertex.uv);
             }
         };
+
+        // ------------------------------------------- Yellow
+        UNIFORM(Yellow)
+        {
+        };
+        MATERIAL(Yellow)
+        {
+            DISPLACE
+            {
+            return vertex.p;
+        }
+
+            SHADE
+            {
+                return{1,1,0,1};
+            }
+        };
     }
 }
 

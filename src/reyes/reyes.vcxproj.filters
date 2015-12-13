@@ -19,6 +19,9 @@
     <Filter Include="app\reyes\camera">
       <UniqueIdentifier>{04280ec0-5dbe-4259-a361-87e8f8025da8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="app\reyes\shapes">
+      <UniqueIdentifier>{895735d6-3ced-4a54-bf73-f76900fc7fb2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -62,6 +65,24 @@
     </ClInclude>
     <ClInclude Include="ogl_help.hpp">
       <Filter>app\core</Filter>
+    </ClInclude>
+    <ClInclude Include="quad.hpp">
+      <Filter>app\reyes\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.hpp">
+      <Filter>app\reyes</Filter>
+    </ClInclude>
+    <ClInclude Include="parametric.hpp">
+      <Filter>app\reyes\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="sphere.hpp">
+      <Filter>app\reyes\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="disc.hpp">
+      <Filter>app\reyes\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="rect.hpp">
+      <Filter>app\reyes\shapes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

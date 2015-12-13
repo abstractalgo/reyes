@@ -83,9 +83,15 @@
   <ItemGroup>
     <ClInclude Include="backend.hpp" />
     <ClInclude Include="camera.hpp" />
+    <ClInclude Include="disc.hpp" />
     <ClInclude Include="grid.hpp" />
     <ClInclude Include="image.hpp" />
     <ClInclude Include="ogl_help.hpp" />
+    <ClInclude Include="parametric.hpp" />
+    <ClInclude Include="quad.hpp" />
+    <ClInclude Include="rect.hpp" />
+    <ClInclude Include="sphere.hpp" />
+    <ClInclude Include="scene.hpp" />
     <ClInclude Include="shading.hpp" />
     <ClInclude Include="shadinglib.hpp" />
     <ClInclude Include="mem.hpp" />

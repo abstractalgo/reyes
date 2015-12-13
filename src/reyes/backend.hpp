@@ -1,7 +1,6 @@
 #pragma once
 
 // <options> ---------------------------------------------------------------------------
-#define RES_BACKEND 640, 480
 #define USE_CONSOLE_BACKEND
 //#define USE_NVTX_BACKEND
 //#define USE_ANTTWBAR_BACKEND

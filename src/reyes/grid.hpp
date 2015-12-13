@@ -17,8 +17,9 @@ namespace reyes
         uint16_t* indices;
         virtual Primitive* at(uint16_t idx) = 0;
         virtual uint16_t count() = 0;
+        virtual uint16_t vCnt() = 0;
         virtual void transform(mx4 m) = 0;
-        virtual AABB2 aabb(void) const = 0;
+        virtual AABB2 aabb(void) = 0;
     };
 
     template <class VertexTy, size_t verticesCnt, size_t indicesCnt>
@@ -28,6 +29,7 @@ namespace reyes
         uint16_t indices[indicesCnt];
         virtual Primitive* at(uint16_t idx) = 0;
         virtual uint16_t count() = 0;
+        virtual uint16_t vCnt() { return verticesCnt; }
         void transform(mx4 m)
         {
             //vec4 p;
@@ -40,15 +42,17 @@ namespace reyes
             //}
         }
 
-        AABB2 aabb(void) const
+        AABB2 aabb(void)
         {
             AABB2 bb;
             bb.max = vec2(data[0].p.x, data[0].p.y);
             bb.min = bb.max;
-            for (uint16_t i = 1; i < verticesCnt; i++)
+            uint16_t cncn = vCnt();
+            for (uint16_t i = 1; i <cncn; i++)
             {
-                bb.min = vec2(fminf(bb.min.x, data[i].p.x), fminf(bb.min.y, data[i].p.y));
-                bb.max = vec2(fmaxf(bb.max.x, data[i].p.x), fmaxf(bb.max.y, data[i].p.y));
+                vec3 p = data[i].p;
+                bb.min = vec2(fminf(bb.min.x, p.x), fminf(bb.min.y, p.y));
+                bb.max = vec2(fmaxf(bb.max.x,p.x), fmaxf(bb.max.y, p.y));
             }
             return bb;
         }
