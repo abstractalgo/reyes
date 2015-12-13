@@ -104,5 +104,39 @@ namespace reyes
 
         virtual normal N(uv uv) = 0;
         virtual position P(uv uv) = 0;
+
+        void renderOGL(uint16_t ur, uint16_t vr)
+        {
+            float ru = 1.0f / ur;
+            float rv = 1.0f / vr;
+            glBegin(GL_LINES);
+            for (uint16_t i = 0; i < ur + 1; i++)
+            {
+                for (uint16_t j = 0; j < vr + 1; j++)
+                {
+                    uv a, b, c, d;
+                    a = uv(ru*i, rv*j);
+                    b = uv(ru*(i + 1), rv*j);
+                    c = uv(ru*(i + 1), rv*(j + 1));
+                    d = uv(ru*i, rv*(j + 1));
+
+                    vec3 pa, pb, pc, pd;
+                    pa = this->P(a);
+                    pb = this->P(b);
+                    pc = this->P(c);
+                    pd = this->P(d);
+
+                    glVertex3f(pa.x, pa.y, pa.z);
+                    glVertex3f(pd.x, pd.y, pd.z);
+                    glVertex3f(pb.x, pb.y, pb.z);
+
+                    glVertex3f(pb.x, pb.y, pb.z);
+                    glVertex3f(pd.x, pd.y, pd.z);
+                    glVertex3f(pc.x, pc.y, pc.z);
+                }
+            }
+            glEnd();
+            glFlush();
+        }
     };
 }

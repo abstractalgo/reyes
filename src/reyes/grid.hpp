@@ -17,7 +17,7 @@ namespace reyes
         uint16_t* indices;
         virtual Primitive* at(uint16_t idx) = 0;
         virtual uint16_t count() = 0;
-        virtual uint16_t vCnt() = 0;
+        //virtual uint16_t vCnt() = 0;
         virtual void transform(mx4 m) = 0;
         virtual AABB2 aabb(void) = 0;
     };
@@ -29,7 +29,7 @@ namespace reyes
         uint16_t indices[indicesCnt];
         virtual Primitive* at(uint16_t idx) = 0;
         virtual uint16_t count() = 0;
-        virtual uint16_t vCnt() { return verticesCnt; }
+        //virtual uint16_t vCnt() { return verticesCnt; }
         void transform(mx4 m)
         {
             //vec4 p;
@@ -47,7 +47,7 @@ namespace reyes
             AABB2 bb;
             bb.max = vec2(data[0].p.x, data[0].p.y);
             bb.min = bb.max;
-            uint16_t cncn = vCnt();
+            uint16_t cncn = 64;
             for (uint16_t i = 1; i <cncn; i++)
             {
                 vec3 p = data[i].p;
