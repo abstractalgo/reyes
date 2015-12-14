@@ -128,11 +128,14 @@ extern void(*__resizeF)(unsigned int, unsigned int);
 #   define perfMarkerStart(a) 
 #   define perfMarkerEnd(a) 
 #endif
-struct PerfMarker
+struct _PerfMarker
 {
-    PerfMarker(const char* name) { perfMarkerStart(name); }
-    ~PerfMarker() { perfMarkerEnd(); }
+    _PerfMarker(const char* name) { perfMarkerStart(name); }
+    ~_PerfMarker() { perfMarkerEnd(); }
 };
+#define NVTX__B_COMBINE1(X,Y) X##Y
+#define NVTX__B_COMBINE(X,Y) NVTX__B_COMBINE1(X,Y)
+#define PerfMarker(markerName) _PerfMarker NVTX__B_COMBINE(marker,__LINE__) (markerName)
 
 // loading antTweakBar libraries
 #ifdef USE_ANTTWBAR_BACKEND
