@@ -133,9 +133,9 @@ struct _PerfMarker
     _PerfMarker(const char* name) { perfMarkerStart(name); }
     ~_PerfMarker() { perfMarkerEnd(); }
 };
-#define NVTX__B_COMBINE1(X,Y) X##Y
-#define NVTX__B_COMBINE(X,Y) NVTX__B_COMBINE1(X,Y)
-#define PerfMarker(markerName) _PerfMarker NVTX__B_COMBINE(marker,__LINE__) (markerName)
+#define NVTX_B_COMBINE1(X,Y) X##Y
+#define NVTX_B_COMBINE(X,Y) NVTX_B_COMBINE1(X,Y)
+#define PerfMarker(markerName) _PerfMarker NVTX_B_COMBINE(marker,__LINE__) (markerName)
 
 // loading antTweakBar libraries
 #ifdef USE_ANTTWBAR_BACKEND
@@ -393,8 +393,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
-HGLRC                               g_hRC = nullptr;
-HDC                                 g_hDC = nullptr;
+HGLRC g_hRC = nullptr;
+HDC g_hDC   = nullptr;
 
 //--------------------------------------------------------------------------------------
 // Initialize drawing API

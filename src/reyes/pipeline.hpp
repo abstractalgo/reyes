@@ -12,13 +12,13 @@ namespace reyes
     template<class FilmTy, uint16_t width, uint16_t height>
     void render(Scene& scene, Camera<FilmTy, width, height>& camera)
     {
-        static const vec2 RASTER_THRESHOLD = { 700,500};
+        static const vec2 RASTER_THRESHOLD = { 64,64};
 
         mem::mAllocator alok;
         MicrogridI<PosColor>* shadedGrid;
         MicrogridI<PosNormalUV>* dicedGrid;
 
-        PerfMarker("REYES render");
+        //PerfMarker("REYES render");
 
         while (scene)
         {

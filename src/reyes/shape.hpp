@@ -6,6 +6,7 @@
 #include "misc.hpp"
 #include "camera.hpp"
 #include "scene.hpp"
+#include "shading.hpp"
 
 namespace reyes
 {
@@ -20,22 +21,54 @@ namespace reyes
             : SplitDir::U);
     }
 
-    /* Abstract class for shapes. */
-    struct ShapeI
+    template<class MaterialTy>
+    struct ParametricSurface
     {
+        float start_u, end_u, start_v, end_v;
+        ParametricSurface()
+            : start_u(0)
+            , end_u(1)
+            , start_v(0)
+            , end_v(1)
+        {}
+
+        MaterialTy material;
         mx4 transform;
+
+        ~ParametricSurface() { delete material; }
+
+        void splitUV(SplitDir direction, ParametricSurface& one, ParametricSurface& two)
+        {
+            if (U == direction)
+            {
+                one.start_u = start_u;
+                one.end_u = end_u;
+                one.start_v = start_v;
+                one.end_v = (start_v + end_v)*0.5f;
+
+                two.start_u = start_u;
+                two.end_u = end_u;
+                two.start_v = (start_v + end_v)*0.5f;
+                two.end_v = end_v;
+            }
+            else
+            {
+                one.start_u = start_u;
+                one.end_u = (start_u + end_u)*0.5f;
+                one.start_v = start_v;
+                one.end_v = end_v;
+
+                two.start_u = (start_u + end_u)*0.5f;
+                two.end_u = end_u;
+                two.start_v = start_v;
+                two.end_v = end_v;
+            }
+        }
+
         virtual void split(SplitDir direction, Scene& scene) = 0;
         virtual mem::blk dice(CameraTransform* camera, mem::AllocatorI* alloc) = 0;
         virtual mem::blk shade(MicrogridI<PosNormalUV>* dgrid, mem::AllocatorI* alloc) = 0;
-        virtual position P(uint16_t idx) = 0;
-        virtual normal N(uint16_t idx) = 0;
-        virtual uv UV(uint16_t idx) = 0;
-    };
-
-    template<class MaterialTy>
-    /* Material-typed abstract class for shapes. */
-    struct Shape : public ShapeI
-    {
-        MaterialTy material;
+        virtual position P(uv uv) = 0;
+        virtual normal N(uv uv) = 0;
     };
 }

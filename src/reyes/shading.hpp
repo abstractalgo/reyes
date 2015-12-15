@@ -7,8 +7,8 @@ namespace reyes
     namespace shading
     {
         template<class UniformBlockTy>
-        /* Material interface. */
-        struct Material
+        /* Material interface and storage. */
+        struct Material : public MaterialI
         {
             UniformBlockTy uniform;
             virtual position pShdr(PosNormalUV& a) = 0;

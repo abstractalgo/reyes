@@ -296,5 +296,38 @@ namespace reyes
                 return top > 0;
             }
         };
+
+//#define DEBUG_ALLOC(_a,_s) 
+//
+//        template<size_t max_allocs>
+//        struct DebugAllocator
+//        {
+//            struct AllocDesc
+//            {
+//                const char* file;
+//                size_t line;
+//            };
+//            size_t places[max_allocs];
+//            size_t head;
+//            size_t count;
+//            mAllocator allocator;
+//            DebugAllocator()
+//                : head(0)
+//                , count(0)
+//            {
+//                for (size_t i = 0; i < max_allocs; i++)
+//                {
+//                    places[i] = i + 1;
+//                }
+//                places[max_allocs - 1] = 0;
+//            }
+//            blk alloc(size_t size, const char* file, size_t line)
+//            {
+//                blk m = allocator.alloc(size);
+//                places[head] = 
+//                count++;
+//                return m;
+//            }
+//        };
     }
 }
