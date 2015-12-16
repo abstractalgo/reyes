@@ -5,7 +5,7 @@
 namespace reyes
 {
     template<class MaterialTy>
-    struct Rectangle : public ParametricSurface<MaterialTy>
+    struct Rectangle : public Surface<MaterialTy>
     {
         vec2 dim;
         vec3 center;

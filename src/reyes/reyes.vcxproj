@@ -86,6 +86,7 @@
     <ClInclude Include="disc.hpp" />
     <ClInclude Include="grid.hpp" />
     <ClInclude Include="image.hpp" />
+    <ClInclude Include="klein.hpp" />
     <ClInclude Include="ogl_help.hpp" />
     <ClInclude Include="parametric.hpp" />
     <ClInclude Include="quad.hpp" />
@@ -97,7 +98,6 @@
     <ClInclude Include="mem.hpp" />
     <ClInclude Include="pipeline.hpp" />
     <ClInclude Include="primitive.hpp" />
-    <ClInclude Include="shape.hpp" />
     <ClInclude Include="vecmx.hpp" />
   </ItemGroup>
   <ItemGroup>

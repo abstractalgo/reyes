@@ -45,4 +45,13 @@ namespace reyes
         normal n;
         uv uv;
     };
+
+    struct Vertex
+    {
+        position p;
+        normal n;
+        uv uv;
+        color c;
+    };
+    typedef uint16_t Index;
 }

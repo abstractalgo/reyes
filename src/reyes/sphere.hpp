@@ -5,7 +5,7 @@
 namespace reyes
 {
     template<class MaterialTy>
-    struct Sphere : public ParametricSurface<MaterialTy>
+    struct Sphere : public Surface<MaterialTy>
     {
         float R;
         vec3 center;

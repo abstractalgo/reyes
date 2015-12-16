@@ -5,7 +5,7 @@
 #include "rect.hpp"
 #include "disc.hpp"
 #include "sphere.hpp"
-#include "quad.hpp"
+#include "klein.hpp"
 
 using namespace reyes;
 
@@ -18,36 +18,35 @@ Camera<GBuffer, 640, 480> camera;
 void mainApp()
 {
     // REYES
+    srand(time(NULL));
     
     printf("REYES renderer v1.82\n");
 
     // scene setup
-    MAKE_SHAPE(scene, Quadrilateral<shading::NormalColor>) ({ -1, 1, 0.5 }, { 1, 1, 0.5 }, { 2, -2, 0.5 }, { -2, -1, 0.5 });;
-    MAKE_SHAPE(scene, Quadrilateral<shading::NormalColor>) ({ 0, 2, 1 }, { 1, 2, 1 }, { 2, 0, 0 }, { -1, -1, 0 });
-    //reyes::Rectangle<shading::UVColor>* ps = MAKE_SHAPE(scene, reyes::Rectangle<shading::UVColor>);
+    //MAKE_SHAPE(scene, Quadrilateral<shading::NormalColor>) ({ -1, 1, 0.5 }, { 1, 1, 0.5 }, { 2, -2, 0.5 }, { -2, -1, 0.5 });;
+    //MAKE_SHAPE(scene, Quadrilateral<shading::NormalColor>) ({ 0, 2, 1 }, { 1, 2, 1 }, { 2, 0, 0 }, { -1, -1, 0 });
 
-    ParametricSurface<shading::Lambert>* ps = new ParametricSurface<shading::Lambert>;
+    Surface<shading::UVColor>* s = MAKE_SHAPE(scene, reyes::Disc<shading::UVColor>);
 
     // camera setup
     //camera.orthographic(-25, 25, -25, 25);
     //camera.lookAt(/*eye*/ { 0, 0, -5 }, /*target*/ { 0, 0, 0 } /*up*/);
 
     // render
-    reyes::render(scene, camera);
+    //reyes::render(scene, camera);
     //camera.image.writePPM("test.ppm");
     
 
     // OPENGL
-    {
+    /*{
         opengl_init(tex, program, quad, camera.image.width, camera.image.height, camera.image.getRGB());
         opengl_display(tex, camera.image.width, camera.image.height, camera.image.getRGB());
         opengl_cleanup(tex, program, quad);
-    }
+    }*/
 
-    //color(*shit)(PosNormalColor&) = shading::Lambert::cShdr;
-
-    /*ps->renderOGL(8, 8);
-    SwapBuffersBackend();*/
+    s->dice(0);
+    s->renderOGL();
+    SwapBuffersBackend();
 }
 
 void InitApp()

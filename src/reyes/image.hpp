@@ -14,7 +14,7 @@ namespace reyes
         uint16_t width, height;
         float half_width, half_height;
         virtual char* getRGB(void) = 0;
-        virtual void rasterize(MicrogridI<PosColor>& grid) = 0;
+        virtual void rasterize(Microgrid& grid) = 0;
         ImageI(uint16_t _width, uint16_t _height)
             : width(_width)
             , height(_height)
@@ -56,32 +56,32 @@ namespace reyes
                         data[x*width + y] = { 127, 127, 127 };
         }
 
-        void rasterize(MicrogridI<PosColor>& grid)
+        void rasterize(Microgrid& grid)
         {
-            uint16_t p_cnt = grid.count();
-            SPrimitiveI* prim;
-            float halfpx_x = 1.0f / width;
-            float halfpx_y = 1.0f / height;
-            for (uint16_t pidx = 0; pidx < p_cnt; pidx++)
-            {
-                prim = static_cast<SPrimitiveI*>(grid.at(pidx));
-                for (uint16_t x = 0; x < width; x++)
-                    for (uint16_t y = 0; y < height; y++)
-                    {
-                        // construct pixel location
-                        float px = -1.0f + (2 * x + 1)*halfpx_x;
-                        float py = 1.0f - (2 * y + 1)*halfpx_y;
-                        vec3 p(px, py, 0);
+            //uint16_t p_cnt = grid.count();
+            //SPrimitiveI* prim;
+            //float halfpx_x = 1.0f / width;
+            //float halfpx_y = 1.0f / height;
+            //for (uint16_t pidx = 0; pidx < p_cnt; pidx++)
+            //{
+            //    prim = static_cast<SPrimitiveI*>(grid.at(pidx));
+            //    for (uint16_t x = 0; x < width; x++)
+            //        for (uint16_t y = 0; y < height; y++)
+            //        {
+            //            // construct pixel location
+            //            float px = -1.0f + (2 * x + 1)*halfpx_x;
+            //            float py = 1.0f - (2 * y + 1)*halfpx_y;
+            //            vec3 p(px, py, 0);
 
-                        // test
-                        if (prim->in(p))
-                        {
-                            // color
-                            color c = prim->at(p).col;
-                            data[y*width + x] = { c.r, c.g, c.b };
-                        }
-                    }
-            }
+            //            // test
+            //            if (prim->in(p))
+            //            {
+            //                // color
+            //                color c = prim->at(p).col;
+            //                data[y*width + x] = { c.r, c.g, c.b };
+            //            }
+            //        }
+            //}
         }
         char* getRGB(void)
         {
@@ -120,15 +120,14 @@ namespace reyes
             }
         }
     
-        void rasterize(MicrogridI<PosColor>& grid)
+        void rasterize(Microgrid& grid)
         {
-            uint16_t p_cnt = grid.count();
-            SPrimitiveI* prim;
+            uint16_t p_cnt = grid.primCount();
             float halfpx_x = 1.0f / width;
             float halfpx_y = 1.0f / height;
             for (uint16_t pidx = 0; pidx < p_cnt; pidx++)
             {
-                prim = static_cast<SPrimitiveI*>(grid.at(pidx));
+                primitive::PrimitiveI* prim = grid[pidx];
                 // get bounding box
                 AABB2 bb = prim->aabb();
                 uint16_t start_x=0, end_x=width, start_y=0, end_y=height;
@@ -150,7 +149,7 @@ namespace reyes
                         // test
                         if (prim->in(p))
                         {
-                            PosColor r = prim->at(p);
+                            Vertex r = prim->interpolate(p);
                             RGBpixel px_rgb = rgb_data[y*width + x];
                             Zpixel px_z = z_data[y*width + x];
 
@@ -160,7 +159,7 @@ namespace reyes
                                 // TODO depth test settings
                                 // TODO blending
                                 px_z.z = r.p.z;
-                                px_rgb = { r.col.r*255.0f, r.col.g*255.0f, r.col.b*255.0f };
+                                px_rgb = { r.c.r*255.0f, r.c.g*255.0f, r.c.b*255.0f };
                                 rgb_data[y*width + x] = px_rgb;
                                 z_data[y*width + x] = px_z;
                             }

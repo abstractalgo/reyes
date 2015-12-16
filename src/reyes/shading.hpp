@@ -8,11 +8,11 @@ namespace reyes
     {
         template<class UniformBlockTy>
         /* Material interface and storage. */
-        struct Material : public MaterialI
+        struct Material
         {
             UniformBlockTy uniform;
-            virtual position pShdr(PosNormalUV& a) = 0;
-            virtual color cShdr(PosNormalUV& a) = 0;
+            virtual position pShdr(Vertex a) = 0;
+            virtual color cShdr(Vertex a) = 0;
         };
 
         template<class InputTy, class OutputTy>

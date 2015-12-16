@@ -117,8 +117,8 @@ namespace reyes
 
 #define UNIFORM(matName) struct matName##UnifBlk
 #define MATERIAL(matName) struct matName : public Material<matName##UnifBlk>
-#define DISPLACE position pShdr(PosNormalUV& vertex)
-#define SHADE color cShdr(PosNormalUV& vertex)
+#define DISPLACE position pShdr(Vertex vertex)
+#define SHADE color cShdr(Vertex vertex)
 
 namespace reyes
 {

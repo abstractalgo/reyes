@@ -36,9 +36,6 @@
     <ClInclude Include="grid.hpp">
       <Filter>app\reyes</Filter>
     </ClInclude>
-    <ClInclude Include="shape.hpp">
-      <Filter>app\reyes</Filter>
-    </ClInclude>
     <ClInclude Include="primitive.hpp">
       <Filter>app\reyes</Filter>
     </ClInclude>
@@ -82,6 +79,9 @@
       <Filter>app\reyes\shapes</Filter>
     </ClInclude>
     <ClInclude Include="rect.hpp">
+      <Filter>app\reyes\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="klein.hpp">
       <Filter>app\reyes\shapes</Filter>
     </ClInclude>
   </ItemGroup>

@@ -20,7 +20,7 @@ namespace reyes
             : image(width, height)
         {}
 
-        void capture(MicrogridI<PosColor>* grid)
+        void capture(Microgrid* grid)
         {
             image.rasterize(*grid);
         }
