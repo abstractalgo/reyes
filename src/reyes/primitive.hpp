@@ -155,16 +155,17 @@ namespace reyes
                         if (!b1 &&  b2) uv = vec2(u2, v2);
                     }
                 }
-                
+
+                res.p = (a.p*(1.0f - uv.x) + b.p*uv.x)*(1.0f - uv.y) + (d.p*(1.0f - uv.x) + c.p*uv.x)*uv.y;
+
+                // TODO: perspective correction
                 res.c = color(
                     (a.c.r*(1.0f - uv.x) + b.c.r*uv.x)*(1.0f - uv.y) + (d.c.r*(1.0f - uv.x) + c.c.r*uv.x)*uv.y,   // R
                     (a.c.g*(1.0f - uv.x) + b.c.g*uv.x)*(1.0f - uv.y) + (d.c.g*(1.0f - uv.x) + c.c.g*uv.x)*uv.y,   // G
                     (a.c.b*(1.0f - uv.x) + b.c.b*uv.x)*(1.0f - uv.y) + (d.c.b*(1.0f - uv.x) + c.c.b*uv.x)*uv.y,   // B
                     (a.c.a*(1.0f - uv.x) + b.c.a*uv.x)*(1.0f - uv.y) + (d.c.a*(1.0f - uv.x) + c.c.a*uv.x)*uv.y    // A
                 );
-                
-                res.p = (a.p*(1.0f - uv.x) + b.p*uv.x)*(1.0f - uv.y) + (d.p*(1.0f - uv.x) + c.p*uv.x)*uv.y;
-                
+
                 return res;
             }
 

@@ -243,6 +243,23 @@ namespace reyes
                 return{1,1,0,1};
             }
         };
+
+        // ------------------------------------------- SinCos
+        UNIFORM(SinCos)
+        {};
+        MATERIAL(SinCos)
+        {
+            DISPLACE
+            {
+                return vertex.p;
+            }
+
+            SHADE
+            {
+                float k = sin(vertex.uv.x * M_PI * 20.0)*cos(vertex.uv.y * 40.0);
+                return{ k, k, k, 1 };
+            }
+        };
     }
 }
 

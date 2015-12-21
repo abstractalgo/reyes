@@ -24,8 +24,8 @@ void mainApp()
     // scene setup
     //MAKE_SHAPE(scene, reyes::Rectangle<shading::NormalColor>) ({ -1, 1, 0.5 }, { 1, 1, 0.5 }, { 2, -2, 0.5 }, { -2, -1, 0.5 });;
     //MAKE_SHAPE(scene, reyes::Rectangle<shading::NormalColor>) ({ 0, 2, 1 }, { 1, 2, 1 }, { 2, 0, 0 }, { -1, -1, 0 });
-    MAKE_SHAPE(scene, reyes::Sphere<shading::NormalColor>) ({ 0, -0.5f, 0 }, 1);
-    MAKE_SHAPE(scene, reyes::Sphere<shading::NormalColor>) ({ 0, 0.5f, 0 }, 1);
+    //MAKE_SHAPE(scene, reyes::Sphere<shading::NormalColor>) ({ 0, -0.5f, 0 }, 1);
+    MAKE_SHAPE(scene, reyes::Klein<shading::UVColor>);
 
     // camera setup
     //camera.orthographic(-25, 25, -25, 25);

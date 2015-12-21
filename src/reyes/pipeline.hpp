@@ -9,7 +9,7 @@
 
 namespace reyes
 {
-    static const vec2 RASTER_THRESHOLD = { 64, 64 };
+    static const vec2 RASTER_THRESHOLD = { 8, 8 };
 
     template<class FilmTy, uint16_t width, uint16_t height>
     void render(Scene& scene, Camera<FilmTy, width, height>& camera)

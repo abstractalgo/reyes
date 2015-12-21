@@ -104,3 +104,5 @@ A lot of code started falling apart, mostly because of the templates, and I didn
 ---
 
 One way to solve the splitting issue and be sure that the right dimension's size was reduced is to always split along both axis at the same time. This approach ensures that the size of the path will get smaller, but also leads to unnecessary over-splitting in some areas. I'm not happy with that. Another way would be to split along both axis, but then check which split was more helpful for faster convergence to desired raster size, then pick only that split. This is computationally costly, obviously, because you do two splits but completely ditch one. Not too happy with that one either.
+
+Another big problem are precision issues (or something that looks like it). Wrong values, wrapping of the values, boundaries at pixel center, a lot of artifacts come from what seems to be a precision issue. I will probably later try to simply switch to double and hope for the best, but even float should be sufficient, so I'm a bit confused.
