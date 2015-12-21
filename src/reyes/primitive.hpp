@@ -33,17 +33,17 @@ namespace reyes
                 Vertex _c = c;
 
                 // adjust attributes
-                _a.c.r = _a.c.r / a.p.z;
-                _a.c.g = _a.c.g / a.p.z;
-                _a.c.b = _a.c.b / a.p.z;
+                _a.c.r /= a.p.z;
+                _a.c.g /= a.p.z;
+                _a.c.b /= a.p.z;
 
-                _b.c.r = _b.c.r / b.p.z;
-                _b.c.g = _b.c.g / b.p.z;
-                _b.c.b = _b.c.b / b.p.z;
+                _b.c.r /= b.p.z;
+                _b.c.g /= b.p.z;
+                _b.c.b /= b.p.z;
 
-                _c.c.r = _c.c.r / c.p.z;
-                _c.c.g = _c.c.g / c.p.z;
-                _c.c.b = _c.c.b / c.p.z;
+                _c.c.r /= c.p.z;
+                _c.c.g /= c.p.z;
+                _c.c.b /= c.p.z;
 
                 float wa, wb, wc;
                 float area = edgeFn(_a, _b, _c.p);

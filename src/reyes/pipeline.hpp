@@ -45,6 +45,7 @@ namespace reyes
             scene.free(shp_blk);
             printf("\rSHAPES: %d    ", scene.cnt);
         }
+        SwapBuffersBackend();
     }
 
     /*struct Renderer

@@ -91,6 +91,10 @@ namespace reyes
         {
             vec3 direction;
             color col;
+            DirectionalLight(color c, vec3 d)
+                : col(c)
+                , direction(d)
+            {}
             color sample(PosNormal point)
             {
                 vec3 n = point.n.normalize();
@@ -139,7 +143,9 @@ namespace reyes
         {
             DISPLACE
             {
-                return vertex.p;
+                float k = sin(vertex.uv.x * M_PI * 20.0)*cos(vertex.uv.y * 40.0);
+                vec3 p = vertex.p + vertex.n * k * 0.1f;
+                return p;
             }
 
             SHADE
@@ -198,13 +204,15 @@ namespace reyes
         {
             DISPLACE
             {
+                
                 return vertex.p;
             }
 
             SHADE
             {
-                float d = vertex.p.z > 1.0f ? 1.0f : vertex.p.z;
-                d = vertex.p.z < 0 ? 0 : vertex.p.z;
+                /*float d = vertex.p.z > 1.0f ? 1.0f : vertex.p.z;
+                d = vertex.p.z < 0 ? 0 : vertex.p.z;*/
+                float d = vertex.p.z + 0.5f + 0.5;
                 return{ d, d, d, 1 };
             }
         };
@@ -251,13 +259,23 @@ namespace reyes
         {
             DISPLACE
             {
-                return vertex.p;
+                float k = sin(vertex.uv.x * M_PI * 20.0)*cos(vertex.uv.y * 40.0);
+                vec3 p = vertex.p - vertex.n * k * 0.1f;
+                return p;
             }
 
             SHADE
             {
-                float k = sin(vertex.uv.x * M_PI * 20.0)*cos(vertex.uv.y * 40.0);
-                return{ k, k, k, 1 };
+                /*float k = sin(vertex.uv.x * M_PI * 20.0)*cos(vertex.uv.y * 40.0);
+                return{ k, k, k, 1 };*/
+
+                /*vec3 n = vertex.n * 0.5f + vec3(0.5f, 0.5f, 0.5f);
+                n.normalize();
+                return{ n.x, n.y, n.z, 1 };*/
+
+                //return{ vertex.uv.x, vertex.uv.y, 0, 1 };
+
+                return{ 1, 1, 0, 1 };
             }
         };
     }

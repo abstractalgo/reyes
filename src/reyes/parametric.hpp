@@ -86,12 +86,12 @@ namespace reyes
         MaterialTy material;
         void dice(CameraTransform* camera, mem::ObjectStack<Microgrid>& grids)
         {
-#ifdef GRID_TY_T
             mem::blk m = grids.alloc(2048);
+#ifdef GRID_TY_T
             grid = ::new(m.ptr) Microgrid(MicrogridType::TRIANGLE, (GR + 1)*(GR + 1), GR*GR * 2 * 3);
 #endif
 #ifdef GRID_TY_Q
-            mem::blk m =(new Microgrid(MicrogridType::QUAD, (GR + 1)*(GR + 1), GR*GR * 4));
+            grid = ::new(m.ptr) Microgrid(MicrogridType::QUAD, (GR + 1)*(GR + 1), GR*GR * 4);
 #endif
             float wu = (end_u - start_u) / (float)(GR);
             float wv = (end_v - start_v) / (float)(GR);
@@ -99,7 +99,7 @@ namespace reyes
             for (uint16_t u = 0; u < GR+1; u++)
             for (uint16_t v = 0; v < GR+1; v++)
             {
-                uv _uv = uv(start_u + u*wu , start_v + v*wv );
+                uv _uv(start_u + u*wu , start_v + v*wv );
                 uint16_t idx = v * (GR+1) + u;
                 grid->vertices[idx].p = P(_uv);
                 grid->vertices[idx].n = N(_uv);

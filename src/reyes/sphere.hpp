@@ -32,7 +32,7 @@ namespace reyes
 
             return vec3(sin(uang)*cos(vang),
                 -(uv.y * 2.0f - 1.0f),
-                cos(uang)*cos(vang)
+               cos(uang)*cos(vang)
                 ) * R + center;
         }
 
@@ -43,6 +43,7 @@ namespace reyes
             {
                 mblks[i] = scene.alloc(sizeof(Sphere<MaterialTy>));
                 Sphere<MaterialTy>* p = ::new(mblks[i].ptr) Sphere<MaterialTy>;
+                p->material = material;
                 p->center = center;
                 p->R = R;
                 if (0 == i)
