@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <ctime>
 
-#define GR 15
+#define GR 8
 #define GRID_TY_T
 //#define GRID_TY_Q
 
@@ -41,7 +41,7 @@ namespace reyes
             , grid(new Microgrid(MicrogridType::TRIANGLE, (GR+1)*(GR+1), GR*GR*2*3))
 #endif
 #ifdef GRID_TY_Q
-            , grid(new Microgrid(MicrogridType::QUAD, (GR+1)*(GR+1), GR*GR**4))
+            , grid(new Microgrid(MicrogridType::QUAD, (GR+1)*(GR+1), GR*GR*4))
 #endif
         {}
 
@@ -137,7 +137,7 @@ namespace reyes
         {
             color rnd = { rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, 1 };
             for (uint16_t i = 0; i < (GR + 1)*((GR + 1)); i++)
-                grid->vertices[i].c = rnd;// material.cShdr(grid->vertices[i]);
+                grid->vertices[i].c =  material.cShdr(grid->vertices[i]);
         }
 
         void renderOGL(void)

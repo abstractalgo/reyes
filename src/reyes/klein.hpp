@@ -16,8 +16,10 @@ namespace reyes
         }
         position P(uv uv)
         {
-            float v = uv.y;
-            float u = uv.x * 2.0f;
+            float u = (uv.x *2.0f-1.0f)*M_PI;
+            float v = uv.y * 2.0f* M_PI;
+            
+            //float u = uv.x * 2.0f;
             float x, y, z;
             if (u < M_PI)
             {
@@ -31,7 +33,10 @@ namespace reyes
                 z = -8.0f * sin(u);
             }
             y = -2.0f * (1.0f - cos(u) / 2.0f) * sin(v);
-            position p(x, y, z);
+            /*x = cos(u) * (cos(0.5f*u)*(M_SQRT2 + cos(v)) + sin(0.5f*u)*sin(v)*cos(v));
+            y = sin(u) * (cos(0.5f*u)*(M_SQRT2 + cos(v)) + sin(0.5f*u)*sin(v)*cos(v));
+            z = -sin(0.5f*u)*(M_SQRT2 + cos(v)) + cos(0.5f*u)*sin(v)*cos(v);*/
+            position p(x,z,y);
             return p*0.1f;
         }
 

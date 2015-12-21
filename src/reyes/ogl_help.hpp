@@ -2,9 +2,11 @@
 
 #include "backend.hpp"
 
+GLuint tex, program, quad;
+
 #define GLSL(version, shader) "#version " #version "\n" #shader
 
-const char* fsquad_vs = GLSL(330,
+static const char* fsquad_vs = GLSL(330,
     in vec2 iPos;
     out vec2 uv;
 
@@ -16,7 +18,7 @@ const char* fsquad_vs = GLSL(330,
     }
 );
 
-const char* fsquad_fs = GLSL(330,
+static const char* fsquad_fs = GLSL(330,
     in vec2 uv;
     uniform sampler2D tex;
     out vec4 frag;
@@ -27,7 +29,7 @@ const char* fsquad_fs = GLSL(330,
     }
 );
 
-void opengl_init(GLuint tex, GLuint program, GLuint quad, unsigned int w, unsigned int h, void* data)
+void opengl_init(unsigned int w, unsigned int h, void* data)
 {
     glClearColor(0.0f, 0.2f, 0.4f, 1.0f);
     // init texture
@@ -72,14 +74,14 @@ void opengl_init(GLuint tex, GLuint program, GLuint quad, unsigned int w, unsign
     }
 }
 
-void opengl_display(GLuint tex, unsigned int w, unsigned int h, void* data)
+void opengl_display(unsigned int w, unsigned int h, void* data)
 {
-    //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     SwapBuffersBackend();
 }
 
-void opengl_cleanup(GLuint tex, GLuint program, GLuint quad)
+void opengl_cleanup()
 {
     glUseProgram(0);
     glDeleteProgram(program);

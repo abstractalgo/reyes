@@ -4,13 +4,18 @@ namespace reyes
 {
     struct Scene
     {
-        mem::Stack<mem::blk, 1024> allocations;
+        mem::Stack<mem::blk, 2048> allocations;
         mem::mAllocator memory;
+        uint16_t cnt;
+
+        Scene() : cnt(0)
+        {}
 
         mem::blk alloc(size_t size)
         {
             mem::blk block = memory.alloc(size);
             allocations.push(block);
+            cnt++;
             return block;
         }
 
@@ -21,6 +26,7 @@ namespace reyes
 
         void free(mem::blk block)
         {
+            cnt--;
             memory.free(block);
         }
 

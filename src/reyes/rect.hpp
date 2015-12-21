@@ -10,7 +10,7 @@ namespace reyes
         vec2 dim;
         vec3 center;
 
-        Rectangle(vec3 c = { 0, 0, 0 }, vec2 d = {1,1})
+        Rectangle(vec3 c = { 0, 0, 0 }, vec2 d = {2,2})
             : dim(d)
             , center(c)
         {}

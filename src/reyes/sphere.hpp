@@ -17,38 +17,64 @@ namespace reyes
 
         normal N(uv uv)
         {
-            float vang = asin(uv.y * 2 - 1);
-            float uang = uv.x*M_PI * 2;
+            float vang = asin(uv.y * 2.0f - 1.0f);
+            float uang = uv.x*M_PI * 2.0f;
 
             return vec3(sin(uang)*cos(vang),
-                -(uv.y * 2 - 1),
+                -(uv.y * 2.0f - 1.0f),
                 cos(uang)*cos(vang)
                 ).normalize();
         }
         position P(uv uv)
         {
-            float vang = asin(uv.y * 2 - 1);
-            float uang = (uv.x*M_PI * 2);
+            float vang = asin(uv.y * 2.0f - 1.0f);
+            float uang = (uv.x*M_PI * 2.0f);
 
             return vec3(sin(uang)*cos(vang),
-                -(uv.y * 2 - 1),
+                -(uv.y * 2.0f - 1.0f),
                 cos(uang)*cos(vang)
                 ) * R + center;
         }
 
         void split(SplitDir direction, Scene& scene)
         {
-            mem::blk one_blk = scene.alloc(sizeof(Sphere<MaterialTy>));
-            mem::blk two_blk = scene.alloc(sizeof(Sphere<MaterialTy>));
-            Sphere<MaterialTy>& one = *(::new(one_blk.ptr) Sphere<MaterialTy>);
-            Sphere<MaterialTy>& two = *(::new(two_blk.ptr) Sphere<MaterialTy>);
-
-            one.center = center;
-            two.center = center;
-            one.R = R;
-            two.R = R;
-
-            splitUV(direction, one, two);
+            mem::blk mblks[4];
+            for (char i = 0; i < 4; i++)
+            {
+                mblks[i] = scene.alloc(sizeof(Sphere<MaterialTy>));
+                Sphere<MaterialTy>* p = ::new(mblks[i].ptr) Sphere<MaterialTy>;
+                p->center = center;
+                p->R = R;
+                if (0 == i)
+                {
+                    p->start_u = start_u;
+                    p->end_u = (start_u + end_u)*0.5f;
+                    p->start_v = start_v;
+                    p->end_v = (start_v + end_v)*0.5f;
+                }
+                else if (1 == i)
+                {
+                    p->start_u = (start_u + end_u)*0.5f;
+                    p->end_u = end_u;
+                    p->start_v = start_v;
+                    p->end_v = (start_v + end_v)*0.5f;
+                }
+                else if (2 == i)
+                {
+                    p->start_u = start_u;
+                    p->end_u = (start_u + end_u)*0.5f;
+                    p->start_v = (start_v + end_v)*0.5f;
+                    p->end_v = end_v;
+                }
+                else if (3 == i)
+                {
+                    p->start_u = (start_u + end_u)*0.5f;
+                    p->end_u = end_u;
+                    p->start_v = (start_v + end_v)*0.5f;
+                    p->end_v = end_v;
+                }
+            }
+            //splitUV(direction, one, two);
         }
     };
 }

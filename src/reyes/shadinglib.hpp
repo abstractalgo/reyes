@@ -186,9 +186,26 @@ namespace reyes
 
             SHADE
             {
-                //vec3 n(vertex.n.x*0.5f + 0.5f, vertex.n.y*0.5f + 0.5f, vertex.n.z*0.5f + 0.5f);
-                vec3 n = vertex.n.normalize();
+                vec3 n = vertex.n * 0.5f + vec3(0.5f, 0.5f, 0.5f);
+                n.normalize();                
                 return{ n.x, n.y, n.z, 1 };
+            }
+        };
+
+        // ------------------------------------------- DepthColor
+        UNIFORM(DepthColor) {};
+        MATERIAL(DepthColor)
+        {
+            DISPLACE
+            {
+                return vertex.p;
+            }
+
+            SHADE
+            {
+                float d = vertex.p.z > 1.0f ? 1.0f : vertex.p.z;
+                d = vertex.p.z < 0 ? 0 : vertex.p.z;
+                return{ d, d, d, 1 };
             }
         };
 

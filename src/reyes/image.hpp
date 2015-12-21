@@ -5,6 +5,7 @@
 #include "misc.hpp"
 #include <cstring>
 #include <cstdint>
+#include "ogl_help.hpp"
 
 namespace reyes
 {
@@ -116,7 +117,7 @@ namespace reyes
             {
                 rgb_data[y*width + x] = { 0, 0, 0 };
                 a_data[y*width + x] = { 1.0f };
-                z_data[y*width + x] = { 1.0f };
+                z_data[y*width + x] = { -1.0f };
             }
         }
     
@@ -150,16 +151,15 @@ namespace reyes
                         if (prim->in(p))
                         {
                             Vertex r = prim->interpolate(p);
-                            RGBpixel px_rgb = rgb_data[y*width + x];
                             Zpixel px_z = z_data[y*width + x];
 
                             // rasterized pixel should overwrite information
-                            if (r.p.z <= px_z.z && r.p.z >= 0.0f)
+                            if (r.p.z > px_z.z)
                             {
                                 // TODO depth test settings
                                 // TODO blending
                                 px_z.z = r.p.z;
-                                px_rgb = { r.c.r*255.0f, r.c.g*255.0f, r.c.b*255.0f };
+                                RGBpixel px_rgb = { r.c.r*255.0f, r.c.g*255.0f, r.c.b*255.0f };
                                 rgb_data[y*width + x] = px_rgb;
                                 z_data[y*width + x] = px_z;
                             }
@@ -167,6 +167,7 @@ namespace reyes
                     }
                 }
             }
+            opengl_display(width, height, getRGB());
         }
     
         char* getRGB(void)

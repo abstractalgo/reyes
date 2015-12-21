@@ -5,6 +5,7 @@
 
 #define CROSS(a,b) vec3(a.y*b.z-a.z*b.y, a.z*b.x-a.x*b.z, a.x*b.y-a.y*b.x)
 #define DOT(a,b) (a.x*b.x+a.y*b.y+a.z*b.z)
+#define edgeFn(a,b,c) ((c.x - a.p.x) * (b.p.y - a.p.y) - (c.y - a.p.y) * (b.p.x - a.p.x))
 
 namespace reyes
 {
@@ -27,32 +28,66 @@ namespace reyes
             Vertex interpolate(position p)
             {
                 Vertex res;
-                vec3 _a = { a.p.x, a.p.y, 1.0f };
-                vec3 _b = { b.p.x, b.p.y, 1.0f };
-                vec3 _c = { c.p.x, c.p.y, 1.0f };
-                p.z = 1.0f;
-                
-                vec3 bxc = CROSS(_b, _c);
-                vec3 axb = CROSS(_a, _b);
-                vec3 cxa = CROSS(_c, _a);
-                float denom = DOT(_a, bxc);
-                
-                float alpha = DOT(p, bxc) / denom;
-                float beta = DOT(p, cxa) / denom;
-                float gamma = DOT(p, axb) / denom;
-                
+                Vertex _a = a;
+                Vertex _b = b;
+                Vertex _c = c;
+
+                // adjust attributes
+                _a.c.r = _a.c.r / a.p.z;
+                _a.c.g = _a.c.g / a.p.z;
+                _a.c.b = _a.c.b / a.p.z;
+
+                _b.c.r = _b.c.r / b.p.z;
+                _b.c.g = _b.c.g / b.p.z;
+                _b.c.b = _b.c.b / b.p.z;
+
+                _c.c.r = _c.c.r / c.p.z;
+                _c.c.g = _c.c.g / c.p.z;
+                _c.c.b = _c.c.b / c.p.z;
+
+                float wa, wb, wc;
+                float area = edgeFn(_a, _b, _c.p);
+                wa = edgeFn(_b, _c, p) / area;
+                wb = edgeFn(_c, _a, p) / area;
+                wc = edgeFn(_a, _b, p) / area;
+                res.p = p;
+                float z = (wa * _a.p.z + wb*_b.p.z + wc*_c.p.z);
+                res.p.z = z;
+
                 res.c = color(
-                    a.c.r*alpha + b.c.r*beta + c.c.r*gamma,   // R
-                    a.c.g*alpha + b.c.g*beta + c.c.g*gamma,   // G
-                    a.c.b*alpha + b.c.b*beta + c.c.b*gamma,   // B
-                    a.c.a*alpha + b.c.a*beta + c.c.a*gamma    // A
+                    (_a.c.r*wa + _b.c.r*wb + _c.c.r*wc)*z,
+                    (_a.c.g*wa + _b.c.g*wb + _c.c.g*wc)*z,
+                    (_a.c.b*wa + _b.c.b*wb + _c.c.b*wc)*z,
+                    1
                 );
-                
-                res.p = position(
-                    a.p.x*alpha + b.p.x*beta + c.p.x*gamma, // X
-                    a.p.y*alpha + b.p.y*beta + c.p.y*gamma, // Y
-                    a.p.z*alpha + b.p.z*beta + c.p.z*gamma  // Z
-                );
+
+
+                //vec3 _a = { a.p.x, a.p.y, 1.0f };
+                //vec3 _b = { b.p.x, b.p.y, 1.0f };
+                //vec3 _c = { c.p.x, c.p.y, 1.0f };
+                //p.z = 1.0f;
+                //
+                //vec3 bxc = CROSS(_b, _c);
+                //vec3 axb = CROSS(_a, _b);
+                //vec3 cxa = CROSS(_c, _a);
+                //float denom = DOT(_a, bxc);
+                //
+                //float alpha = DOT(p, bxc) / denom;
+                //float beta = DOT(p, cxa) / denom;
+                //float gamma = DOT(p, axb) / denom;
+                //
+                //res.c = color(
+                //    a.c.r*alpha + b.c.r*beta + c.c.r*gamma,   // R
+                //    a.c.g*alpha + b.c.g*beta + c.c.g*gamma,   // G
+                //    a.c.b*alpha + b.c.b*beta + c.c.b*gamma,   // B
+                //    a.c.a*alpha + b.c.a*beta + c.c.a*gamma    // A
+                //);
+                //
+                //res.p = position(
+                //    a.p.x*alpha + b.p.x*beta + c.p.x*gamma, // X
+                //    a.p.y*alpha + b.p.y*beta + c.p.y*gamma, // Y
+                //    a.p.z*alpha + b.p.z*beta + c.p.z*gamma  // Z
+                //);
                 
                 return res;
             }
@@ -120,45 +155,6 @@ namespace reyes
                         if (!b1 &&  b2) uv = vec2(u2, v2);
                     }
                 }
-                
-    //#define M_ABS(a) (((a) < 0) ? -(a) : (a))
-    //
-    //            {
-    //
-    //                vec2  vc1, vc2, vcp1, vcp2;
-    //                float vA, vC, vB;
-    //                float s, is, t, am2bpc, tdenom_x, tdenom_y;
-    //
-    //                vc1 = vec2(a.p.x - c.p.x, a.p.y - c.p.y);
-    //                vc2 = vec2(b.p.x - d.p.x, b.p.y - d.p.y);
-    //
-    //                vcp1 = vec2(a.p.x - p.x, a.p.y - p.y);
-    //                vcp2 = vec2(b.p.x - p.x, b.p.y - p.y);
-    //
-    //                vA = vcp1.x * vc1.y - vcp1.y * vc1.x;
-    //                vC = vcp2.x * vc2.y - vcp2.y * vc2.x;
-    //                vB = ((vcp1.x * vc2.y - vcp1.y * vc2.x) +
-    //                    (vcp2.x * vc1.y - vcp2.y * vc1.x)) * 0.5f;
-    //
-    //                am2bpc = vA - 2.0f * vB + vC;
-    //
-    //                if (am2bpc > -0.0001f && am2bpc < 0.0001f)
-    //                    s = vA / (vA - vC);
-    //                else
-    //                    s = ((vA - vB) + sqrtf(vB * vB - vA * vC)) / am2bpc;
-    //
-    //                is = 1.0f - s;
-    //                tdenom_x = is * vc1.x + s * vc2.x;
-    //                tdenom_y = is * vc1.y + s * vc2.y;
-    //
-    //                if (M_ABS(tdenom_x) > M_ABS(tdenom_y))
-    //                    t = (is * vcp1.x + s * vcp2.x) / tdenom_x;
-    //                else
-    //                    t = (is * vcp1.y + s * vcp2.y) / tdenom_y;
-    //
-    //                uv = vec2(is, t);
-    //            }
-    //#undef M_ABS
                 
                 res.c = color(
                     (a.c.r*(1.0f - uv.x) + b.c.r*uv.x)*(1.0f - uv.y) + (d.c.r*(1.0f - uv.x) + c.c.r*uv.x)*uv.y,   // R

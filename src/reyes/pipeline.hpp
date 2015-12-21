@@ -9,13 +9,11 @@
 
 namespace reyes
 {
+    static const vec2 RASTER_THRESHOLD = { 64, 64 };
+
     template<class FilmTy, uint16_t width, uint16_t height>
     void render(Scene& scene, Camera<FilmTy, width, height>& camera)
     {
-        static const vec2 RASTER_THRESHOLD = { 32 , 32 };
-
-        PerfMarker("REYES render");
-
         while (scene)
         {
             mem::blk shp_blk = scene.pop();
@@ -42,7 +40,42 @@ namespace reyes
             }
 
         memoryCleanup:
+            delete surface->grid;
             scene.free(shp_blk);
         }
     }
+
+    /*struct Renderer
+    {
+        Scene* scene;
+        CameraI* camera;
+        HANDLE threadHandle;
+        DWORD threadId;
+        bool running;
+
+        Renderer(Scene* _scene, CameraI* _camera)
+            : scene(_scene)
+            , camera(_camera)
+            , running(false)
+        {
+            threadHandle = CreateThread(0, 0, this->render, this, CREATE_SUSPENDED, &threadId);
+        }
+
+        void go()
+        {
+            running = true;
+        }
+
+        void pause()
+        {
+            running = false;
+        }
+
+        static DWORD WINAPI render(void* a)
+        {
+            Renderer* r = static_cast<Renderer*>(a);
+            
+            return 0;
+        }
+    };*/
 }

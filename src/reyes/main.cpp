@@ -11,9 +11,8 @@ using namespace reyes;
 
 #define MAKE_SHAPE(_scene, _shp) ::new(_scene.alloc(sizeof(_shp)).ptr) _shp
 
-GLuint tex, program, quad;
 Scene scene;
-Camera<GBuffer, 640, 480> camera;
+Camera<GBuffer, 480, 480> camera;
 
 void mainApp()
 {
@@ -23,30 +22,25 @@ void mainApp()
     printf("REYES renderer v1.82\n");
 
     // scene setup
-    //MAKE_SHAPE(scene, Quadrilateral<shading::NormalColor>) ({ -1, 1, 0.5 }, { 1, 1, 0.5 }, { 2, -2, 0.5 }, { -2, -1, 0.5 });;
-    //MAKE_SHAPE(scene, Quadrilateral<shading::NormalColor>) ({ 0, 2, 1 }, { 1, 2, 1 }, { 2, 0, 0 }, { -1, -1, 0 });
-
-    Surface<shading::UVColor>* s = MAKE_SHAPE(scene, reyes::Disc<shading::UVColor>);
+    //MAKE_SHAPE(scene, reyes::Rectangle<shading::NormalColor>) ({ -1, 1, 0.5 }, { 1, 1, 0.5 }, { 2, -2, 0.5 }, { -2, -1, 0.5 });;
+    //MAKE_SHAPE(scene, reyes::Rectangle<shading::NormalColor>) ({ 0, 2, 1 }, { 1, 2, 1 }, { 2, 0, 0 }, { -1, -1, 0 });
+    MAKE_SHAPE(scene, reyes::Sphere<shading::NormalColor>) ({ 0, -0.5f, 0 }, 1);
+    MAKE_SHAPE(scene, reyes::Sphere<shading::NormalColor>) ({ 0, 0.5f, 0 }, 1);
 
     // camera setup
     //camera.orthographic(-25, 25, -25, 25);
     //camera.lookAt(/*eye*/ { 0, 0, -5 }, /*target*/ { 0, 0, 0 } /*up*/);
 
     // render
-    //reyes::render(scene, camera);
+    opengl_init(camera.image.width, camera.image.height, 0);
+    reyes::render(scene, camera);
     //camera.image.writePPM("test.ppm");
-    
+    opengl_cleanup();
 
-    // OPENGL
-    /*{
-        opengl_init(tex, program, quad, camera.image.width, camera.image.height, camera.image.getRGB());
-        opengl_display(tex, camera.image.width, camera.image.height, camera.image.getRGB());
-        opengl_cleanup(tex, program, quad);
-    }*/
 
-    s->dice(0);
+    /*s->dice(0);
     s->renderOGL();
-    SwapBuffersBackend();
+    SwapBuffersBackend();*/
 }
 
 void InitApp()
