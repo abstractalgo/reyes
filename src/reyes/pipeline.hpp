@@ -9,17 +9,18 @@
 
 namespace reyes
 {
-    static const vec2 RASTER_THRESHOLD = { 8, 8 };
+    static const vec2 RASTER_THRESHOLD = { 64, 64 };
 
     template<class FilmTy, uint16_t width, uint16_t height>
     void render(Scene& scene, Camera<FilmTy, width, height>& camera)
     {
+        mem::ObjectStack<Microgrid> grids(1<<23);   // 8MB
         while (scene)
         {
             mem::blk shp_blk = scene.pop();
             SurfaceI* surface = static_cast<SurfaceI*>(shp_blk.ptr);
             
-            surface->dice(&camera);                                             // DICE
+            surface->dice(&camera, grids);                                      // DICE
 
             AABB2 bb = surface->grid->aabb();                                   // BOUND
             if (bb.max.x <= -1.0f || bb.min.x >= 1.0f ||                        // | try to cull
@@ -40,8 +41,9 @@ namespace reyes
             }
 
         memoryCleanup:
-            delete surface->grid;
+            grids.pop();
             scene.free(shp_blk);
+            printf("\rSHAPES: %d    ", scene.cnt);
         }
     }
 

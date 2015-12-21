@@ -133,10 +133,10 @@ namespace reyes
                 AABB2 bb = prim->aabb();
                 uint16_t start_x=0, end_x=width, start_y=0, end_y=height;
                 // calc tight rasterization box
-                for (start_x = 0; -1.0f + (2 * start_x + 1)*halfpx_x < bb.min.x; start_x++);
-                for (end_x = start_x; -1.0f + (2 * end_x + 1)*halfpx_x < bb.max.x; end_x++);
-                for (start_y = 0; 1.0f - (2 * start_y + 1)*halfpx_y > bb.max.y; start_y++);
-                for (end_y = start_y; 1.0f - (2 * end_y + 1)*halfpx_y >= bb.min.y; end_y++);
+                for (start_x = 0; -1.0f + (2 * start_x + 1)*halfpx_x < bb.min.x && start_x<width; start_x++);
+                for (end_x = start_x; -1.0f + (2 * end_x + 1)*halfpx_x < bb.max.x && end_x<width; end_x++);
+                for (start_y = 0; 1.0f - (2 * start_y + 1)*halfpx_y > bb.max.y && start_y<height; start_y++);
+                for (end_y = start_y; 1.0f - (2 * end_y + 1)*halfpx_y >= bb.min.y && end_y<height; end_y++);
                 // rasterize
                 for (uint16_t x = start_x; x < end_x; x++)
                 {

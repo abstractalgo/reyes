@@ -37,17 +37,12 @@ namespace reyes
             , end_u(1)
             , start_v(0)
             , end_v(1)
-#ifdef GRID_TY_T
-            , grid(new Microgrid(MicrogridType::TRIANGLE, (GR+1)*(GR+1), GR*GR*2*3))
-#endif
-#ifdef GRID_TY_Q
-            , grid(new Microgrid(MicrogridType::QUAD, (GR+1)*(GR+1), GR*GR*4))
-#endif
+            , grid(0)
         {}
 
         ~SurfaceI()
         {
-            delete grid;
+            //delete grid;
         }
 
         void splitUV(SplitDir direction, SurfaceI& one, SurfaceI& two)
@@ -79,7 +74,7 @@ namespace reyes
         }
 
         virtual void split(SplitDir direction, Scene& scene) = 0;
-        virtual void dice(CameraTransform* camera) = 0;
+        virtual void dice(CameraTransform* camera, mem::ObjectStack<Microgrid>& grids) = 0;
         virtual void shade(void) = 0;
         virtual position P(uv uv) = 0;
         virtual normal N(uv uv) = 0;
@@ -89,14 +84,22 @@ namespace reyes
     struct Surface : public SurfaceI
     {
         MaterialTy material;
-        void dice(CameraTransform* camera)
+        void dice(CameraTransform* camera, mem::ObjectStack<Microgrid>& grids)
         {
+#ifdef GRID_TY_T
+            mem::blk m = grids.alloc(2048);
+            grid = ::new(m.ptr) Microgrid(MicrogridType::TRIANGLE, (GR + 1)*(GR + 1), GR*GR * 2 * 3);
+#endif
+#ifdef GRID_TY_Q
+            mem::blk m =(new Microgrid(MicrogridType::QUAD, (GR + 1)*(GR + 1), GR*GR * 4));
+#endif
+            float wu = (end_u - start_u) / (float)(GR);
+            float wv = (end_v - start_v) / (float)(GR);
             // vertices
             for (uint16_t u = 0; u < GR+1; u++)
             for (uint16_t v = 0; v < GR+1; v++)
             {
-                float w = 1.0f/(float)(GR);
-                uv _uv = uv(start_u + u*w * (end_u - start_u), start_v + v*w * (end_v - start_v));
+                uv _uv = uv(start_u + u*wu , start_v + v*wv );
                 uint16_t idx = v * (GR+1) + u;
                 grid->vertices[idx].p = P(_uv);
                 grid->vertices[idx].n = N(_uv);
@@ -137,7 +140,7 @@ namespace reyes
         {
             color rnd = { rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, 1 };
             for (uint16_t i = 0; i < (GR + 1)*((GR + 1)); i++)
-                grid->vertices[i].c =  material.cShdr(grid->vertices[i]);
+                grid->vertices[i].c = rnd;// material.cShdr(grid->vertices[i]);
         }
 
         void renderOGL(void)

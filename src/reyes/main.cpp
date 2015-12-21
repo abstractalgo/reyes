@@ -25,7 +25,7 @@ void mainApp()
     //MAKE_SHAPE(scene, reyes::Rectangle<shading::NormalColor>) ({ -1, 1, 0.5 }, { 1, 1, 0.5 }, { 2, -2, 0.5 }, { -2, -1, 0.5 });;
     //MAKE_SHAPE(scene, reyes::Rectangle<shading::NormalColor>) ({ 0, 2, 1 }, { 1, 2, 1 }, { 2, 0, 0 }, { -1, -1, 0 });
     //MAKE_SHAPE(scene, reyes::Sphere<shading::NormalColor>) ({ 0, -0.5f, 0 }, 1);
-    MAKE_SHAPE(scene, reyes::Klein<shading::UVColor>);
+    Surface<shading::UVColor>* s = MAKE_SHAPE(scene, reyes::Sphere<shading::UVColor>);
 
     // camera setup
     //camera.orthographic(-25, 25, -25, 25);
@@ -35,12 +35,14 @@ void mainApp()
     opengl_init(camera.image.width, camera.image.height, 0);
     reyes::render(scene, camera);
     //camera.image.writePPM("test.ppm");
-    opengl_cleanup();
+    
 
 
     /*s->dice(0);
     s->renderOGL();
     SwapBuffersBackend();*/
+
+    opengl_cleanup();
 }
 
 void InitApp()
