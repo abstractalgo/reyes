@@ -15,26 +15,28 @@ namespace reyes
             , center(c)
         {}
 
-        normal N(uv uv)
-        {
-            float vang = asin(uv.y * 2.0f - 1.0f);
-            float uang = uv.x*M_PI * 2.0f;
-
-            return vec3(sin(uang)*cos(vang),
-                -(uv.y * 2.0f - 1.0f),
-                cos(uang)*cos(vang)
-                ).normalize();
-        }
         position P(uv uv)
         {
             float vang = asin(uv.y * 2.0f - 1.0f);
             float uang = (uv.x*M_PI * 2.0f);
 
             return vec3(sin(uang)*cos(vang),
-                -(uv.y * 2.0f - 1.0f),
-               cos(uang)*cos(vang)
-                ) * R + center;
+                sin(vang),
+                cos(uang)*cos(vang)
+                ).normalize() * R + center;
         }
+
+        normal N(uv uv)
+        {
+            float vang = asin(uv.y * 2.0f - 1.0f);
+            float uang = uv.x*M_PI * 2.0f;
+
+            return vec3(sin(uang)*cos(vang),
+                sin(vang),
+                cos(uang)*cos(vang)
+                ).normalize();
+        }
+        
 
         void split(SplitDir direction, Scene& scene)
         {
@@ -43,7 +45,7 @@ namespace reyes
             {
                 mblks[i] = scene.alloc(sizeof(Sphere<MaterialTy>));
                 Sphere<MaterialTy>* p = ::new(mblks[i].ptr) Sphere<MaterialTy>;
-                p->material = material;
+                //p->material = material;
                 p->center = center;
                 p->R = R;
                 if (0 == i)

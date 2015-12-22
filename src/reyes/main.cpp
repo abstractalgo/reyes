@@ -12,7 +12,7 @@ using namespace reyes;
 #define MAKE_SHAPE(_scene, _shp) ::new(_scene.alloc(sizeof(_shp)).ptr) _shp
 
 Scene scene;
-Camera<OGLImage, 480, 480> camera;
+Camera<GBuffer, 480, 480> camera;
 
 void mainApp()
 {
@@ -24,7 +24,7 @@ void mainApp()
     // scene setup
     //MAKE_SHAPE(scene, reyes::Rectangle<shading::NormalColor>) ({ -1, 1, 0.5 }, { 1, 1, 0.5 }, { 2, -2, 0.5 }, { -2, -1, 0.5 });;
     //MAKE_SHAPE(scene, reyes::Rectangle<shading::NormalColor>) ({ 0, 2, 1 }, { 1, 2, 1 }, { 2, 0, 0 }, { -1, -1, 0 });
-    MAKE_SHAPE(scene, reyes::Sphere<shading::UVColor>);// ({ 0, 0, 0 }, 1);
+    MAKE_SHAPE(scene, reyes::Sphere<shading::NormalColor>);// ({ 0, 0, 0 }, 0.3);
     //Surface<shading::NormalColor>* s = MAKE_SHAPE(scene, reyes::Sphere<shading::NormalColor>) ({ 0, 0, 0 }, 1.0f);
 
     // camera setup
@@ -32,7 +32,7 @@ void mainApp()
     //camera.lookAt(/*eye*/ { 0, 0, -5 }, /*target*/ { 0, 0, 0 } /*up*/);
 
     // render
-    //opengl_init(camera.image.width, camera.image.height, 0);
+    opengl_init(camera.image.width, camera.image.height, 0);
     reyes::render(scene, camera);
     //camera.image.writePPM("test.ppm");
     
@@ -42,7 +42,7 @@ void mainApp()
     s->renderOGL();
     SwapBuffersBackend();*/
 
-    //opengl_cleanup();
+    opengl_cleanup();
 }
 
 void InitApp()

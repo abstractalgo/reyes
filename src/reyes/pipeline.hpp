@@ -9,7 +9,7 @@
 
 namespace reyes
 {
-    static const vec2 RASTER_THRESHOLD = { 64, 64 };
+    static const vec2 RASTER_THRESHOLD = { 128, 128};
 
     template<class FilmTy, uint16_t width, uint16_t height>
     void render(Scene& scene, Camera<FilmTy, width, height>& camera)
@@ -45,7 +45,7 @@ namespace reyes
             scene.free(shp_blk);
             printf("\rSHAPES: %d    ", scene.cnt);
         }
-        SwapBuffersBackend();
+        //SwapBuffersBackend();
     }
 
     /*struct Renderer

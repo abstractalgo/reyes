@@ -140,7 +140,7 @@ namespace reyes
         {
             color rnd = { rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, 1 };
             for (uint16_t i = 0; i < (GR + 1)*((GR + 1)); i++)
-                grid->vertices[i].c = rnd;// material.cShdr(grid->vertices[i]);
+                grid->vertices[i].c =  material.cShdr(grid->vertices[i]);
         }
 
         void renderOGL(void)

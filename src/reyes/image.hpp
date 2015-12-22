@@ -40,56 +40,6 @@ namespace reyes
         }
     };
 
-    /* Primitive RGB rasterizer. */
-    struct RGB8Image : public ImageI
-    {
-        struct RGB8Pixel
-        {
-            char r, g, b;
-        } *data;
-
-        RGB8Image(uint16_t _width, uint16_t _height)
-            : ImageI(_width, _height)
-            , data(new RGB8Pixel[_width*_height])
-        {
-            for (uint16_t x = 0; x < height; x++)
-                for (uint16_t y = 0; y < width; y++)
-                        data[x*width + y] = { 127, 127, 127 };
-        }
-
-        void rasterize(Microgrid& grid)
-        {
-            //uint16_t p_cnt = grid.count();
-            //SPrimitiveI* prim;
-            //float halfpx_x = 1.0f / width;
-            //float halfpx_y = 1.0f / height;
-            //for (uint16_t pidx = 0; pidx < p_cnt; pidx++)
-            //{
-            //    prim = static_cast<SPrimitiveI*>(grid.at(pidx));
-            //    for (uint16_t x = 0; x < width; x++)
-            //        for (uint16_t y = 0; y < height; y++)
-            //        {
-            //            // construct pixel location
-            //            float px = -1.0f + (2 * x + 1)*halfpx_x;
-            //            float py = 1.0f - (2 * y + 1)*halfpx_y;
-            //            vec3 p(px, py, 0);
-
-            //            // test
-            //            if (prim->in(p))
-            //            {
-            //                // color
-            //                color c = prim->at(p).col;
-            //                data[y*width + x] = { c.r, c.g, c.b };
-            //            }
-            //        }
-            //}
-        }
-        char* getRGB(void)
-        {
-            return (char*)data;
-        }
-    };
-
     /* G-Buffer storage. */
     struct GBuffer : public ImageI
     {
@@ -179,12 +129,12 @@ namespace reyes
     struct OGLImage : public ImageI
     {
         GLuint fbo, rb, tex;
+        char* data;
         OGLImage(uint16_t _width, uint16_t _height)
             : ImageI(_width, _height)
+            , data(0)
         {
-            /*glGenFramebuffers(1, &fbo);
-
-            glGenRenderbuffers(1, &rb);
+            /*glGenRenderbuffers(1, &rb);
             glBindRenderbuffer(GL_RENDERBUFFER, rb);
             glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
             glBindRenderbuffer(GL_RENDERBUFFER, 0);
@@ -198,6 +148,7 @@ namespace reyes
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
             glBindTexture(GL_TEXTURE_2D, 0);
 
+            glGenFramebuffers(1, &fbo);
             glBindFramebuffer(GL_FRAMEBUFFER, fbo);
             glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rb);
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tex, 0);*/
@@ -205,6 +156,9 @@ namespace reyes
 
         char* getRGB(void)
         {
+            /*data = new char[3 * width*height];
+            glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, data);
+            return data;*/
             return 0;
         }
         void rasterize(Microgrid& grid)
@@ -230,7 +184,6 @@ namespace reyes
 
                     glColor3f(c.c.r, c.c.g, c.c.b);
                     glVertex3f(c.p.x, c.p.y, c.p.z);
-
                 }
                 glEnd();
                 break;
@@ -257,6 +210,18 @@ namespace reyes
                 glEnd();
                 break;
             }
+        }
+
+        ~OGLImage()
+        {
+            /*glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            glDeleteRenderbuffers(1, &rb);
+            glDeleteTextures(1, &tex);
+            glDeleteFramebuffers(1, &fbo);*/
+            fbo = 0;
+            tex = 0;
+            rb = 0;
+            delete[] data;
         }
     };
 }
