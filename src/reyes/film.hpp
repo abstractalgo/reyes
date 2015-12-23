@@ -2,7 +2,7 @@
 
 #include "vecmx.hpp"
 #include "grid.hpp"
-#include "misc.hpp"
+#include "color.hpp"
 #include <cstring>
 #include <cstdint>
 #include "backend.hpp"

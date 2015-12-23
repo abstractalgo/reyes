@@ -1,11 +1,17 @@
 #include "backend.hpp"
-#include "oglfilm.hpp"
 #include "pipeline.hpp"
-#include "shadinglib.hpp"
-#include "rect.hpp"
+
+#include "oglfilm.hpp"
+// shapes
+#include "plane.hpp"
 #include "disc.hpp"
 #include "sphere.hpp"
-#include "klein.hpp"
+// materials
+#include "depthmat.hpp"
+#include "lambertmat.hpp"
+#include "normalmat.hpp"
+#include "solidcolormat.hpp"
+#include "uvmat.hpp"
 
 using namespace reyes;
 
@@ -23,24 +29,15 @@ void mainApp()
     // scene setup
     //MAKE_SHAPE(scene, reyes::Rectangle<shading::NormalColor>) ({ -1, 1, 0.5 }, { 1, 1, 0.5 }, { 2, -2, 0.5 }, { -2, -1, 0.5 });;
     //MAKE_SHAPE(scene, reyes::Rectangle<shading::NormalColor>) ({ 0, 2, 1 }, { 1, 2, 1 }, { 2, 0, 0 }, { -1, -1, 0 });
-    MAKE_SHAPE(s, scene, reyes::Sphere<shading::NormalColor>);// ({ 0, 0, 0 }, 0.3);
-    //Surface<shading::NormalColor>* s = MAKE_SHAPE(scene, reyes::Sphere<shading::NormalColor>) ({ 0, 0, 0 }, 1.0f);
+    MAKE_SHAPE(s, scene, reyes::lib::Sphere<lib::NormalColor>);// ({ 0, 0, 0 }, 0.3);
 
     // camera setup
     //camera.orthographic(-25, 25, -25, 25);
     //camera.lookAt(/*eye*/ { 0, 0, -5 }, /*target*/ { 0, 0, 0 } /*up*/);
 
     // render
-    //reyes::render(scene, camera);
+    reyes::render(scene, camera);
     //camera.image.writePPM("test.ppm");
-    
-
-    mem::ObjectStack<Microgrid> grids(1 << 23);   // 8MB
-    s->dice(0,grids);
-    s->renderOGL();
-    SwapBuffersBackend();
-    mem::blk b = grids.pop();
-    scene.free(scene.pop());
 }
 #else
 void InitApp()

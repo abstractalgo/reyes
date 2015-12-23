@@ -2,7 +2,7 @@
 
 #include "mem.hpp"
 #include "backend.hpp"
-#include "parametric.hpp"
+#include "shape.hpp"
 #include "grid.hpp"
 #include "camera.hpp"
 
@@ -17,7 +17,7 @@ namespace reyes
         while (scene)
         {
             mem::blk shp_blk = scene.pop();
-            SurfaceI* surface = static_cast<SurfaceI*>(shp_blk.ptr);
+            ShapeI* surface = static_cast<ShapeI*>(shp_blk.ptr);
             
             surface->dice(&camera, grids);                                      // DICE
 

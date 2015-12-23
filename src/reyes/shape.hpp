@@ -1,9 +1,8 @@
 #pragma once
 
 #include "mem.hpp"
-#include "vecmx.hpp"
+#include "shading.hpp"
 #include "grid.hpp"
-#include "misc.hpp"
 #include "camera.hpp"
 #include "scene.hpp"
 #include <cstdlib>
@@ -26,13 +25,13 @@ namespace reyes
             : SplitDir::U);
     }
 
-    struct SurfaceI
+    struct ShapeI
     {
         float start_u, end_u, start_v, end_v;
         mx4 transform;
         Microgrid* grid;
 
-        SurfaceI()
+        ShapeI()
             : start_u(0)
             , end_u(1)
             , start_v(0)
@@ -40,12 +39,12 @@ namespace reyes
             , grid(0)
         {}
 
-        ~SurfaceI()
+        ~ShapeI()
         {
             //delete grid;
         }
 
-        void splitUV(SplitDir direction, SurfaceI& one, SurfaceI& two)
+        void splitUV(SplitDir direction, ShapeI& one, ShapeI& two)
         {
             if (U == direction)
             {
@@ -81,12 +80,12 @@ namespace reyes
     };
 
     template<class MaterialTy>
-    struct Surface : public SurfaceI
+    struct Shape : public ShapeI
     {
         MaterialTy material;
         void dice(CameraTransform* camera, mem::ObjectStack<Microgrid>& grids)
         {
-            mem::blk m = grids.alloc(2048);
+            mem::blk m = grids.alloc(2048); // TODO
 #ifdef GRID_TY_T
             grid = ::new(m.ptr) Microgrid(MicrogridType::TRIANGLE, (GR + 1)*(GR + 1), GR*GR * 2 * 3);
 #endif
