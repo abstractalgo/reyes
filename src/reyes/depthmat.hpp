@@ -18,7 +18,7 @@ namespace reyes
             {
                 /*float d = vertex.p.z > 1.0f ? 1.0f : vertex.p.z;
                 d = vertex.p.z < 0 ? 0 : vertex.p.z;*/
-                float d = vertex.p.z * 0.5f + 0.5;
+                float d = vertex.p.z*.5f + .5f;
                 return{ d, d, d, 1 };
             }
         };

@@ -8,7 +8,7 @@
 
 namespace reyes
 {
-    static const vec2 RASTER_THRESHOLD = { 700, 700};
+    static const vec2 RASTER_THRESHOLD = { 400, 400 };
 
     template<class FilmTy, uint16_t width, uint16_t height>
     void render(Scene& scene, Camera<FilmTy, width, height>& camera)
@@ -17,11 +17,11 @@ namespace reyes
         while (scene)
         {
             mem::blk shp_blk = scene.pop();
-            ShapeI* surface = static_cast<ShapeI*>(shp_blk.ptr);
+            ShapeI* shape = static_cast<ShapeI*>(shp_blk.ptr);
             
-            surface->dice(&camera, grids);                                      // DICE
+            shape->dice(&camera, grids);                                      // DICE
 
-            AABB2 bb = surface->grid->aabb();                                   // BOUND
+            AABB2 bb = shape->grid->aabb();                                   // BOUND
             if (bb.max.x <= -1.0f || bb.min.x >= 1.0f ||                        // | try to cull
                 bb.min.y >= 1.0f || bb.max.y <= -1.0f)                          // |
                 goto memoryCleanup;                                             // |
@@ -30,17 +30,18 @@ namespace reyes
             SplitDir dir = split_dir(rasSz, RASTER_THRESHOLD);                  // | determine if to split and how
             if (SplitDir::NoSplit != dir)                                       // |
             {                                                                   // |
-                surface->split(dir, scene);                                     // | do split
+                shape->split(dir, scene);                                     // | do split
             }                                                                   // |
             else                                                                // | don't split, so continue to raster
             {
-                surface->shade();                                               // SHADE
+                shape->shade();                                               // SHADE
 
-                camera.film.rasterize(*surface->grid);                          // SAMPLE
+                camera.film.rasterize(*shape->grid);                          // SAMPLE
             }
 
         memoryCleanup:
-            grids.pop();
+            delete shape->grid;
+            //grids.pop();
             scene.free(shp_blk);
             printf("\rSHAPES: %d    ", scene.cnt);
         }

@@ -40,7 +40,7 @@ namespace reyes
                 /*x = cos(u) * (cos(0.5f*u)*(M_SQRT2 + cos(v)) + sin(0.5f*u)*sin(v)*cos(v));
                 y = sin(u) * (cos(0.5f*u)*(M_SQRT2 + cos(v)) + sin(0.5f*u)*sin(v)*cos(v));
                 z = -sin(0.5f*u)*(M_SQRT2 + cos(v)) + cos(0.5f*u)*sin(v)*cos(v);*/
-                position p(x, y, z);
+                position p(x, -y, z);
                 return p*0.05f;
             }
 

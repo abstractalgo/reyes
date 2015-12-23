@@ -11,8 +11,8 @@ namespace reyes
         {
             DISPLACE
             {
-            return vertex.p;
-        }
+                return vertex.p;
+            }
 
             SHADE
             {

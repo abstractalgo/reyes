@@ -6,6 +6,7 @@
 #include "plane.hpp"
 #include "disc.hpp"
 #include "sphere.hpp"
+#include "klein.hpp"
 // materials
 #include "depthmat.hpp"
 #include "lambertmat.hpp"
@@ -29,7 +30,7 @@ void mainApp()
     // scene setup
     //MAKE_SHAPE(scene, reyes::Rectangle<shading::NormalColor>) ({ -1, 1, 0.5 }, { 1, 1, 0.5 }, { 2, -2, 0.5 }, { -2, -1, 0.5 });;
     //MAKE_SHAPE(scene, reyes::Rectangle<shading::NormalColor>) ({ 0, 2, 1 }, { 1, 2, 1 }, { 2, 0, 0 }, { -1, -1, 0 });
-    MAKE_SHAPE(s, scene, reyes::lib::Sphere<lib::NormalColor>);// ({ 0, 0, 0 }, 0.3);
+    MAKE_SHAPE(s, scene, reyes::lib::Plane<lib::UVColor>);// ({ 0, 0, 0 }, 0.3);
 
     // camera setup
     //camera.orthographic(-25, 25, -25, 25);

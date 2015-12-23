@@ -2,7 +2,6 @@
 
 #include <cstdint>
 #include <cmath>
-#include "primitive.hpp"
 #include "color.hpp"
 
 namespace reyes
@@ -44,7 +43,7 @@ namespace reyes
             }
         }
 
-        primitive::PrimitiveI* operator[](Index idx)
+        /*primitive::PrimitiveI* operator[](Index idx)
         {
             if (MicrogridType::TRIANGLE == type)
             {
@@ -63,7 +62,7 @@ namespace reyes
                 q->d = vertices[indices[4 * idx + 3]];
                 return q;
             }
-        }
+        }*/
 
         /* Bounding box for entire grid. */
         AABB2 aabb(void)

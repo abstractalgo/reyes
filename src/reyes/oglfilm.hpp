@@ -44,9 +44,11 @@ namespace reyes
         {
             glUseProgram(0);
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
-            glClear(GL_DEPTH_BUFFER_BIT);
+            //glClearColor(1, 1, 0, 1);
+            glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+            
             glEnable(GL_DEPTH_TEST);
-            //glDepthFunc(GL_GEQUAL);
+            //glDepthFunc(GL_LEQUAL);
             switch (grid.type)
             {
             case MicrogridType::TRIANGLE:
@@ -57,13 +59,13 @@ namespace reyes
                     Vertex b = grid.vertices[grid.indices[3 * i + 1]];
                     Vertex c = grid.vertices[grid.indices[3 * i + 2]];
                     glColor3f(a.c.r, a.c.g, a.c.b);
-                    glVertex3f(a.p.x, a.p.y, a.p.z);
+                    glVertex3f(a.p.x, a.p.y, -a.p.z);
 
                     glColor3f(b.c.r, b.c.g, b.c.b);
-                    glVertex3f(b.p.x, b.p.y, b.p.z);
+                    glVertex3f(b.p.x, b.p.y, -b.p.z);
 
                     glColor3f(c.c.r, c.c.g, c.c.b);
-                    glVertex3f(c.p.x, c.p.y, c.p.z);
+                    glVertex3f(c.p.x, c.p.y, -c.p.z);
                 }
                 glEnd();
                 break;
@@ -76,16 +78,16 @@ namespace reyes
                     Vertex c = grid.vertices[grid.indices[4 * i + 2]];
                     Vertex d = grid.vertices[grid.indices[4 * i + 3]];
                     glColor3f(a.c.r, a.c.g, a.c.b);
-                    glVertex3f(a.p.x, a.p.y, a.p.z);
+                    glVertex3f(a.p.x, a.p.y, -a.p.z);
 
                     glColor3f(b.c.r, b.c.g, b.c.b);
-                    glVertex3f(b.p.x, b.p.y, b.p.z);
+                    glVertex3f(b.p.x, b.p.y, -b.p.z);
 
                     glColor3f(c.c.r, c.c.g, c.c.b);
-                    glVertex3f(c.p.x, c.p.y, c.p.z);
+                    glVertex3f(c.p.x, c.p.y, -c.p.z);
 
                     glColor3f(d.c.r, d.c.g, d.c.b);
-                    glVertex3f(d.p.x, d.p.y, d.p.z);
+                    glVertex3f(d.p.x, d.p.y, -d.p.z);
                 }
                 glEnd();
                 break;

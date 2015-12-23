@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include <ctime>
 
-#define GR 8
+#define GR 1
 #define GRID_TY_T
 //#define GRID_TY_Q
 
@@ -44,7 +44,7 @@ namespace reyes
             //delete grid;
         }
 
-        void splitUV(SplitDir direction, ShapeI& one, ShapeI& two)
+        /*void splitUV(SplitDir direction, ShapeI& one, ShapeI& two)
         {
             if (U == direction)
             {
@@ -70,7 +70,7 @@ namespace reyes
                 two.start_v = start_v;
                 two.end_v = end_v;
             }
-        }
+        }*/
 
         virtual void split(SplitDir direction, Scene& scene) = 0;
         virtual void dice(CameraTransform* camera, mem::ObjectStack<Microgrid>& grids) = 0;
@@ -85,9 +85,10 @@ namespace reyes
         MaterialTy material;
         void dice(CameraTransform* camera, mem::ObjectStack<Microgrid>& grids)
         {
-            mem::blk m = grids.alloc(2048); // TODO
+            //mem::blk m = grids.alloc(2048); // TODO
 #ifdef GRID_TY_T
-            grid = ::new(m.ptr) Microgrid(MicrogridType::TRIANGLE, (GR + 1)*(GR + 1), GR*GR * 2 * 3);
+            //grid = ::new(m.ptr) Microgrid(MicrogridType::TRIANGLE, (GR + 1)*(GR + 1), GR*GR * 2 * 3);
+            grid = ::new Microgrid(MicrogridType::TRIANGLE, (GR + 1)*(GR + 1), GR*GR * 2 * 3);
 #endif
 #ifdef GRID_TY_Q
             grid = ::new(m.ptr) Microgrid(MicrogridType::QUAD, (GR + 1)*(GR + 1), GR*GR * 4);
@@ -100,9 +101,9 @@ namespace reyes
             {
                 uv _uv(start_u + u*wu , start_v + v*wv );
                 uint16_t idx = v * (GR+1) + u;
+                grid->vertices[idx].uv = uv(start_u + u*wu, start_v + v*wv);
                 grid->vertices[idx].p = P(_uv);
                 grid->vertices[idx].n = N(_uv);
-                grid->vertices[idx].uv = _uv;
                 grid->vertices[idx].p = material.pShdr(grid->vertices[idx]);
                 // TODO transformations: model, view, projection
             }
