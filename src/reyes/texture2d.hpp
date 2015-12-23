@@ -6,7 +6,7 @@ namespace reyes
 {
     namespace lib
     {
-        struct Texture2D : public TextureSampler
+        struct Texture2D : public Sampler
         {
             uint16_t width, height;
             char* data;

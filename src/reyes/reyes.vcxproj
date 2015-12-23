@@ -87,6 +87,7 @@
     <ClInclude Include="depthmat.hpp" />
     <ClInclude Include="directionalight.hpp" />
     <ClInclude Include="disc.hpp" />
+    <ClInclude Include="displacementmat.hpp" />
     <ClInclude Include="grid.hpp" />
     <ClInclude Include="film.hpp" />
     <ClInclude Include="klein.hpp" />

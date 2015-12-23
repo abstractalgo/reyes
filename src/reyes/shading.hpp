@@ -24,7 +24,7 @@ namespace reyes
     {
         virtual OutputTy sample(InputTy input) = 0;
     };
-    typedef Resource<uv, color> TextureSampler;
+    typedef Resource<uv, color> Sampler;
 
     /* Light interface. */
     struct Light : public Resource<PosNormal, color>

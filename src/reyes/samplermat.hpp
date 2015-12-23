@@ -8,7 +8,7 @@ namespace reyes
     {
         UNIFORM(SamplerMat)
         {
-            TextureSampler* sampler;
+            Sampler* sampler;
         };
         MATERIAL(SamplerMat)
         {

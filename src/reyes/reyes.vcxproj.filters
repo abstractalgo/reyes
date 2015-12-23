@@ -28,11 +28,11 @@
     <Filter Include="app\reyes\lib\shapes">
       <UniqueIdentifier>{895735d6-3ced-4a54-bf73-f76900fc7fb2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="app\reyes\lib\resources">
-      <UniqueIdentifier>{2aeec2d6-3dcd-4d02-9483-cdcf7a12c0c6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="app\reyes\lib\materials">
       <UniqueIdentifier>{032365f0-8433-46b5-8697-c6c7c47aaa5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="app\reyes\lib\samplers">
+      <UniqueIdentifier>{2aeec2d6-3dcd-4d02-9483-cdcf7a12c0c6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -100,7 +100,7 @@
       <Filter>app\reyes\lib\lights</Filter>
     </ClInclude>
     <ClInclude Include="texture2d.hpp">
-      <Filter>app\reyes\lib\resources</Filter>
+      <Filter>app\reyes\lib\samplers</Filter>
     </ClInclude>
     <ClInclude Include="depthmat.hpp">
       <Filter>app\reyes\lib\materials</Filter>
@@ -121,10 +121,13 @@
       <Filter>app\reyes\lib\materials</Filter>
     </ClInclude>
     <ClInclude Include="sincosshader.hpp">
-      <Filter>app\reyes\lib\resources</Filter>
+      <Filter>app\reyes\lib\samplers</Filter>
     </ClInclude>
     <ClInclude Include="shape.hpp">
       <Filter>app\reyes</Filter>
+    </ClInclude>
+    <ClInclude Include="displacementmat.hpp">
+      <Filter>app\reyes\lib\materials</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

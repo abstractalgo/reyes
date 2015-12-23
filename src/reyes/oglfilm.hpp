@@ -42,12 +42,12 @@ namespace reyes
         }
         void rasterize(Microgrid& grid)
         {
-            glUseProgram(0);
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
-            //glClearColor(1, 1, 0, 1);
-            glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+            //glDisable(GL_CULL_FACE);
             
-            glEnable(GL_DEPTH_TEST);
+            //glClearColor(1, 1, 0, 1);
+            //
+            
+            
             //glDepthFunc(GL_LEQUAL);
             switch (grid.type)
             {

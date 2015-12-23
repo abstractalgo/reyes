@@ -20,45 +20,21 @@ namespace reyes
 
             position P(uv uv)
             {
-                /*float vang = asin(uv.y * 2.0f - 1.0f);
-                float uang = (uv.x*M_PI * 2.0f);
-
-                return vec3(sin(uang)*cos(vang),
-                    sin(vang),
-                    cos(uang)*cos(vang)
-                    ).normalize() * R + center;*/
-
-                float theta = uv.x * 2.0f * M_PI;
-                float phi = uv.y*M_PI;
-
-                float x = sin(theta) * cos(phi);
-                float y = sin(theta) * sin(phi);
-                float z = cos(theta);
-
-                vec3 n(x, y, z);
-                n.normalize();
+                vec3 n = N(uv);
 
                 return n*R + center;
             }
 
             normal N(uv uv)
             {
-                /*float vang = asin(uv.y * 2.0f - 1.0f);
-                float uang = uv.x*M_PI * 2.0f;
+                float theta = uv.x*2.0f*M_PI;
+                float phi = uv.y* M_PI;
 
-                return vec3(sin(uang)*cos(vang),
-                    sin(vang),
-                    cos(uang)*cos(vang)
-                    ).normalize();*/
+                float z = cos(theta) * sin(phi);
+                float x = sin(theta) * sin(phi);
+                float y = cos(phi);
 
-                float theta = uv.x * 2.0f * M_PI;
-                float phi = uv.y*M_PI;
-
-                float x = sin(theta) * cos(phi);
-                float y = sin(theta) * sin(phi);
-                float z = cos(theta);
-
-                vec3 n(x, y, z);
+                vec3 n(x,y,z);
                 n.normalize();
 
                 return n;
@@ -72,7 +48,7 @@ namespace reyes
                 {
                     mblks[i] = scene.alloc(sizeof(Sphere<MaterialTy>));
                     Sphere<MaterialTy>* p = ::new(mblks[i].ptr) Sphere<MaterialTy>;
-                    //p->material = material;
+                    p->material.uniform = material.uniform;     // memory garbage
                     p->center = center;
                     p->R = R;
                     if (0 == i)
@@ -104,7 +80,6 @@ namespace reyes
                         p->end_v = end_v;
                     }
                 }
-                //splitUV(direction, one, two);
             }
         };
     }

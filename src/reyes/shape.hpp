@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include <ctime>
 
-#define GR 1
+#define GR 8
 #define GRID_TY_T
 //#define GRID_TY_Q
 
@@ -44,34 +44,6 @@ namespace reyes
             //delete grid;
         }
 
-        /*void splitUV(SplitDir direction, ShapeI& one, ShapeI& two)
-        {
-            if (U == direction)
-            {
-                one.start_u = start_u;
-                one.end_u = end_u;
-                one.start_v = start_v;
-                one.end_v = (start_v + end_v)*0.5f;
-
-                two.start_u = start_u;
-                two.end_u = end_u;
-                two.start_v = (start_v + end_v)*0.5f;
-                two.end_v = end_v;
-            }
-            else
-            {
-                one.start_u = start_u;
-                one.end_u = (start_u + end_u)*0.5f;
-                one.start_v = start_v;
-                one.end_v = end_v;
-
-                two.start_u = (start_u + end_u)*0.5f;
-                two.end_u = end_u;
-                two.start_v = start_v;
-                two.end_v = end_v;
-            }
-        }*/
-
         virtual void split(SplitDir direction, Scene& scene) = 0;
         virtual void dice(CameraTransform* camera, mem::ObjectStack<Microgrid>& grids) = 0;
         virtual void shade(void) = 0;
@@ -85,10 +57,9 @@ namespace reyes
         MaterialTy material;
         void dice(CameraTransform* camera, mem::ObjectStack<Microgrid>& grids)
         {
-            //mem::blk m = grids.alloc(2048); // TODO
+            mem::blk m = grids.alloc(2048); // TODO
 #ifdef GRID_TY_T
-            //grid = ::new(m.ptr) Microgrid(MicrogridType::TRIANGLE, (GR + 1)*(GR + 1), GR*GR * 2 * 3);
-            grid = ::new Microgrid(MicrogridType::TRIANGLE, (GR + 1)*(GR + 1), GR*GR * 2 * 3);
+            grid = ::new(m.ptr) Microgrid(MicrogridType::TRIANGLE, (GR + 1)*(GR + 1), GR*GR * 2 * 3);
 #endif
 #ifdef GRID_TY_Q
             grid = ::new(m.ptr) Microgrid(MicrogridType::QUAD, (GR + 1)*(GR + 1), GR*GR * 4);
@@ -140,81 +111,10 @@ namespace reyes
         {
             color rnd = { rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, 1 };
             for (uint16_t i = 0; i < (GR + 1)*((GR + 1)); i++)
-                grid->vertices[i].c =  material.cShdr(grid->vertices[i]);
-        }
-
-        void renderOGL(void)
-        {
-#ifdef GRID_TY_T
-            glColor3f(1, 1, 1);
-            glBegin(GL_TRIANGLES);
-            for (uint16_t i = 0; i < grid->primCount(); i++)
             {
-                Vertex a = grid->vertices[grid->indices[3 * i + 0]];
-                Vertex b = grid->vertices[grid->indices[3 * i + 1]];
-                Vertex c = grid->vertices[grid->indices[3 * i + 2]];
-                glVertex3f(a.p.x, a.p.y, a.p.z);
-                glVertex3f(b.p.x, b.p.y, b.p.z);
-                glVertex3f(c.p.x, c.p.y, c.p.z);
+                grid->vertices[i].c = rnd; // material.cShdr(grid->vertices[i]);
             }
-            glEnd();
-
-            glColor3f(1, 0, 0);
-            glBegin(GL_LINES);
-            for (uint16_t i = 0; i < grid->primCount(); i++)
-            {
-                Vertex a = grid->vertices[grid->indices[3 * i + 0]];
-                Vertex b = grid->vertices[grid->indices[3 * i + 1]];
-                Vertex c = grid->vertices[grid->indices[3 * i + 2]];
-                glVertex3f(a.p.x, a.p.y, a.p.z);
-                glVertex3f(b.p.x, b.p.y, b.p.z);
-
-                glVertex3f(b.p.x, b.p.y, b.p.z);
-                glVertex3f(c.p.x, c.p.y, c.p.z);
-
-                glVertex3f(c.p.x, c.p.y, c.p.z);
-                glVertex3f(a.p.x, a.p.y, a.p.z);
-            }
-            glEnd();
-#endif
-#ifdef GRID_TY_Q
-            glColor3f(1, 1, 1);
-            glBegin(GL_QUADS);
-            for (uint16_t i = 0; i < grid->primCount(); i++)
-            {
-                Vertex a = grid->vertices[grid->indices[4 * i + 0]];
-                Vertex b = grid->vertices[grid->indices[4 * i + 1]];
-                Vertex c = grid->vertices[grid->indices[4 * i + 2]];
-                Vertex d = grid->vertices[grid->indices[4 * i + 3]];
-                glVertex3f(a.p.x, a.p.y, a.p.z);
-                glVertex3f(b.p.x, b.p.y, b.p.z);
-                glVertex3f(c.p.x, c.p.y, c.p.z);
-                glVertex3f(d.p.x, d.p.y, d.p.z);
-            }
-            glEnd();
-
-            glColor3f(1, 0, 0);
-            glBegin(GL_LINES);
-            for (uint16_t i = 0; i < grid->primCount(); i++)
-            {
-                Vertex a = grid->vertices[grid->indices[4 * i + 0]];
-                Vertex b = grid->vertices[grid->indices[4 * i + 1]];
-                Vertex c = grid->vertices[grid->indices[4 * i + 2]];
-                Vertex d = grid->vertices[grid->indices[4 * i + 3]];
-                glVertex3f(a.p.x, a.p.y, a.p.z);
-                glVertex3f(b.p.x, b.p.y, b.p.z);
-
-                glVertex3f(b.p.x, b.p.y, b.p.z);
-                glVertex3f(c.p.x, c.p.y, c.p.z);
-
-                glVertex3f(c.p.x, c.p.y, c.p.z);
-                glVertex3f(d.p.x, d.p.y, d.p.z);
-
-                glVertex3f(d.p.x, d.p.y, d.p.z);
-                glVertex3f(a.p.x, a.p.y, a.p.z);
-            }
-            glEnd();
-#endif
+                
         }
     };
 }

@@ -52,6 +52,12 @@ namespace reyes
         normal n;
         uv uv;
         color c;
+        Vertex()
+            : p(0,0,0)
+            , n (0,1,0)
+            , uv(0,0)
+            , c(0,0,0,1)
+        {}
     };
     typedef uint16_t Index;
 }

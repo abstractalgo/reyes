@@ -6,11 +6,11 @@ namespace reyes
 {
     namespace lib
     {
-        struct SinCosShader : public TextureSampler
+        struct SinCosShader : public Sampler
         {
-            color sample(uv input)
+            color sample(uv uv)
             {
-                float k = sin(input.x * M_PI * 20.0)*cos(input.y * 40.0);
+                float k = sin(uv.x * M_PI * 20.0)*cos(uv.y * 40.0);
                 return{ k, k, k, 1 };
             }
         };

@@ -20,41 +20,43 @@ current version v1.8
 
 - transformations (translate, rotate, scale, project)
 - perspective camera
-- dicing
-- finalize quadrilaterals and triangles
+- ~~dicing~~
+- ~~finalize quadrilaterals and triangles~~
 - ~~G-buffer~~ (***z-index arc***)
 - ~~bounding and splitting~~
-- ~~improved memorymanagment~~
+- ~~improved memory management~~
 - ~~entire reyes pipeline~~
 - geometry
-    - plane (aka quad)
-    - sphere
+    - ~~plane (aka quad)~~
+    - ~~sphere~~
     - bezier patch (cubic)
         - newell teapot
-- shading
+- ~~shading~~
     - ~~matlib~~
         - ~~lambert~~
         - ~~normal~~
         - ~~uv~~
         - ~~tex2d~~
-    - resources
+    - ~~resources~~
         - ~~texture~~ (***untested yet***)
-        - func. eval. (displacement)
-    - lights
+        - ~~func. eval.~~ (displacement)
+    - ~~lights~~
         - ~~directional~~
         - ~~point~~
 - normal-mapped, textured cube (***!challenge!***)
 
 ####v3.0
 
-- shadow mapping
-- ~~more advanced rasterizer~~
-- SH light
+- threaded renderer
 - perf
     - profiling
     - progress indicator
     - progressive (~~rendering in a window~~)
+- shadow mapping
 - even better memory managment
+- Klein bottle
+- SH light
+- more advanced rasterizer
 - dof
 - motion blur
 - A-buffer
