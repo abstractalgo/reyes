@@ -108,3 +108,10 @@ One way to solve the splitting issue and be sure that the right dimension's size
 Another big problem are precision issues (or something that looks like it). Wrong values, wrapping of the values, boundaries at pixel center, a lot of artifacts come from what seems to be a precision issue. I will probably later try to simply switch to double and hope for the best, but even float should be sufficient, so I'm a bit confused.
 
 UPDATE: I've solved the precision issue, or whatever it is by completely ditching my CPU rasterizer. I've swapped it with GPU rasterizer (running OGL 1.x, proudly), so I can get moving more faster, and I'll get back to CPU rasterizer later. I am even thinking about abandoning the idea of CPU rasterization and doing even A-buffer version on GPU. Well, at least until I figure what the heck is wrong with the code, even though I think it's alright even now, but it obviously isn't.
+
+***Dec 23, 2015***
+---
+
+Oh my God, that took a while. Reverse Z coordinate, re-clearing framebuffer after every rasterized primitive and ogl clipping were the "mistakes". Neither of those was really semantic error, but they oversaw some very simple and obvious assumptions. And I has serious problems with sphere geometry, and I'm yet to fix Klein bottle geometry. Here's one of the images during very long (several days) debug session.
+
+![ibw4](ibw4.png "ibw4")
