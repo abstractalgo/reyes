@@ -5,12 +5,12 @@
 namespace reyes
 {
     template<class MaterialTy>
-    struct Rectangle : public Surface<MaterialTy>
+    struct Plane : public Surface<MaterialTy>
     {
         vec2 dim;
         vec3 center;
 
-        Rectangle(vec3 c = { 0, 0, 0 }, vec2 d = {2,2})
+        Plane(vec3 c = { 0, 0, 0 }, vec2 d = { 2, 2 })
             : dim(d)
             , center(c)
         {}
@@ -27,10 +27,10 @@ namespace reyes
 
         void split(SplitDir direction, Scene& scene)
         {
-            mem::blk one_blk = scene.alloc(sizeof(Rectangle<MaterialTy>));
-            mem::blk two_blk = scene.alloc(sizeof(Rectangle<MaterialTy>));
-            Rectangle<MaterialTy>& one = *(::new(one_blk.ptr) Rectangle<MaterialTy>);
-            Rectangle<MaterialTy>& two = *(::new(two_blk.ptr) Rectangle<MaterialTy>);
+            mem::blk one_blk = scene.alloc(sizeof(Plane<MaterialTy>));
+            mem::blk two_blk = scene.alloc(sizeof(Plane<MaterialTy>));
+            Plane<MaterialTy>& one = *(::new(one_blk.ptr) Plane<MaterialTy>);
+            Plane<MaterialTy>& two = *(::new(two_blk.ptr) Plane<MaterialTy>);
 
             one.center = center;
             two.center = center;

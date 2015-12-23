@@ -5,11 +5,10 @@
 #include "parametric.hpp"
 #include "grid.hpp"
 #include "camera.hpp"
-#include "image.hpp"
 
 namespace reyes
 {
-    static const vec2 RASTER_THRESHOLD = { 128, 128};
+    static const vec2 RASTER_THRESHOLD = { 700, 700};
 
     template<class FilmTy, uint16_t width, uint16_t height>
     void render(Scene& scene, Camera<FilmTy, width, height>& camera)
@@ -27,7 +26,7 @@ namespace reyes
                 bb.min.y >= 1.0f || bb.max.y <= -1.0f)                          // |
                 goto memoryCleanup;                                             // |
 
-            vec2 rasSz = camera.image.estimate(bb.max - bb.min);                // SPLIT - estimate grid's raster size
+            vec2 rasSz = camera.film.estimate(bb.max - bb.min);                 // SPLIT - estimate grid's raster size
             SplitDir dir = split_dir(rasSz, RASTER_THRESHOLD);                  // | determine if to split and how
             if (SplitDir::NoSplit != dir)                                       // |
             {                                                                   // |
@@ -37,7 +36,7 @@ namespace reyes
             {
                 surface->shade();                                               // SHADE
 
-                camera.capture(surface->grid);                                  // SAMPLE
+                camera.film.rasterize(*surface->grid);                          // SAMPLE
             }
 
         memoryCleanup:
@@ -45,7 +44,8 @@ namespace reyes
             scene.free(shp_blk);
             printf("\rSHAPES: %d    ", scene.cnt);
         }
-        //SwapBuffersBackend();
+        //camera.film.display();
+        SwapBuffersBackend();
     }
 
     /*struct Renderer

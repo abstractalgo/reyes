@@ -22,6 +22,9 @@
     <Filter Include="app\reyes\shapes">
       <UniqueIdentifier>{895735d6-3ced-4a54-bf73-f76900fc7fb2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="app\reyes\camera\films">
+      <UniqueIdentifier>{be965d2c-0552-41c4-a0a8-b9b4c422ee18}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -45,9 +48,6 @@
     <ClInclude Include="camera.hpp">
       <Filter>app\reyes\camera</Filter>
     </ClInclude>
-    <ClInclude Include="image.hpp">
-      <Filter>app\reyes\camera</Filter>
-    </ClInclude>
     <ClInclude Include="vecmx.hpp">
       <Filter>app\reyes\math</Filter>
     </ClInclude>
@@ -58,9 +58,6 @@
       <Filter>app\reyes\shading</Filter>
     </ClInclude>
     <ClInclude Include="backend.hpp">
-      <Filter>app\core</Filter>
-    </ClInclude>
-    <ClInclude Include="ogl_help.hpp">
       <Filter>app\core</Filter>
     </ClInclude>
     <ClInclude Include="quad.hpp">
@@ -83,6 +80,15 @@
     </ClInclude>
     <ClInclude Include="klein.hpp">
       <Filter>app\reyes\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="cpufilm.hpp">
+      <Filter>app\reyes\camera\films</Filter>
+    </ClInclude>
+    <ClInclude Include="film.hpp">
+      <Filter>app\reyes\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="oglfilm.hpp">
+      <Filter>app\reyes\camera\films</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

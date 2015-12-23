@@ -1,7 +1,7 @@
 #pragma once
 
 #include "vecmx.hpp"
-#include "image.hpp"
+#include "film.hpp"
 
 namespace reyes
 {
@@ -14,8 +14,6 @@ namespace reyes
     /* Camera interface. */
     struct CameraI : public CameraTransform
     {
-        virtual void capture(Microgrid* grid) = 0;
-
         /* Mark perspective frustum. */
         void perspective(float fov, float aspect, float near, float far)
         {
@@ -49,15 +47,10 @@ namespace reyes
     /* Camera and its film. */
     struct Camera : public CameraI
     {
-        FilmTy image;
+        FilmTy film;
 
         Camera()
-            : image(width, height)
+            : film(width, height)
         {}
-
-        void capture(Microgrid* grid)
-        {
-            image.rasterize(*grid);
-        }
     };
 }
