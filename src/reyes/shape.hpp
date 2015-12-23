@@ -9,8 +9,12 @@
 #include <ctime>
 
 #define GR 8
+#define GRID_TY_Tri
+#ifdef GRID_TY_Tri
 #define GRID_TY_T
-//#define GRID_TY_Q
+#else
+#define GRID_TY_Q
+#endif
 
 namespace reyes
 {
@@ -99,10 +103,10 @@ namespace reyes
                 grid->indices[v * (GR * 6) + u * 6 + 5] = ((v + 1) * (GR + 1)) + (u + 1);
 #endif
 #ifdef GRID_TY_Q
-                grid->indices[v * (GR*4) + u * 4 + 0] = (v * (GR+1)) + (u);
-                grid->indices[v * (GR*4) + u * 4 + 1] = (v * (GR+1)) + (u + 1);
-                grid->indices[v * (GR*4) + u * 4 + 2] = ((v + 1) * (GR+1)) + (u + 1);
-                grid->indices[v * (GR*4) + u * 4 + 3] = ((v + 1) * (GR+1)) + (u);
+                grid->indices[v * (GR * 4) + u * 4 + 0] = (v * (GR + 1)) + (u);
+                grid->indices[v * (GR * 4) + u * 4 + 1] = ((v + 1) * (GR + 1)) + (u);
+                grid->indices[v * (GR * 4) + u * 4 + 2] = ((v + 1) * (GR + 1)) + (u + 1);
+                grid->indices[v * (GR * 4) + u * 4 + 3] = (v * (GR + 1)) + (u + 1);
 #endif
             }
         }
@@ -112,9 +116,8 @@ namespace reyes
             color rnd = { rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, 1 };
             for (uint16_t i = 0; i < (GR + 1)*((GR + 1)); i++)
             {
-                grid->vertices[i].c = rnd; // material.cShdr(grid->vertices[i]);
+                grid->vertices[i].c = rnd;// material.cShdr(grid->vertices[i]);
             }
-                
         }
     };
 }

@@ -26,17 +26,16 @@ void mainApp()
 {
     // REYES
     srand(time(NULL));
-    
     printf("REYES renderer v1.85\n");
-    Scene scene;
-    Camera<OGLFilm, 480, 480> camera;
+
     // scene setup
-    //MAKE_SHAPE(scene, reyes::Rectangle<shading::NormalColor>) ({ -1, 1, 0.5 }, { 1, 1, 0.5 }, { 2, -2, 0.5 }, { -2, -1, 0.5 });;
-    //MAKE_SHAPE(scene, reyes::Rectangle<shading::NormalColor>) ({ 0, 2, 1 }, { 1, 2, 1 }, { 2, 0, 0 }, { -1, -1, 0 });
-    MAKE_SHAPE(ss, scene, reyes::lib::Sphere<lib::DisplacementMat>) ({ 0, 0, 0 }, 0.9);
+    Scene scene;
+    MAKE_SHAPE(ss, scene, reyes::lib::Sphere<lib::DisplacementMat>) ({ 0, 0.5f, 0 }, 0.3);
     ss->material.uniform.sampler = new lib::SinCosShader;
+    MAKE_SHAPE(a, scene, reyes::lib::Plane<lib::UVColor>) ({ -0.5f, -0.5f, 0 }, { 0.8f, 0.6f });
 
     // camera setup
+    Camera<OGLFilm, 480, 480> camera;
     //camera.orthographic(-25, 25, -25, 25);
     //camera.lookAt(/*eye*/ { 0, 0, -5 }, /*target*/ { 0, 0, 0 } /*up*/);
 

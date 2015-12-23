@@ -10,7 +10,7 @@ namespace reyes
         {
             color sample(uv uv)
             {
-                float k = sin(uv.x * M_PI * 20.0)*cos(uv.y * 40.0);
+                float k = sin(uv.x * M_PI * 20.0)*cos(uv.y * M_PI* 20.0);
                 return{ k, k, k, 1 };
             }
         };

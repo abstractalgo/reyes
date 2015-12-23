@@ -34,7 +34,7 @@ namespace reyes
                 {
                     mblks[i] = scene.alloc(sizeof(Plane<MaterialTy>));
                     Plane<MaterialTy>* p = ::new(mblks[i].ptr) Plane<MaterialTy>;
-                    //p->material = material;
+                    p->material.uniform = material.uniform;
                     p->center = center;
                     p->dim = dim;
                     if (0 == i)
