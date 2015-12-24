@@ -98,9 +98,9 @@
     <ClInclude Include="plane.hpp" />
     <ClInclude Include="pointlight.hpp" />
     <ClInclude Include="samplermat.hpp" />
-    <ClInclude Include="sincosshader.hpp" />
+    <ClInclude Include="sincossampler.hpp" />
     <ClInclude Include="solidcolormat.hpp" />
-    <ClInclude Include="texture2d.hpp" />
+    <ClInclude Include="bmpsampler.hpp" />
     <ClInclude Include="shlight.hpp" />
     <ClInclude Include="sphere.hpp" />
     <ClInclude Include="scene.hpp" />

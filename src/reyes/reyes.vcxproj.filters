@@ -99,9 +99,6 @@
     <ClInclude Include="shlight.hpp">
       <Filter>app\reyes\lib\lights</Filter>
     </ClInclude>
-    <ClInclude Include="texture2d.hpp">
-      <Filter>app\reyes\lib\samplers</Filter>
-    </ClInclude>
     <ClInclude Include="depthmat.hpp">
       <Filter>app\reyes\lib\materials</Filter>
     </ClInclude>
@@ -120,14 +117,17 @@
     <ClInclude Include="samplermat.hpp">
       <Filter>app\reyes\lib\materials</Filter>
     </ClInclude>
-    <ClInclude Include="sincosshader.hpp">
-      <Filter>app\reyes\lib\samplers</Filter>
-    </ClInclude>
     <ClInclude Include="shape.hpp">
       <Filter>app\reyes</Filter>
     </ClInclude>
     <ClInclude Include="displacementmat.hpp">
       <Filter>app\reyes\lib\materials</Filter>
+    </ClInclude>
+    <ClInclude Include="bmpsampler.hpp">
+      <Filter>app\reyes\lib\samplers</Filter>
+    </ClInclude>
+    <ClInclude Include="sincossampler.hpp">
+      <Filter>app\reyes\lib\samplers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

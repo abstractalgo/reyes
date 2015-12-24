@@ -6,17 +6,14 @@ namespace reyes
 {
     namespace lib
     {
-        struct Texture2D : public Sampler
+        struct BMPSampler : public Sampler
         {
             uint16_t width, height;
             unsigned char* data;
 
-            Texture2D(uint16_t w, uint16_t h)
+            BMPSampler(uint16_t w, uint16_t h, const char* filename)
                 : width(w)
                 , height(h)
-            {}
-
-            bool loadBMP(const char* filename)
             {
                 unsigned char header[54];
                 size_t imageSize;
@@ -25,17 +22,17 @@ namespace reyes
                 // open the file
                 FILE * file = fopen(filename, "rb");
                 if (!file)
-                    return false;
+                    return;
                 if (fread(header, 1, 54, file) != 54)
-                    return false;
+                    return;
                 if (header[0] != 'B' || header[1] != 'M')
-                    return false;
+                    return;
 
                 // allocate data
                 imageSize = this->width * this->height * 3;
                 data = new unsigned char[imageSize];
                 if (!data)
-                    return false;
+                    return;
 
                 // read data
                 fread(data, 1, imageSize, file);
@@ -50,8 +47,6 @@ namespace reyes
                     data[3 * i + 0] = data[3 * i + 2];
                     data[3 * i + 2] = t;
                 }
-
-                return true;
             }
 
             color sample(uv uv)

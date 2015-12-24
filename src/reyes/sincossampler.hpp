@@ -6,7 +6,7 @@ namespace reyes
 {
     namespace lib
     {
-        struct SinCosShader : public Sampler
+        struct SinCosSampler : public Sampler
         {
             color sample(uv uv)
             {

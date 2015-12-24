@@ -22,7 +22,7 @@ current version v1.9
 - perspective camera
 - ~~dicing~~
 - ~~finalize quadrilaterals and triangles~~
-- ~~G-buffer~~ (***z-index arc***)
+- ~~G-buffer~~
 - ~~bounding and splitting~~
 - ~~improved memory management~~
 - ~~entire reyes pipeline~~
@@ -56,7 +56,7 @@ current version v1.9
 - Klein bottle
 - Newell teapot
 - SH light
-- more advanced rasterizer
+- more advanced rasterizer (?) (z-index arc)
 - dof
 - motion blur
 - A-buffer

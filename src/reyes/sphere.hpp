@@ -10,19 +10,14 @@ namespace reyes
         template<class MaterialTy>
         struct Sphere : public Shape<MaterialTy>
         {
-            float R;
-            vec3 center;
-
-            Sphere(vec3 c = { 0, 0, 0 }, float r = 1.0f)
-                : R(r)
-                , center(c)
+            Sphere()
             {}
 
             position P(uv uv)
             {
                 vec3 n = N(uv);
 
-                return n*R + center;
+                return n;
             }
 
             normal N(uv uv)
@@ -48,37 +43,7 @@ namespace reyes
                 {
                     mblks[i] = scene.alloc(sizeof(Sphere<MaterialTy>));
                     Sphere<MaterialTy>* p = ::new(mblks[i].ptr) Sphere<MaterialTy>;
-                    p->material.uniform = material.uniform;     // memory garbage
-                    p->center = center;
-                    p->R = R;
-                    if (0 == i)
-                    {
-                        p->start_u = start_u;
-                        p->end_u = (start_u + end_u)*0.5f;
-                        p->start_v = start_v;
-                        p->end_v = (start_v + end_v)*0.5f;
-                    }
-                    else if (1 == i)
-                    {
-                        p->start_u = (start_u + end_u)*0.5f;
-                        p->end_u = end_u;
-                        p->start_v = start_v;
-                        p->end_v = (start_v + end_v)*0.5f;
-                    }
-                    else if (2 == i)
-                    {
-                        p->start_u = start_u;
-                        p->end_u = (start_u + end_u)*0.5f;
-                        p->start_v = (start_v + end_v)*0.5f;
-                        p->end_v = end_v;
-                    }
-                    else if (3 == i)
-                    {
-                        p->start_u = (start_u + end_u)*0.5f;
-                        p->end_u = end_u;
-                        p->start_v = (start_v + end_v)*0.5f;
-                        p->end_v = end_v;
-                    }
+                    Shape<MaterialTy>::splitData(p, i);
                 }
             }
         };
