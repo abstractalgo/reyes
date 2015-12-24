@@ -6,20 +6,14 @@ namespace reyes
 {
     namespace lib
     {
-
         template<class MaterialTy>
         struct Sphere : public Shape<MaterialTy>
         {
-            Sphere()
-            {}
-
             position P(uv uv)
             {
                 vec3 n = N(uv);
-
                 return n;
             }
-
             normal N(uv uv)
             {
                 float theta = uv.x*2.0f*M_PI;
@@ -34,8 +28,6 @@ namespace reyes
 
                 return n;
             }
-
-
             void split(SplitDir direction, Scene& scene)
             {
                 mem::blk mblks[4];

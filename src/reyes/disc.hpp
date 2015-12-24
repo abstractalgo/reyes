@@ -8,9 +8,6 @@ namespace reyes {
         template<class MaterialTy>
         struct Disc : public Shape<MaterialTy>
         {
-            Disc()
-            {}
-
             normal N(uv uv)
             {
                 return vec3(0, 0, 1);
@@ -22,7 +19,6 @@ namespace reyes {
                 float l = uv.y;
                 return v*l;
             }
-
             void split(SplitDir direction, Scene& scene)
             {
                 mem::blk mblks[4];

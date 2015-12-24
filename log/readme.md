@@ -115,3 +115,12 @@ UPDATE: I've solved the precision issue, or whatever it is by completely ditchin
 Oh my God, that took a while. Reverse Z coordinate, re-clearing framebuffer after every rasterized primitive and ogl clipping were the "mistakes". Neither of those was really semantic error, but they oversaw some very simple and obvious assumptions. And I has serious problems with sphere geometry, and I'm yet to fix Klein bottle geometry. Here's one of the images during very long (several days) debug session.
 
 ![ibw4](ibw4.png "ibw4")
+
+***Dec 24, 2015***
+---
+
+Some of the transformations are working. I mean, they all are working, but I'm definitely too lazy to make sure 100% that they are correct and all that, but it seems fine. I managed to avoid cameras and matrices (still!). I am pretty happy with how things are going.
+
+Here's the image of the displaced sphere, cubic bezier patch, textured rectangle and uv-colored disc. Second image shows corresponding patches.
+
+![v2_shaded](v2_shaded.png "v2_shaded") ![v2_patches](v2_patches.png "v2_patches")

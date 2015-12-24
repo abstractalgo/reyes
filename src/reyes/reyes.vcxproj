@@ -82,6 +82,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="backend.hpp" />
+    <ClInclude Include="bezier16.hpp" />
     <ClInclude Include="camera.hpp" />
     <ClInclude Include="cpufilm.hpp" />
     <ClInclude Include="depthmat.hpp" />

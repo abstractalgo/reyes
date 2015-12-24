@@ -9,7 +9,7 @@
 #include <ctime>
 
 #define GR 8
-#define GRID_SHADE
+//#define GRID_SHADE
 #define GRID_TY_Tri
 
 #ifdef GRID_TY_Tri
@@ -81,15 +81,18 @@ namespace reyes
 #ifdef GRID_TY_Q
             grid = ::new(m.ptr) Microgrid(MicrogridType::QUAD, (GR + 1)*(GR + 1), GR*GR * 4);
 #endif
+
             float wu = (end_u - start_u) / (float)(GR);
             float wv = (end_v - start_v) / (float)(GR);
+            Vertex vx;
+            uint16_t idx;
+            uv _uv;
             // vertices
             for (uint16_t u = 0; u < GR+1; u++)
             for (uint16_t v = 0; v < GR + 1; v++)
             {
-                uv _uv(start_u + u*wu, start_v + v*wv);
-                uint16_t idx = v * (GR + 1) + u;
-                Vertex vx;
+                _uv = vec2(start_u + u*wu, start_v + v*wv);
+                idx = v * (GR + 1) + u;
 
                 // calculate model-world values
                 vx.uv = uv(start_u + u*wu, start_v + v*wv);
@@ -105,45 +108,36 @@ namespace reyes
                 vx.p.y *= transform.S.y;
                 vx.p.z *= transform.S.z;
                 // 2. rotate (XYZ order)
-                float Rx = transform.R.x;
-                float Ry = transform.R.y;
-                float Rz = transform.R.z;
-
                 // 1 0  0
                 // 0 c -s
                 // 0 s  c
-                //vx.p.y = vx.p.y*cos(Rx) + sin(Rx)*vx.p.z;
-                //vx.p.z = -vx.p.y*sin(Rx) + cos(Rx)*vx.p.z;
-                vx.p.y = vx.p.y*cos(Rx) - sin(Rx)*vx.p.z;
-                vx.p.z = vx.p.y*sin(Rx) + cos(Rx)*vx.p.z;
-
+                float Rx = transform.R.x;
+                vx.p.y = vx.p.y*cos(Rx) + sin(Rx)*vx.p.z;
+                vx.p.z = -vx.p.y*sin(Rx) + cos(Rx)*vx.p.z;
                 //  c 0 s
                 //  0 1 0
                 // -s 0 c
-                //vx.p.x = vx.p.x*cos(Ry) - sin(Ry)*vx.p.z;
-                //vx.p.z = vx.p.x*sin(Ry) + cos(Ry)*vx.p.z;
-                vx.p.x = vx.p.x*cos(Ry) + sin(Ry)*vx.p.z;
-                vx.p.z = -vx.p.x*sin(Ry) + cos(Ry)*vx.p.z;
-
+                float Ry = transform.R.y;
+                vx.p.x = vx.p.x*cos(Ry) - sin(Ry)*vx.p.z;
+                vx.p.z = vx.p.x*sin(Ry) + cos(Ry)*vx.p.z;
                 // c -s 0
                 // s  c 0
                 // 0  0 1
-                //vx.p.x = vx.p.x*cos(Rz) + sin(Rz)*vx.p.y;
-                //vx.p.y = -vx.p.y*sin(Rz) + cos(Rz)*vx.p.y;
-                vx.p.x = vx.p.x*cos(Rz) - sin(Rz)*vx.p.y;
-                vx.p.y = vx.p.y*sin(Rz) + cos(Rz)*vx.p.y;
+                float Rz = transform.R.z;
+                vx.p.x = vx.p.x*cos(Rz) + sin(Rz)*vx.p.y;
+                vx.p.y = -vx.p.x*sin(Rz) + cos(Rz)*vx.p.y;
                 // 3. translate
                 vx.p.x += transform.T.x;
                 vx.p.y += transform.T.y;
                 vx.p.z += transform.T.z;
 
                 // transform normal
-                vx.n.y = vx.n.y*cos(Rx) - sin(Rx)*vx.n.z;
-                vx.n.z = vx.n.y*sin(Rx) + cos(Rx)*vx.n.z;
-                vx.n.x = vx.n.x*cos(Ry) + sin(Ry)*vx.n.z;
-                vx.n.z = -vx.n.x*sin(Ry) + cos(Ry)*vx.n.z;
-                vx.n.x = vx.n.x*cos(Rz) - sin(Rz)*vx.n.y;
-                vx.n.y = vx.n.y*sin(Rz) + cos(Rz)*vx.n.y;
+                vx.n.y = vx.n.y*cos(Rx) + sin(Rx)*vx.n.z;
+                vx.n.z = -vx.n.y*sin(Rx) + cos(Rx)*vx.n.z;
+                vx.n.x = vx.n.x*cos(Ry) - sin(Ry)*vx.n.z;
+                vx.n.z = vx.n.x*sin(Ry) + cos(Ry)*vx.n.z;
+                vx.n.x = vx.n.x*cos(Rz) + sin(Rz)*vx.n.y;
+                vx.n.y = -vx.n.x*sin(Rz) + cos(Rz)*vx.n.y;
 
                 vx.n.x *= transform.S.x;
                 vx.n.y *= transform.S.y;

@@ -7,6 +7,7 @@
 #include "disc.hpp"
 #include "sphere.hpp"
 #include "klein.hpp"
+#include "bezier16.hpp"
 // materials
 #include "depthmat.hpp"
 #include "lambertmat.hpp"
@@ -14,7 +15,6 @@
 #include "solidcolormat.hpp"
 #include "uvmat.hpp"
 #include "samplermat.hpp"
-
 #include "displacementmat.hpp"
 // samplers
 #include "sincossampler.hpp"
@@ -29,32 +29,66 @@ void mainApp()
 {
     // REYES
     srand(time(NULL));
-    printf("REYES renderer v1.9\n");
+    printf("REYES renderer v1.95\n");
 
     // scene setup
     Scene scene;
 
-    MAKE_SHAPE(sphere, scene, reyes::lib::Sphere<lib::NormalColor>);
-    //sphere->material.uniform.sampler = new lib::SinCosShader;
-    sphere->transform.T = vec3(0, 0.5f, 0);
+    // test shapes
+    MAKE_SHAPE(sphere, scene, lib::Sphere<lib::DisplacementMat>);
+    sphere->material.uniform.sampler = new lib::SinCosSampler;
+    sphere->material.uniform.k = 0.1f;
+    sphere->transform.T = vec3(-0.5f, 0.5f, 0);
     sphere->transform.S = vec3(0.3f, 0.3f, 0.3f);
-    //sphere->transform.R.y = M_PI / 4.0f;
 
-    MAKE_SHAPE(square, scene, reyes::lib::Plane<lib::NormalColor>);
-    //square->material.uniform.sampler = new lib::BMPSampler(512, 512, "lena.bmp");
+    MAKE_SHAPE(square, scene, lib::Plane<lib::SamplerMat>);
+    square->material.uniform.sampler = new lib::BMPSampler(512, 512, "lena.bmp");
     square->transform.T = vec3(-0.5f, -0.5f, 0);
-    square->transform.R.x = 0.3;
+    square->transform.S = vec3(.9f, .9f, .9f);
 
-    MAKE_SHAPE(disc, scene, reyes::lib::Disc<lib::UVColor>);
+    MAKE_SHAPE(disc, scene, lib::Disc<lib::UVColor>);
     disc->transform.S = vec3(.5f, .5f, .5f);
     disc->transform.T = vec3( 0.5f, -0.5f, 0 );
-    disc->transform.R.x = M_PI / 4.0f;
-    disc->transform.R.y = M_PI / 4.0f;
+
+    vec3 control_points[16];
+    control_points[0] = vec3(-.75f, .75f, 0);
+    control_points[1] = vec3(-.25f, .75f, 0);
+    control_points[2] = vec3(.25f, .75f, 0);
+    control_points[3] = vec3(.75f, .75f, 0);
+
+    control_points[4] = vec3(-.75f, 0.25f);
+    control_points[5] = vec3(-.25f, 0.25f, 1);
+    control_points[6] = vec3(.25f, 0.25f, 1);
+    control_points[7] = vec3(.75f, 0.25f, 0);
+
+    control_points[8] = vec3(-.75f, -.25f, 0);
+    control_points[9] = vec3(-.25f, -.25f, 1);
+    control_points[10] = vec3(.25f, -.25f, 1);
+    control_points[11] = vec3(.75f, -.25f, 0);
+
+    control_points[12] = vec3(-.75f, -.75f, 0);
+    control_points[13] = vec3(-.25f, -.75f, 0);
+    control_points[14] = vec3(.25f, -.75f, 0);
+    control_points[15] = vec3(.75f, -.75f, 0);
+    MAKE_SHAPE(patch, scene, lib::Bezier16<lib::NormalColor>) (control_points);
+    patch->transform.R.y = M_PI *0.25f;
+    patch->transform.T = vec3(0.5f, 0.5f, 0);
+    patch->transform.S = vec3(.5f, .5f, .5f);
+
+
+    // box
+    /*MAKE_SHAPE(w1, scene, lib::Plane<lib::NormalColor>);
+    w1->transform.T = vec3(M_SQRT2 / 4.0f, 0, M_SQRT2 / 4.0f);
+    w1->transform.R.y = -M_PI / 4.0f;
+
+    MAKE_SHAPE(w2, scene, lib::Plane<lib::NormalColor>);
+    w2->transform.T = vec3(-M_SQRT2 / 4.0f, 0, M_SQRT2 / 4.0f);
+    w2->transform.R.y = M_PI / 4.0f;*/
 
     // camera setup
     Camera<OGLFilm, 480, 480> camera;
-    //camera.orthographic(-25, 25, -25, 25);
-    //camera.lookAt(/*eye*/ { 0, 0, -5 }, /*target*/ { 0, 0, 0 } /*up*/);
+    camera.perspective(45, 1, 0.1, 100);
+    camera.lookAt(/*eye*/ { 0, 5, 0 }, /*target*/ { 0, 0, 0 } /*up*/);
 
     // render
     reyes::render(scene, camera);

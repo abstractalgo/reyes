@@ -1,7 +1,7 @@
 # reyes
 reyes renderer
 
-current version v1.9
+current version v1.95
 
 ###TODO
 
@@ -18,8 +18,8 @@ current version v1.9
 
 ####v2.0
 
-- transformations (translate, rotate, scale, project)
-- perspective camera
+- camera (perspective and orthographic)
+- ~~transformations (translate, rotate, scale)~~
 - ~~dicing~~
 - ~~finalize quadrilaterals and triangles~~
 - ~~G-buffer~~
@@ -29,7 +29,7 @@ current version v1.9
 - geometry
     - ~~plane (aka quad)~~
     - ~~sphere~~
-    - bezier patch (cubic)
+    - ~~bezier patch (cubic)~~
 - ~~shading~~
     - ~~materials~~
         - ~~lambert~~

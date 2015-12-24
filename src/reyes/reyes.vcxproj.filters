@@ -129,5 +129,8 @@
     <ClInclude Include="sincossampler.hpp">
       <Filter>app\reyes\lib\samplers</Filter>
     </ClInclude>
+    <ClInclude Include="bezier16.hpp">
+      <Filter>app\reyes\lib\shapes</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

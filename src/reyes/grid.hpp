@@ -14,8 +14,6 @@ namespace reyes
         uint16_t vertCount;
         uint16_t indiCount;
         MicrogridType type;
-        static int cnt;
-        int id;
 
         Microgrid(MicrogridType _ty, uint16_t vcnt, uint16_t icnt)
             : type(_ty)
@@ -23,9 +21,7 @@ namespace reyes
             , indiCount(icnt)
             , vertices(new Vertex[vertCount])
             , indices(new Index[indiCount])
-        {
-            id = cnt++;
-        }
+        {}
 
         ~Microgrid()
         {
@@ -67,6 +63,4 @@ namespace reyes
             // TODO
         }
     };
-
-    int Microgrid::cnt = 0;
 }

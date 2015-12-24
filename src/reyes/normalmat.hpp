@@ -18,14 +18,14 @@ namespace reyes
 
             SHADE
             {
-                float nx = CLAMP(vertex.n.x, 0, 1);
+                /*float nx = CLAMP(vertex.n.x, 0, 1);
                 float ny = CLAMP(vertex.n.y, 0, 1);
                 float nz = CLAMP(vertex.n.z, 0, 1);
                 vec3 n(nx, ny, nz);
-                return{ n.x, n.y, n.z, 1 };
+                return{ n.x, n.y, n.z, 1 };*/
 
-                //vec3 n(vertex.n.x*0.5f + 0.5f, vertex.n.y*0.5f + 0.5f, vertex.n.z*0.5f + 0.5f);
-                //return{ n.x, n.y, n.z, 1 };
+                vec3 n(vertex.n.x*0.5f + 0.5f, vertex.n.y*0.5f + 0.5f, vertex.n.z*0.5f + 0.5f);
+                return{ n.x, n.y, n.z, 1 };
             }
         };
     }
