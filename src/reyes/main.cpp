@@ -16,6 +16,7 @@
 #include "samplermat.hpp"
 #include "sincosshader.hpp"
 #include "displacementmat.hpp"
+#include "texture2d.hpp"
 
 using namespace reyes;
 
@@ -26,13 +27,15 @@ void mainApp()
 {
     // REYES
     srand(time(NULL));
-    printf("REYES renderer v1.85\n");
+    printf("REYES renderer v1.9\n");
 
     // scene setup
     Scene scene;
     MAKE_SHAPE(ss, scene, reyes::lib::Sphere<lib::DisplacementMat>) ({ 0, 0.5f, 0 }, 0.3);
     ss->material.uniform.sampler = new lib::SinCosShader;
-    MAKE_SHAPE(a, scene, reyes::lib::Plane<lib::UVColor>) ({ -0.5f, -0.5f, 0 }, { 0.8f, 0.6f });
+    MAKE_SHAPE(a, scene, reyes::lib::Plane<lib::SamplerMat>) ({ -0.5f, -0.5f, 0 }, { 1,1 });
+    a->material.uniform.sampler = new lib::Texture2D(512, 512);
+    static_cast<lib::Texture2D*>(a->material.uniform.sampler)->loadBMP("lena.bmp");
 
     // camera setup
     Camera<OGLFilm, 480, 480> camera;

@@ -9,7 +9,9 @@
 #include <ctime>
 
 #define GR 8
+#define GRID_SHADE
 #define GRID_TY_Tri
+
 #ifdef GRID_TY_Tri
 #define GRID_TY_T
 #else
@@ -116,7 +118,11 @@ namespace reyes
             color rnd = { rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, 1 };
             for (uint16_t i = 0; i < (GR + 1)*((GR + 1)); i++)
             {
-                grid->vertices[i].c = rnd;// material.cShdr(grid->vertices[i]);
+#ifdef GRID_SHADE
+                grid->vertices[i].c = material.cShdr(grid->vertices[i]);
+#else
+                grid->vertices[i].c = rnd;
+#endif
             }
         }
     };

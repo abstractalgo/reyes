@@ -1,7 +1,7 @@
 # reyes
 reyes renderer
 
-current version v1.85
+current version v1.9
 
 ###TODO
 
@@ -30,16 +30,15 @@ current version v1.85
     - ~~plane (aka quad)~~
     - ~~sphere~~
     - bezier patch (cubic)
-        - newell teapot
 - ~~shading~~
-    - ~~matlib~~
+    - ~~materials~~
         - ~~lambert~~
         - ~~normal~~
         - ~~uv~~
         - ~~tex2d~~
-    - ~~resources~~
-        - ~~texture~~ (***untested yet***)
-        - ~~func. eval.~~ (displacement)
+    - ~~samplers~~
+        - ~~texture~~
+        - ~~func. eval. (displacement)~~
     - ~~lights~~
         - ~~directional~~
         - ~~point~~
@@ -52,9 +51,10 @@ current version v1.85
     - profiling
     - progress indicator
     - progressive (~~rendering in a window~~)
-- shadow mapping
 - even better memory managment
+- shadow mapping
 - Klein bottle
+- Newell teapot
 - SH light
 - more advanced rasterizer
 - dof
