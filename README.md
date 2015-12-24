@@ -26,7 +26,7 @@ current version v1.95
 - ~~bounding and splitting~~
 - ~~improved memory management~~
 - ~~entire reyes pipeline~~
-- geometry
+- ~~geometry~~
     - ~~plane (aka quad)~~
     - ~~sphere~~
     - ~~bezier patch (cubic)~~
