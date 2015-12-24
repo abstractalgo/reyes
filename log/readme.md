@@ -123,4 +123,8 @@ Some of the transformations are working. I mean, they all are working, but I'm d
 
 Here's the image of the displaced sphere, cubic bezier patch, textured rectangle and uv-colored disc. Second image shows corresponding patches.
 
-![v2_shaded](v2_shaded.png "v2_shaded") ![v2_patches](v2_patches.png "v2_patches")
+![cover](cover.png "cover")
+
+***cracks:*** does my renderer has cracks in the image? I would assume no, because when I split shape, I get surfaces that literally share all of the points along the edge. Because those edge vertices have exact same UV coordinates, then they would also displace/shade in exactly the same way. So there should be no discontinuities, as far as my logic is capable of deducing. So I think I am good with this as it is.
+
+***distorted micropolygons:*** however, large micropolys are still an issue. I just test to see it entire grid fits into threshold, but any of the actual polys could be spread across that entire area as far as I'm concerned. And that is not good, obviously. Very simple solution would be to check for each and every micropoly dimension, and determine the split direction if the exceeds a threshold. But currently I'm not concerned about that, and it doesn't really matter. However, it is fun to think about the problem. Another option would be to determine split direction for some primitive in the grid, but then split only that primitive (and not entire grid) and push additional shapes in some extra buffer for such cases. I would assume that problem of distorted/elongated/large micropolys is not that common, so buffer could be kept small, but that's just my guess.

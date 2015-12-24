@@ -92,8 +92,6 @@ namespace reyes
                 glEnd();
                 break;
             }
-
-            
         }
 
         ~OGLFilm()

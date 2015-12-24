@@ -93,6 +93,7 @@
     <ClInclude Include="film.hpp" />
     <ClInclude Include="klein.hpp" />
     <ClInclude Include="lambertmat.hpp" />
+    <ClInclude Include="litmat.hpp" />
     <ClInclude Include="normalmat.hpp" />
     <ClInclude Include="oglfilm.hpp" />
     <ClInclude Include="shape.hpp" />

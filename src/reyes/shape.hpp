@@ -9,7 +9,7 @@
 #include <ctime>
 
 #define GR 8
-//#define GRID_SHADE
+#define GRID_SHADE
 #define GRID_TY_Tri
 
 #ifdef GRID_TY_Tri

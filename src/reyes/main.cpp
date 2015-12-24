@@ -16,6 +16,7 @@
 #include "uvmat.hpp"
 #include "samplermat.hpp"
 #include "displacementmat.hpp"
+#include "litmat.hpp"
 // samplers
 #include "sincossampler.hpp"
 #include "bmpsampler.hpp"
@@ -75,15 +76,22 @@ void mainApp()
     patch->transform.T = vec3(0.5f, 0.5f, 0);
     patch->transform.S = vec3(.5f, .5f, .5f);
 
-
     // box
-    /*MAKE_SHAPE(w1, scene, lib::Plane<lib::NormalColor>);
+    /*MAKE_SHAPE(w1, scene, lib::Plane<lib::LitMat>);
+    w1->material.uniform.albedoMap  = new lib::BMPSampler(512, 512, "stone_albedo.bmp");
+    w1->material.uniform.normalMap  = new lib::BMPSampler(512, 512, "stone_normal.bmp");
+    w1->material.uniform.light      = new lib::DirectionalLight({ 1, 1, 1, 1 }, { 0, 1, 0 });
     w1->transform.T = vec3(M_SQRT2 / 4.0f, 0, M_SQRT2 / 4.0f);
     w1->transform.R.y = -M_PI / 4.0f;
+    w1->material.uniform.rot = w1->transform.R;
 
-    MAKE_SHAPE(w2, scene, lib::Plane<lib::NormalColor>);
+    MAKE_SHAPE(w2, scene, lib::Plane<lib::LitMat>);
+    w2->material.uniform.albedoMap  = w1->material.uniform.albedoMap;
+    w2->material.uniform.normalMap  = w1->material.uniform.normalMap;
+    w2->material.uniform.light      = w1->material.uniform.light;
     w2->transform.T = vec3(-M_SQRT2 / 4.0f, 0, M_SQRT2 / 4.0f);
-    w2->transform.R.y = M_PI / 4.0f;*/
+    w2->transform.R.y = M_PI / 4.0f;
+    w2->material.uniform.rot = w2->transform.R;*/
 
     // camera setup
     Camera<OGLFilm, 480, 480> camera;

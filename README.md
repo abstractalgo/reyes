@@ -1,6 +1,8 @@
 # reyes
 reyes renderer
 
+![cover](log/cover.png "cover")
+
 current version v1.95
 
 ###TODO
@@ -14,35 +16,21 @@ current version v1.95
 - ~~basic pipeline~~
 - ~~basic rasterizer~~
 
-![First render](log/reyes_first.png "First image")
-
 ####v2.0
 
 - camera (perspective and orthographic)
 - ~~transformations (translate, rotate, scale)~~
 - ~~dicing~~
+- ~~bounding and splitting~~
+- ~~entire reyes pipeline~~
 - ~~finalize quadrilaterals and triangles~~
 - ~~G-buffer~~
-- ~~bounding and splitting~~
-- ~~improved memory management~~
-- ~~entire reyes pipeline~~
-- ~~geometry~~
-    - ~~plane (aka quad)~~
-    - ~~sphere~~
-    - ~~bezier patch (cubic)~~
+- ~~improved memory management and speed~~
+- ~~geometry (plane, sphere, disc, cubic bezier patch)~~
 - ~~shading~~
-    - ~~materials~~
-        - ~~lambert~~
-        - ~~normal~~
-        - ~~uv~~
-        - ~~tex2d~~
-    - ~~samplers~~
-        - ~~texture~~
-        - ~~func. eval. (displacement)~~
-    - ~~lights~~
-        - ~~directional~~
-        - ~~point~~
-- normal-mapped, textured cube (***!challenge!***)
+    - ~~materials (lambert, normal, depth, uv, solid, textured)~~
+    - ~~samplers (bmp texture, func. eval.)~~
+    - ~~lights (directional, point)~~
 
 ####v3.0
 
@@ -63,15 +51,13 @@ current version v1.95
     - transparency support
     - inject optimizations
     - multisample buffer
-- material
-    - toon
-    - phong
+- materials (toon, phong, ggxD)
 - extra
     - additional post-processing effects
 
 ####v4.0
 
-- fix cracks
+- fix cracks (no need?)
 - fix elongated micropolygons
 - additional geometry
     - catmull-clark subdiv
@@ -98,3 +84,7 @@ current version v1.95
 ####v113A
 
 - full Renderman specification :D
+
+####challenge
+
+- normal-mapped, textured cube

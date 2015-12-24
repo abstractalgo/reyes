@@ -132,5 +132,8 @@
     <ClInclude Include="bezier16.hpp">
       <Filter>app\reyes\lib\shapes</Filter>
     </ClInclude>
+    <ClInclude Include="litmat.hpp">
+      <Filter>app\reyes\lib\materials</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
