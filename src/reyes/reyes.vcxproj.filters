@@ -135,5 +135,8 @@
     <ClInclude Include="litmat.hpp">
       <Filter>app\reyes\lib\materials</Filter>
     </ClInclude>
+    <ClInclude Include="teapot.hpp">
+      <Filter>app\reyes\lib\shapes</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

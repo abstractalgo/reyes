@@ -20,6 +20,7 @@
 // samplers
 #include "sincossampler.hpp"
 #include "bmpsampler.hpp"
+#include "teapot.hpp"
 
 using namespace reyes;
 
@@ -36,22 +37,48 @@ void mainApp()
     Scene scene;
 
     // test shapes
-    MAKE_SHAPE(sphere, scene, lib::Sphere<lib::DisplacementMat>);
-    sphere->material.uniform.sampler = new lib::SinCosSampler;
-    sphere->material.uniform.k = 0.1f;
-    sphere->transform.T = vec3(-0.5f, 0.5f, 0);
-    sphere->transform.S = vec3(0.3f, 0.3f, 0.3f);
+    {
+        // sphere
+        MAKE_SHAPE(sphere, scene, lib::Sphere<lib::DisplacementMat>);
+        sphere->material.uniform.sampler = new lib::SinCosSampler;
+        sphere->material.uniform.k = 0.1f;
+        sphere->transform.T = vec3(-0.5f, 0.5f, 0);
+        sphere->transform.S = vec3(0.3f, 0.3f, 0.3f);
 
-    MAKE_SHAPE(square, scene, lib::Plane<lib::SamplerMat>);
-    square->material.uniform.sampler = new lib::BMPSampler(512, 512, "lena.bmp");
-    square->transform.T = vec3(-0.5f, -0.5f, 0);
-    square->transform.S = vec3(.9f, .9f, .9f);
+        // textured plane
+        MAKE_SHAPE(square, scene, lib::Plane<lib::SamplerMat>);
+        square->material.uniform.sampler = new lib::BMPSampler(512, 512, "lena.bmp");
+        square->transform.T = vec3(-0.5f, -0.5f, 0);
+        square->transform.S = vec3(.8f, .8f, .8f);
+        square->transform.R.z = -0.2;
 
-    MAKE_SHAPE(disc, scene, lib::Disc<lib::UVColor>);
-    disc->transform.S = vec3(.5f, .5f, .5f);
-    disc->transform.T = vec3( 0.5f, -0.5f, 0 );
+        // textured teapot
+        lib::BMPSampler* tex = new lib::BMPSampler(512, 512, "stone_albedo.bmp");
+        lib::DirectionalLight* lig = new lib::DirectionalLight({ 1, 1, 1, 1 }, {1, 1, 0.5});
+        for (uint32_t i = 0; i < kTeapotNumPatches; i++)
+        {
+            vec3 control_points[16];
+            for (uint32_t vi = 0; vi < 16; vi++)
+            {
+                control_points[vi].x = teapotVertices[teapotPatches[i][vi] - 1][0];
+                control_points[vi].z = teapotVertices[teapotPatches[i][vi] - 1][1];
+                control_points[vi].y = teapotVertices[teapotPatches[i][vi] - 1][2];
+            }
+            MAKE_SHAPE(patch, scene, lib::Bezier16<lib::Lambert>) (control_points);
+            patch->material.uniform.texture = tex;
+            patch->material.uniform.light = lig;
+            patch->transform.S = vec3(0.15f, 0.15f, 0.15f);
+            patch->transform.T = vec3(0.45f, 0.3f, 0);
+            //patch->transform.R.x = M_PI * 0.3f;
+        }
 
-    vec3 control_points[16];
+        // uv disc
+        MAKE_SHAPE(disc, scene, lib::Disc<lib::UVColor>);
+        disc->transform.S = vec3(.4f, .4f, .4f);
+        disc->transform.T = vec3(0.5f, -0.5f, 0);
+    }
+
+    /*vec3 control_points[16];
     control_points[0] = vec3(-.75f, .75f, 0);
     control_points[1] = vec3(-.25f, .75f, 0);
     control_points[2] = vec3(.25f, .75f, 0);
@@ -74,24 +101,26 @@ void mainApp()
     MAKE_SHAPE(patch, scene, lib::Bezier16<lib::NormalColor>) (control_points);
     patch->transform.R.y = M_PI *0.25f;
     patch->transform.T = vec3(0.5f, 0.5f, 0);
-    patch->transform.S = vec3(.5f, .5f, .5f);
+    patch->transform.S = vec3(.5f, .5f, .5f);*/
 
     // box
-    /*MAKE_SHAPE(w1, scene, lib::Plane<lib::LitMat>);
-    w1->material.uniform.albedoMap  = new lib::BMPSampler(512, 512, "stone_albedo.bmp");
-    w1->material.uniform.normalMap  = new lib::BMPSampler(512, 512, "stone_normal.bmp");
-    w1->material.uniform.light      = new lib::DirectionalLight({ 1, 1, 1, 1 }, { 0, 1, 0 });
-    w1->transform.T = vec3(M_SQRT2 / 4.0f, 0, M_SQRT2 / 4.0f);
-    w1->transform.R.y = -M_PI / 4.0f;
-    w1->material.uniform.rot = w1->transform.R;
+    {
+        /*MAKE_SHAPE(w1, scene, lib::Plane<lib::LitMat>);
+        w1->material.uniform.albedoMap  = new lib::BMPSampler(512, 512, "stone_albedo.bmp");
+        w1->material.uniform.normalMap  = new lib::BMPSampler(512, 512, "stone_normal.bmp");
+        w1->material.uniform.light      = new lib::DirectionalLight({ 1, 1, 1, 1 }, { 0, 1, 0 });
+        w1->transform.T = vec3(M_SQRT2 / 4.0f, 0, M_SQRT2 / 4.0f);
+        w1->transform.R.y = -M_PI / 4.0f;
+        w1->material.uniform.rot = w1->transform.R;
 
-    MAKE_SHAPE(w2, scene, lib::Plane<lib::LitMat>);
-    w2->material.uniform.albedoMap  = w1->material.uniform.albedoMap;
-    w2->material.uniform.normalMap  = w1->material.uniform.normalMap;
-    w2->material.uniform.light      = w1->material.uniform.light;
-    w2->transform.T = vec3(-M_SQRT2 / 4.0f, 0, M_SQRT2 / 4.0f);
-    w2->transform.R.y = M_PI / 4.0f;
-    w2->material.uniform.rot = w2->transform.R;*/
+        MAKE_SHAPE(w2, scene, lib::Plane<lib::LitMat>);
+        w2->material.uniform.albedoMap  = w1->material.uniform.albedoMap;
+        w2->material.uniform.normalMap  = w1->material.uniform.normalMap;
+        w2->material.uniform.light      = w1->material.uniform.light;
+        w2->transform.T = vec3(-M_SQRT2 / 4.0f, 0, M_SQRT2 / 4.0f);
+        w2->transform.R.y = M_PI / 4.0f;
+        w2->material.uniform.rot = w2->transform.R;*/
+    }
 
     // camera setup
     Camera<OGLFilm, 480, 480> camera;

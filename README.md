@@ -42,7 +42,7 @@ current version v1.95
 - even better memory managment
 - shadow mapping
 - Klein bottle
-- Newell teapot
+~~- Newell teapot~~
 - SH light
 - more advanced rasterizer (?) (z-index arc)
 - dof

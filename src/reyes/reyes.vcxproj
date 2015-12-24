@@ -110,6 +110,7 @@
     <ClInclude Include="mem.hpp" />
     <ClInclude Include="pipeline.hpp" />
     <ClInclude Include="primitive.hpp" />
+    <ClInclude Include="teapot.hpp" />
     <ClInclude Include="uvmat.hpp" />
     <ClInclude Include="vecmx.hpp" />
   </ItemGroup>
