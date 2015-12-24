@@ -7,7 +7,7 @@ current version v1.95
 
 ###TODO
 
-####v1.0
+####v1.0 rock
 
 - ~~basic buffer (1 sample per pixel)~~
 - ~~no bucketing~~
@@ -16,7 +16,7 @@ current version v1.95
 - ~~basic pipeline~~
 - ~~basic rasterizer~~
 
-####v2.0
+####v2.0 dragonfly
 
 - camera (perspective and orthographic)
 - ~~transformations (translate, rotate, scale)~~
@@ -26,59 +26,51 @@ current version v1.95
 - ~~finalize quadrilaterals and triangles~~
 - ~~G-buffer~~
 - ~~improved memory management and speed~~
-- ~~geometry (plane, sphere, disc, cubic bezier patch)~~
-- ~~shading~~
-    - ~~materials (lambert, normal, depth, uv, solid, textured)~~
-    - ~~samplers (bmp texture, func. eval.)~~
-    - ~~lights (directional, point)~~
+- geometry: ~~plane~~, ~~sphere~~, ~~disc~~, ~~cubic bezier patch~~, ~~Utah teapot~~, Klein bottle
+- ~~materials~~
+- ~~samplers~~
+- lights: ~~directional~~, ~~point~~, SH
 
-####v3.0
+####v3.0 nautilus
 
 - threaded renderer
-- perf
-    - profiling
-    - progress indicator
-    - progressive (~~rendering in a window~~)
+- profiling
 - even better memory managment
-- shadow mapping
-- Klein bottle
-~~- Newell teapot~~
-- SH light
-- more advanced rasterizer (?) (z-index arc)
-- dof
-- motion blur
 - A-buffer
+    - stochastic (multi)sampling
     - transparency support
     - inject optimizations
-    - multisample buffer
-- materials (toon, phong, ggxD)
-- extra
-    - additional post-processing effects
+- dof
+- motion blur
+- bucketing
+- task (job) manager
+- (more advanced rasterizer)
+- (progress indicator)
 
-####v4.0
+####v4.0 cheetah
+
+- (GP)GPU implementation
+- (pseudo) real-time
+
+####v5.0 alien
 
 - fix cracks (no need?)
 - fix elongated micropolygons
+- dice criterium different
+- dynamic dicing
+
+####v6.0 bambi (totally irrelevant)
+
+- shadow mapping
+- extra
+    - additional post-processing effects
+- animation
+- materials (toon, phong, ggxD)
 - additional geometry
     - catmull-clark subdiv
     - more bezier
     - nurbs (b-spline)
     - loop subdiv
-
-####v5.0 
-
-- bucketing
-- task (job) manager
-
-####v6.0
-
-- (GP)GPU implementation
-- job affinity selection
-- (pseudo) real-time
-
-####v7.0
-
-- animation
 - ~~shading language~~ (***needs to be more flexible***)
 
 ####v113A
