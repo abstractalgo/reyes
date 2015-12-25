@@ -19,6 +19,11 @@
 - Real-time Stochastic Rasterization on Conventional GPU Architectures, McGuire et al. (paper)
 - Toward a Blurry Rasterizer, Jacob Munkberg (slides, SIGGRAPH 2011)
 
+####bezier surfaces
+
+- scratchapixel, http://scratchapixel.com/lessons/advanced-rendering/bezier-curve-rendering-utah-teapot/bezier-surface
+- Philip Rideout, http://prideout.net/blog/?p=46#patch
+
 ####towards raytracing of subdivision surfaces
 
 - Direct ray tracing of full-featured subdivison surfaces using Bezier clipping, Takahito Tejima et al. (paper, @jcgt)
