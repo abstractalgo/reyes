@@ -138,5 +138,8 @@
     <ClInclude Include="teapot.hpp">
       <Filter>app\reyes\lib\shapes</Filter>
     </ClInclude>
+    <ClInclude Include="mat.hpp">
+      <Filter>app\reyes</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

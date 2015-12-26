@@ -157,22 +157,3 @@ struct ParametricSurface : public Shape<MatTy, VertexTy>
         // raspodeli uv
     }
 };
-
-/*
-
-ParametricSurface<USE_MAT(Lambert)> oblik;
-ParametricSurface<USE_MAT(SolidColor)> kugla;
-oblik.dice();
-oblik.shade();
-AbstractShape* shapes[2];
-shapes[0] = &oblik;
-shapes[1] = &kugla;
-
-for (uint16_t i = 0; i < 2; i++)
-{
-    shapes[i]->dice();
-    shapes[i]->split();
-    shapes[i]->shade();
-    shapes[i]->rasterize(0);
-}
-*/
