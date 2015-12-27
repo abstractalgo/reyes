@@ -15,27 +15,18 @@ namespace reyes
         return (size.x > threshold.x || size.y > threshold.y);
     }
 
-    struct ShapeI
+    struct Shape
     {
         float start_u, end_u, start_v, end_v;
         Microgrid grid;
+        Material* material;
 
-        ShapeI()
+        Shape()
             : start_u(0)
             , end_u(1)
             , start_v(0)
             , end_v(1)
         {}
-
-        virtual void split(Scene& scene) = 0;
-        virtual void dice(void) = 0;
-        virtual void shade(void) = 0;
-    };
-
-    template<class MaterialTy>
-    struct Shape : public ShapeI
-    {
-        MaterialTy* material;
 
         void dice(void)
         {
@@ -57,7 +48,7 @@ namespace reyes
             }
         }
 
-        void splitData(Shape<MaterialTy>* shp, char i)
+        void splitData(Shape* shp, char i)
         {
             shp->material = material;
             if (0 == i)

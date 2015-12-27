@@ -5,8 +5,7 @@
 namespace reyes {
     namespace lib {
 
-        template<class MaterialTy>
-        struct Disc : public Shape<MaterialTy>
+        struct Disc : public Shape
         {
             normal N(uv uv)
             {
@@ -24,9 +23,9 @@ namespace reyes {
                 mem::blk mblks[4];
                 for (char i = 0; i < 4; i++)
                 {
-                    mblks[i] = scene.alloc(sizeof(Disc<MaterialTy>));
-                    Disc<MaterialTy>* p = ::new(mblks[i].ptr) Disc<MaterialTy>;
-                    Shape<MaterialTy>::splitData(p, i);
+                    mblks[i] = scene.alloc(sizeof(Disc));
+                    Disc* p = ::new(mblks[i].ptr) Disc;
+                    Shape::splitData(p, i);
                 }
                 
             }

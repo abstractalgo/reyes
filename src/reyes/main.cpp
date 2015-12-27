@@ -58,9 +58,10 @@ void mainApp()
     //sphere->transform.S = vec3(0.3f, 0.3f, 0.3f);
 
     // textured plane
-    MAKE_SHAPE(square, scene, lib::Plane<lib::SamplerMat>);
+    /*MAKE_SHAPE(square, scene, lib::Plane<lib::SamplerMat>);
     square->material = &sq_mat;
-    square->material->uniform.sampler = &lena_sampler;
+    square->material->uniform.sampler = &lena_sampler;*/
+
     //square->transform.T = vec3(-0.5f, -0.5f, 0);
     //square->transform.S = vec3(.8f, .8f, .8f);
     //square->transform.R.z = -0.2;
@@ -85,8 +86,8 @@ void mainApp()
     //}
 
     //// uv disc
-    //MAKE_SHAPE(disc, scene, lib::Disc<lib::UVColor>);
-    //disc->material = &uv_mat;
+    MAKE_SHAPE(disc, scene, lib::Disc);
+    disc->material = &uv_mat;
     //disc->transform.S = vec3(.4f, .4f, .4f);
     //disc->transform.T = vec3(0.5f, -0.5f, 0);
 

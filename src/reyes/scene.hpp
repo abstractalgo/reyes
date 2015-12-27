@@ -35,4 +35,6 @@ namespace reyes
             return allocations.top > 0;
         }
     };
+
+    //typedef mem::StaticObjectStack<char, 1 << 20> Scene;
 }

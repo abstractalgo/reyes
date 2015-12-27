@@ -6,8 +6,7 @@ namespace reyes
 {
     namespace lib
     {
-        template<class MaterialTy>
-        struct Plane : public Shape<MaterialTy>
+        struct Plane : public Shape
         {
             normal N(uv uv)
             {
@@ -22,9 +21,9 @@ namespace reyes
                 mem::blk mblks[4];
                 for (char i = 0; i < 4; i++)
                 {
-                    mblks[i] = scene.alloc(sizeof(Plane<MaterialTy>));
-                    Plane<MaterialTy>* p = ::new(mblks[i].ptr) Plane<MaterialTy>;
-                    Shape<MaterialTy>::splitData(p, i);
+                    mblks[i] = scene.alloc(sizeof(Plane));
+                    Plane* p = ::new(mblks[i].ptr) Plane;
+                    Shape::splitData(p, i);
                 }
             }
         };

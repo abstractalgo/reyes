@@ -4,9 +4,7 @@
 
 namespace reyes {
     namespace lib {
-
-        template<class MaterialTy>
-        struct Bezier16 : public Shape<MaterialTy>
+        struct Bezier16 : public Shape
         {
             vec3 points[16];
             Bezier16(const vec3* _p=0)
@@ -62,17 +60,16 @@ namespace reyes {
                 mem::blk mblks[4];
                 for (char i = 0; i < 4; i++)
                 {
-                    mblks[i] = scene.alloc(sizeof(Bezier16<MaterialTy>));
-                    Bezier16<MaterialTy>* p = ::new(mblks[i].ptr) Bezier16<MaterialTy>;
+                    mblks[i] = scene.alloc(sizeof(Bezier16));
+                    Bezier16* p = ::new(mblks[i].ptr) Bezier16;
                     for (char i = 0; i < 16; i++)
                     {
                         p->points[i].x = points[i].x;
                         p->points[i].y = points[i].y;
                         p->points[i].z = points[i].z;
                     }
-                    Shape<MaterialTy>::splitData(p, i);
+                    Shape::splitData(p, i);
                 }
-
             }
         };
     }

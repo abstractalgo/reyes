@@ -4,6 +4,7 @@
 #include <cmath>
 #include "color.hpp"
 #include "settings.hpp"
+#include "mem.hpp"
 
 namespace reyes
 {

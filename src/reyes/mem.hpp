@@ -269,6 +269,58 @@ namespace reyes
             }
         };
 
+        template<class ObjTy, size_t capacity>
+        struct StaticObjectStack
+        {
+            // ....[ Object_n-1 ][ size_n-1 ][ Object_n ][ size_n ]
+            // ....................................................^ top
+
+            char data[capacity];
+            char* top;
+
+            StaticObjectStack()
+                : top(data)
+            {}
+            void* alloc(size_t size)
+            {
+                if (size + sizeof(size_t) > data + capacity - top)
+                    return nullptr;
+
+                void* mem = static_cast<void*>(top);
+                size_t* sz_ptr = (size_t*)(top += size);
+                *sz_ptr = size;
+                top += sizeof(size_t);
+                return mem;
+            }
+            ObjTy* pop(void)
+            {
+                if (!size()) return 0;
+                size_t size = *(size_t*)(top -= sizeof(size_t));
+                top -= size;
+                return (ObjTy*)(top);
+            }
+            ObjTy* get(char* ptr)
+            {
+                if (ptr == data) return 0;
+                size_t size = *(size_t*)(ptr -= sizeof(size_t));
+                ptr -= size;
+                return (ObjTy*)(ptr);
+            }
+            size_t size() const
+            {
+                return top - data;
+            }
+            operator bool(void) const
+            {
+                return size() > 0;
+            }
+            ~StaticObjectStack()
+            {
+                assert(data == top);
+                delete[] data;
+            }
+        };
+
         template<class ItemTy, size_t size>
         struct Stack
         {
@@ -329,5 +381,43 @@ namespace reyes
 //                return m;
 //            }
 //        };
+
+        template<class SlotTy, int slotCount>
+        struct Pool
+        {
+            SlotTy data[slotCount];
+            int freeList[slotCount]; // can be optimized to reuse
+            int freeHead;
+            int freeCnt;
+
+            Pool()
+                : freeHead(0)
+                , freeCnt(slotCount)
+            {
+                for (int i = 0; i < slotCount - 1; i++)
+                    freeList[i] = i + 1;
+                freeList[slotCount-1] = -1;
+            }
+
+            SlotTy* getFree(void)
+            {
+                if (freeHead < 0)
+                    return 0;
+                int idx = freeHead;
+                freeHead = freeList[freeHead];
+                return data + idx;
+            }
+
+            void free(int idx)
+            {
+                freeList[idx] = freeHead;
+                freeHead = idx;
+            }
+
+            ~Pool()
+            {
+                //assert()
+            }
+        };
     }
 }

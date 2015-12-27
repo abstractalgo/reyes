@@ -6,8 +6,7 @@ namespace reyes
 {
     namespace lib
     {
-        template<class MaterialTy>
-        struct Sphere : public Shape<MaterialTy>
+        struct Sphere : public Shape
         {
             position P(uv uv)
             {
@@ -33,9 +32,9 @@ namespace reyes
                 mem::blk mblks[4];
                 for (char i = 0; i < 4; i++)
                 {
-                    mblks[i] = scene.alloc(sizeof(Sphere<MaterialTy>));
-                    Sphere<MaterialTy>* p = ::new(mblks[i].ptr) Sphere<MaterialTy>;
-                    Shape<MaterialTy>::splitData(p, i);
+                    mblks[i] = scene.alloc(sizeof(Sphere));
+                    Sphere* p = ::new(mblks[i].ptr) Sphere;
+                    Shape::splitData(p, i);
                 }
             }
         };
