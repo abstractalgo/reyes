@@ -6,9 +6,7 @@
 #include "scene.hpp"
 #include <cstdlib>
 #include <ctime>
-
-#define DEBUG_GRID
-#define DEBUG_PRIM
+#include "settings.hpp"
 
 namespace reyes
 {

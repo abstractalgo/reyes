@@ -141,5 +141,8 @@
     <ClInclude Include="mat.hpp">
       <Filter>app\reyes</Filter>
     </ClInclude>
+    <ClInclude Include="settings.hpp">
+      <Filter>app\reyes</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

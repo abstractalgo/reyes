@@ -5,11 +5,10 @@
 #include "shape.hpp"
 #include "grid.hpp"
 #include "camera.hpp"
+#include "settings.hpp"
 
 namespace reyes
 {
-    static const vec2 RASTER_THRESHOLD = { 16, 16 };
-
     template<class FilmTy, uint16_t width, uint16_t height>
     void render(Scene& scene, Camera<FilmTy, width, height>& camera)
     {

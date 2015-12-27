@@ -3,22 +3,7 @@
 #include <cstdint>
 #include <cmath>
 #include "color.hpp"
-
-#define TRIANGLE_GRID 0
-#define QUAD_GRID 1
-// ---- <options> ----------------------------
-#define GRID_DIM 2
-#define GRID_TYPE QUAD_GRID
-// ---- </options> ----------------------------
-#define GRID_SIZE ((GRID_DIM + 1)*(GRID_DIM + 1))
-#if GRID_TYPE==TRIANGLE_GRID
-#define GRID_IDX_SIZE GRID_DIM*GRID_DIM * 6
-#define GRID_PRIM_SIZE GRID_DIM*GRID_DIM*2
-#else
-#define GRID_IDX_SIZE GRID_DIM*GRID_DIM * 4
-#define GRID_PRIM_SIZE GRID_DIM*GRID_DIM
-#endif
-
+#include "settings.hpp"
 
 namespace reyes
 {
