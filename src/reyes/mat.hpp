@@ -168,3 +168,59 @@ shapes[i]->split();
 shapes[i]->shade();
 shapes[i]->rasterize(0);
 }*/
+
+/*
+// calculate model-world values
+vx.uv = uv(start_u + u*wu, start_v + v*wv);
+vx.p = P(_uv);
+vx.n = N(_uv);
+vx.p = material.pShdr(vx);
+
+// TODO transformations: model, view, projection
+
+// transform vertex
+// 1. scale
+vx.p.x *= transform.S.x;
+vx.p.y *= transform.S.y;
+vx.p.z *= transform.S.z;
+// 2. rotate (XYZ order)
+// 1 0  0
+// 0 c -s
+// 0 s  c
+float Rx = transform.R.x;
+vx.p.y = vx.p.y*cos(Rx) + sin(Rx)*vx.p.z;
+vx.p.z = -vx.p.y*sin(Rx) + cos(Rx)*vx.p.z;
+//  c 0 s
+//  0 1 0
+// -s 0 c
+float Ry = transform.R.y;
+vx.p.x = vx.p.x*cos(Ry) - sin(Ry)*vx.p.z;
+vx.p.z = vx.p.x*sin(Ry) + cos(Ry)*vx.p.z;
+// c -s 0
+// s  c 0
+// 0  0 1
+float Rz = transform.R.z;
+vx.p.x = vx.p.x*cos(Rz) + sin(Rz)*vx.p.y;
+vx.p.y = -vx.p.x*sin(Rz) + cos(Rz)*vx.p.y;
+// 3. translate
+vx.p.x += transform.T.x;
+vx.p.y += transform.T.y;
+vx.p.z += transform.T.z;
+
+// transform normal
+vx.n.y = vx.n.y*cos(Rx) + sin(Rx)*vx.n.z;
+vx.n.z = -vx.n.y*sin(Rx) + cos(Rx)*vx.n.z;
+vx.n.x = vx.n.x*cos(Ry) - sin(Ry)*vx.n.z;
+vx.n.z = vx.n.x*sin(Ry) + cos(Ry)*vx.n.z;
+vx.n.x = vx.n.x*cos(Rz) + sin(Rz)*vx.n.y;
+vx.n.y = -vx.n.x*sin(Rz) + cos(Rz)*vx.n.y;
+
+vx.n.x *= transform.S.x;
+vx.n.y *= transform.S.y;
+vx.n.z *= transform.S.z;
+
+vx.n.normalize();
+
+
+grid->vertices[idx] = vx;
+*/

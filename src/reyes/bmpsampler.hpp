@@ -66,6 +66,11 @@ namespace reyes
                 unsigned char B = data[3 * offset + 2];
                 return{ R / 255.0f, G / 255.0f, B / 255.0f, 1.0f };
             }
+
+            ~BMPSampler()
+            {
+                delete[] data;
+            }
         };
     }
 }

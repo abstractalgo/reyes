@@ -1,7 +1,7 @@
 #pragma once 
 
 #include "vecmx.hpp"
-#include "grid.hpp"
+#include "shape.hpp"
 #include "color.hpp"
 #include <cstring>
 #include <cstdint>

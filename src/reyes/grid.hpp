@@ -6,17 +6,17 @@
 
 #define TRIANGLE_GRID 0
 #define QUAD_GRID 1
-// <options>
-#define GRID_DIM 8
-#define GRID_TYPE TRIANGLE_GRID
-// </options>
+// ---- <options> ----------------------------
+#define GRID_DIM 2
+#define GRID_TYPE QUAD_GRID
+// ---- </options> ----------------------------
 #define GRID_SIZE ((GRID_DIM + 1)*(GRID_DIM + 1))
 #if GRID_TYPE==TRIANGLE_GRID
 #define GRID_IDX_SIZE GRID_DIM*GRID_DIM * 6
 #define GRID_PRIM_SIZE GRID_DIM*GRID_DIM*2
 #else
 #define GRID_IDX_SIZE GRID_DIM*GRID_DIM * 4
-#define GRID_PRIM_SIZE GRID_DIM*GRID_DIM*2
+#define GRID_PRIM_SIZE GRID_DIM*GRID_DIM
 #endif
 
 
@@ -32,10 +32,6 @@ namespace reyes
             for (uint16_t v = 0; v < GRID_DIM; v++)
             for (uint16_t u = 0; u < GRID_DIM; u++)
             {
-                // A: v * 9 + u
-                // B: v * 9 + u + 1
-                // C: v * 9 + 9 + u + 1
-                // D: v * 9 + 9 + u
 #if GRID_TYPE==TRIANGLE_GRID
                 // ADB
                 indices[v * (GRID_DIM * 6) + u * 6 + 0] = (v * (GRID_DIM + 1)) + (u);

@@ -19,7 +19,8 @@ namespace reyes
 
             SHADE
             {
-                return uniform.sampler->sample(vertex.uv);
+                color c = uniform.sampler->sample(vertex.uv);
+                return color(c.r*vertex.uv.x, c.g*vertex.uv.y, c.g, 1);
             }
         };
     }

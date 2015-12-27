@@ -37,59 +37,58 @@ void mainApp()
     Scene scene;
 
     // test shapes
-    {
-        lib::DisplacementMat* sp_mat    = new lib::DisplacementMat;
-        lib::SamplerMat* sq_mat         = new lib::SamplerMat;
-        lib::Lambert* teapot_mat        = new lib::Lambert;
-        lib::UVColor* uv_mat            = new lib::UVColor;
-        lib::SinCosSampler* sc_sampler  = new lib::SinCosSampler;
-        lib::BMPSampler* lena_sampler   = new lib::BMPSampler(512, 512, "lena.bmp");
-        lib::BMPSampler* stone_sampler  = new lib::BMPSampler(512, 512, "stone_albedo.bmp");
-        lib::DirectionalLight* dir_lig  = new lib::DirectionalLight({ 1, 1, 1, 1 }, { 1, 1, 0.5 });
+    // materials
+    lib::DisplacementMat sp_mat;
+    lib::SamplerMat sq_mat;
+    lib::Lambert teapot_mat;
+    lib::UVColor uv_mat;
+    // samplers
+    lib::SinCosSampler sc_sampler;
+    lib::BMPSampler lena_sampler(512, 512, "lena.bmp");
+    lib::BMPSampler stone_sampler(512, 512, "stone_albedo.bmp");
+    //light
+    lib::DirectionalLight dir_lig({ 1, 1, 1, 1 }, { 1, 1, 0.5 });
 
-        // sphere
-        MAKE_SHAPE(sphere, scene, lib::Sphere<lib::DisplacementMat>);
-        sphere->material = sp_mat;
-        sphere->material->uniform.sampler = sc_sampler;
-        sphere->material->uniform.k = 0.1f;
-        //sphere->transform.T = vec3(-0.5f, 0.5f, 0);
-        //sphere->transform.S = vec3(0.3f, 0.3f, 0.3f);
+    // sphere
+    /*MAKE_SHAPE(sphere, scene, lib::Sphere<lib::DisplacementMat>);
+    sphere->material = &sp_mat;
+    sphere->material->uniform.sampler = &sc_sampler;
+    sphere->material->uniform.k = 0.1f;*/
+    //sphere->transform.T = vec3(-0.5f, 0.5f, 0);
+    //sphere->transform.S = vec3(0.3f, 0.3f, 0.3f);
 
-        // textured plane
-        MAKE_SHAPE(square, scene, lib::Plane<lib::SamplerMat>);
-        square->material = sq_mat;
-        square->material->uniform.sampler = lena_sampler;
-        //square->transform.T = vec3(-0.5f, -0.5f, 0);
-        //square->transform.S = vec3(.8f, .8f, .8f);
-        //square->transform.R.z = -0.2;
+    // textured plane
+    MAKE_SHAPE(square, scene, lib::Plane<lib::SamplerMat>);
+    square->material = &sq_mat;
+    square->material->uniform.sampler = &lena_sampler;
+    //square->transform.T = vec3(-0.5f, -0.5f, 0);
+    //square->transform.S = vec3(.8f, .8f, .8f);
+    //square->transform.R.z = -0.2;
 
-        // textured teapot
-        lib::BMPSampler* tex = stone_sampler;
-        
-        for (uint32_t i = 0; i < kTeapotNumPatches; i++)
-        {
-            vec3 control_points[16];
-            for (uint32_t vi = 0; vi < 16; vi++)
-            {
-                control_points[vi].x = teapotVertices[teapotPatches[i][vi] - 1][0];
-                control_points[vi].z = teapotVertices[teapotPatches[i][vi] - 1][1];
-                control_points[vi].y = teapotVertices[teapotPatches[i][vi] - 1][2];
-            }
-            MAKE_SHAPE(patch, scene, lib::Bezier16<lib::Lambert>) (control_points);
-            patch->material = teapot_mat;
-            patch->material->uniform.texture = tex;
-            patch->material->uniform.light = dir_lig;
-            //patch->transform.S = vec3(0.15f, 0.15f, 0.15f);
-            //patch->transform.T = vec3(0.45f, 0.3f, 0);
-            //patch->transform.R.x = M_PI * 0.3f;
-        }
+    // textured teapot        
+    //for (uint32_t i = 0; i < kTeapotNumPatches; i++)
+    //{
+    //    vec3 control_points[16];
+    //    for (uint32_t vi = 0; vi < 16; vi++)
+    //    {
+    //        control_points[vi].x = teapotVertices[teapotPatches[i][vi] - 1][0] *0.3f;
+    //        control_points[vi].z = teapotVertices[teapotPatches[i][vi] - 1][1] * 0.3f;
+    //        control_points[vi].y = teapotVertices[teapotPatches[i][vi] - 1][2] * 0.3f;
+    //    }
+    //    MAKE_SHAPE(patch, scene, lib::Bezier16<lib::Lambert>) (control_points);
+    //    patch->material = &teapot_mat;
+    //    patch->material->uniform.texture = &stone_sampler;
+    //    patch->material->uniform.light = &dir_lig;
+    //    //patch->transform.S = vec3(0.15f, 0.15f, 0.15f);
+    //    //patch->transform.T = vec3(0.45f, 0.3f, 0);
+    //    //patch->transform.R.x = M_PI * 0.3f;
+    //}
 
-        // uv disc
-        MAKE_SHAPE(disc, scene, lib::Disc<lib::UVColor>);
-        disc->material = uv_mat;
-        //disc->transform.S = vec3(.4f, .4f, .4f);
-        //disc->transform.T = vec3(0.5f, -0.5f, 0);
-    }
+    //// uv disc
+    //MAKE_SHAPE(disc, scene, lib::Disc<lib::UVColor>);
+    //disc->material = &uv_mat;
+    //disc->transform.S = vec3(.4f, .4f, .4f);
+    //disc->transform.T = vec3(0.5f, -0.5f, 0);
 
     /*vec3 control_points[16];
     control_points[0] = vec3(-.75f, .75f, 0);

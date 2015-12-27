@@ -46,37 +46,75 @@ namespace reyes
                 glBegin(GL_TRIANGLES);
                 for (uint16_t i = 0; i < GRID_PRIM_SIZE; i++)
                 {
+#ifdef DEBUG_PRIM
+                    color rnd = { rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, 1 };
+#endif
                     Vertex a = grid.vertices[grid.indices[3 * i + 0]];
                     Vertex b = grid.vertices[grid.indices[3 * i + 1]];
                     Vertex c = grid.vertices[grid.indices[3 * i + 2]];
+
+                    // one
+#ifdef DEBUG_PRIM
+                    glColor3f(rnd.r, rnd.g, rnd.b);
+#else
                     glColor3f(a.c.r, a.c.g, a.c.b);
+#endif
                     glVertex3f(a.p.x, a.p.y, -a.p.z);
 
+                    // two
+#ifdef DEBUG_PRIM
+                    glColor3f(rnd.r, rnd.g, rnd.b);
+#else
                     glColor3f(b.c.r, b.c.g, b.c.b);
+#endif
                     glVertex3f(b.p.x, b.p.y, -b.p.z);
 
+                    // three
+#ifdef DEBUG_PRIM
+                    glColor3f(rnd.r, rnd.g, rnd.b);
+#else
                     glColor3f(c.c.r, c.c.g, c.c.b);
+#endif
                     glVertex3f(c.p.x, c.p.y, -c.p.z);
                 }
                 glEnd();
 #else
                 glBegin(GL_QUADS);
-                for (uint16_t i = 0; i < GRID_PRIM_COUNT; i++)
+                for (uint16_t i = 0; i < GRID_PRIM_SIZE; i++)
                 {
+#ifdef DEBUG_PRIM
+                    color rnd = { rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, 1 };
+#endif
                     Vertex a = grid.vertices[grid.indices[4 * i + 0]];
                     Vertex b = grid.vertices[grid.indices[4 * i + 1]];
                     Vertex c = grid.vertices[grid.indices[4 * i + 2]];
                     Vertex d = grid.vertices[grid.indices[4 * i + 3]];
+#ifdef DEBUG_PRIM
+                    glColor3f(rnd.r, rnd.g, rnd.b);
+#else
                     glColor3f(a.c.r, a.c.g, a.c.b);
+#endif
                     glVertex3f(a.p.x, a.p.y, -a.p.z);
 
+#ifdef DEBUG_PRIM
+                    glColor3f(rnd.r, rnd.g, rnd.b);
+#else
                     glColor3f(b.c.r, b.c.g, b.c.b);
+#endif
                     glVertex3f(b.p.x, b.p.y, -b.p.z);
 
+#ifdef DEBUG_PRIM
+                    glColor3f(rnd.r, rnd.g, rnd.b);
+#else
                     glColor3f(c.c.r, c.c.g, c.c.b);
+#endif
                     glVertex3f(c.p.x, c.p.y, -c.p.z);
 
+#ifdef DEBUG_PRIM
+                    glColor3f(rnd.r, rnd.g, rnd.b);
+#else
                     glColor3f(d.c.r, d.c.g, d.c.b);
+#endif
                     glVertex3f(d.p.x, d.p.y, -d.p.z);
                 }
                 glEnd();

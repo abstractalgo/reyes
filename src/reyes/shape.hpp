@@ -7,7 +7,8 @@
 #include <cstdlib>
 #include <ctime>
 
-#define SHAPE_SHADE
+#define DEBUG_GRID
+#define DEBUG_PRIM
 
 namespace reyes
 {
@@ -93,15 +94,15 @@ namespace reyes
 
         void shade(void)
         {
-#ifndef SHAPE_SHADE
+#ifdef DEBUG_GRID
             color rnd = { rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, 1 };
 #endif
             for (uint16_t i = 0; i < GRID_SIZE; i++)
             {
-#ifdef SHAPE_SHADE
-                grid.vertices[i].c = material->cShdr(grid.vertices[i]);
+#ifdef DEBUG_GRID
+                grid.vertices[i].c = rnd;
 #else
-                grid->vertices[i].c = rnd;
+                grid.vertices[i].c = material->cShdr(grid.vertices[i]);
 #endif
             }
         }
