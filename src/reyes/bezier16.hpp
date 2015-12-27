@@ -8,9 +8,8 @@ namespace reyes {
         template<class MaterialTy>
         struct Bezier16 : public Shape<MaterialTy>
         {
-            vec3* points;
+            vec3 points[16];
             Bezier16(const vec3* _p=0)
-                : points(new vec3[16])
             {
                 if (_p)
                 {
@@ -58,14 +57,19 @@ namespace reyes {
                 return evalBezierCurve4(uCurve, uv.y);
             }
 
-            void split(SplitDir direction, Scene& scene)
+            void split(Scene& scene)
             {
                 mem::blk mblks[4];
                 for (char i = 0; i < 4; i++)
                 {
                     mblks[i] = scene.alloc(sizeof(Bezier16<MaterialTy>));
                     Bezier16<MaterialTy>* p = ::new(mblks[i].ptr) Bezier16<MaterialTy>;
-                    p->points = points;
+                    for (char i = 0; i < 16; i++)
+                    {
+                        p->points[i].x = points[i].x;
+                        p->points[i].y = points[i].y;
+                        p->points[i].z = points[i].z;
+                    }
                     Shape<MaterialTy>::splitData(p, i);
                 }
 

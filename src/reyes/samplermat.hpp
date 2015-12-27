@@ -6,12 +6,12 @@ namespace reyes
 {
     namespace lib
     {
-        UNIFORM(SamplerMat)
-        {
-            Sampler* sampler;
-        };
         MATERIAL(SamplerMat)
         {
+            UNIFORM_BEGIN
+                Sampler* sampler;
+            UNIFORM_END
+                
             DISPLACE
             {
                 return vertex.p;

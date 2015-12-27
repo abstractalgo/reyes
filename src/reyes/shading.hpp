@@ -2,18 +2,17 @@
 
 #include "color.hpp"
 
-#define UNIFORM(matName) struct matName##UnifBlk
-#define MATERIAL(matName) struct matName : public Material<matName##UnifBlk>
+#define MATERIAL(matName) struct matName : public Material
+#define UNIFORM_BEGIN struct Uniform {
+#define UNIFORM_END } uniform;
 #define DISPLACE position pShdr(Vertex vertex)
 #define SHADE color cShdr(Vertex vertex)
 
 namespace reyes
 {
-    template<class UniformBlockTy>
     /* Material interface and storage. */
     struct Material
     {
-        UniformBlockTy uniform;
         virtual position pShdr(Vertex a) = 0;
         virtual color cShdr(Vertex a) = 0;
     };

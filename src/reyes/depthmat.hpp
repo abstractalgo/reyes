@@ -6,7 +6,6 @@ namespace reyes
 {
     namespace lib
     {
-        UNIFORM(DepthColor) {};
         MATERIAL(DepthColor)
         {
             DISPLACE

@@ -8,7 +8,6 @@ namespace reyes
 {
     namespace lib
     {
-        UNIFORM(NormalColor) {};
         MATERIAL(NormalColor)
         {
             DISPLACE
@@ -30,3 +29,5 @@ namespace reyes
         };
     }
 }
+
+#undef CLAMP

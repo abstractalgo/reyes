@@ -4,42 +4,54 @@
 #include <cmath>
 #include "color.hpp"
 
+#define TRIANGLE_GRID 0
+#define QUAD_GRID 1
+// <options>
+#define GRID_DIM 8
+#define GRID_TYPE TRIANGLE_GRID
+// </options>
+#define GRID_SIZE ((GRID_DIM + 1)*(GRID_DIM + 1))
+#if GRID_TYPE==TRIANGLE_GRID
+#define GRID_IDX_SIZE GRID_DIM*GRID_DIM * 6
+#define GRID_PRIM_SIZE GRID_DIM*GRID_DIM*2
+#else
+#define GRID_IDX_SIZE GRID_DIM*GRID_DIM * 4
+#define GRID_PRIM_SIZE GRID_DIM*GRID_DIM*2
+#endif
+
+
 namespace reyes
 {
-    enum MicrogridType { QUAD=0, TRIANGLE };
     struct Microgrid
     {
-        Vertex* vertices;
-        Index* indices;
-        uint16_t vertCount;
-        uint16_t indiCount;
-        MicrogridType type;
+        Vertex vertices[GRID_SIZE];
+        Index indices[GRID_IDX_SIZE];
 
-        Microgrid(MicrogridType _ty, uint16_t vcnt, uint16_t icnt)
-            : type(_ty)
-            , vertCount(vcnt)
-            , indiCount(icnt)
-            , vertices(new Vertex[vertCount])
-            , indices(new Index[indiCount])
-        {}
-
-        ~Microgrid()
+        Microgrid()
         {
-            delete[] vertices;
-            delete[] indices;
-            vertices = 0;
-            indices = 0;
-        }
+            for (uint16_t v = 0; v < GRID_DIM; v++)
+            for (uint16_t u = 0; u < GRID_DIM; u++)
+            {
+                // A: v * 9 + u
+                // B: v * 9 + u + 1
+                // C: v * 9 + 9 + u + 1
+                // D: v * 9 + 9 + u
+#if GRID_TYPE==TRIANGLE_GRID
+                // ADB
+                indices[v * (GRID_DIM * 6) + u * 6 + 0] = (v * (GRID_DIM + 1)) + (u);
+                indices[v * (GRID_DIM * 6) + u * 6 + 1] = ((v + 1) * (GRID_DIM + 1)) + (u);
+                indices[v * (GRID_DIM * 6) + u * 6 + 2] = (v * (GRID_DIM + 1)) + (u + 1);
 
-        uint16_t primCount(void)
-        {
-            if (MicrogridType::TRIANGLE == type)
-            {
-                return indiCount / 3;
-            }
-            else if (MicrogridType::QUAD == type)
-            {
-                return indiCount / 4;
+                // BDC
+                indices[v * (GRID_DIM * 6) + u * 6 + 3] = (v * (GRID_DIM + 1)) + (u + 1);
+                indices[v * (GRID_DIM * 6) + u * 6 + 4] = ((v + 1) * (GRID_DIM + 1)) + (u);
+                indices[v * (GRID_DIM * 6) + u * 6 + 5] = ((v + 1) * (GRID_DIM + 1)) + (u + 1);
+#else
+                indices[v * (GRID_DIM * 4) + u * 4 + 0] = (v * (GRID_DIM + 1)) + (u);
+                indices[v * (GRID_DIM * 4) + u * 4 + 1] = ((v + 1) * (GRID_DIM + 1)) + (u);
+                indices[v * (GRID_DIM * 4) + u * 4 + 2] = ((v + 1) * (GRID_DIM + 1)) + (u + 1);
+                indices[v * (GRID_DIM * 4) + u * 4 + 3] = (v * (GRID_DIM + 1)) + (u + 1);
+#endif
             }
         }
 
@@ -49,18 +61,13 @@ namespace reyes
             AABB2 bb;
             bb.max = vec2(vertices[0].p.x, vertices[0].p.y);
             bb.min = bb.max;
-            for (uint16_t i = 1; i < vertCount; i++)
+            for (uint16_t i = 1; i < GRID_SIZE; i++)
             {
                 vec3 p = vertices[i].p;
                 bb.min = vec2(fminf(bb.min.x, p.x), fminf(bb.min.y, p.y));
                 bb.max = vec2(fmaxf(bb.max.x, p.x), fmaxf(bb.max.y, p.y));
             }
             return bb;
-        }
-
-        void transform(mx4 m)
-        {
-            // TODO
         }
     };
 }

@@ -6,15 +6,14 @@ namespace reyes
 {
     namespace lib
     {
-        UNIFORM(SolidColor)
-        {
-            color col;
-            SolidColorUnifBlk()
-                : col(1,0,0,1)
-            {}
-        };
         MATERIAL(SolidColor)
         {
+            UNIFORM_BEGIN
+                color col;
+                Uniform()
+                    : col(1, 0, 0, 1)
+                {}
+            UNIFORM_END
             DISPLACE
             {
                 return vertex.p;

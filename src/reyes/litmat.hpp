@@ -7,15 +7,15 @@ namespace reyes
 {
     namespace lib
     {
-        UNIFORM(LitMat)
-        {
-            Sampler* albedoMap;
-            Sampler* normalMap;
-            DirectionalLight* light;
-            vec3 rot;
-        };
         MATERIAL(LitMat)
         {
+            UNIFORM_BEGIN
+                Sampler* albedoMap;
+                Sampler* normalMap;
+                DirectionalLight* light;
+                vec3 rot;
+            UNIFORM_END
+
             DISPLACE
             {
                 return vertex.p;

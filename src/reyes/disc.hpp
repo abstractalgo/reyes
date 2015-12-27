@@ -19,7 +19,7 @@ namespace reyes {
                 float l = uv.y;
                 return v*l;
             }
-            void split(SplitDir direction, Scene& scene)
+            void split(Scene& scene)
             {
                 mem::blk mblks[4];
                 for (char i = 0; i < 4; i++)

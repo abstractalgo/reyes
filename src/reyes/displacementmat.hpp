@@ -6,17 +6,17 @@ namespace reyes
 {
     namespace lib
     {
-        UNIFORM(DisplacementMat)
-        {
-            Sampler* sampler;
-            float k;
-            DisplacementMatUnifBlk()
-                : sampler(0)
-                , k(0.05f)
-            {}
-        };
         MATERIAL(DisplacementMat)
         {
+            UNIFORM_BEGIN
+                Sampler* sampler;
+                float k;
+                Uniform()
+                    : sampler(0)
+                    , k(0.05f)
+                {}
+            UNIFORM_END
+
             DISPLACE
             {
                 color c = uniform.sampler->sample(vertex.uv);

@@ -68,12 +68,7 @@ struct SolidColor/* : public Material*/
 
 #define USE_MAT(_name) _name, _name::VertexDesc
 
-typedef uint16_t Index;
 
-#define TRIANGLE_GRID 0
-#define QUAD_GRID 1
-#define GRID_DIM 80
-#define GRID_TYPE TRIANGLE_GRID
 
 struct AbstractShape
 {
@@ -105,7 +100,7 @@ struct Shape : public AbstractShape
     {
         // popuni vertekse
         // popuni indice - mogu se izmestiti u zasebnu klasu/strukturu
-        for (uint16_t i = 0; i < (GRID_DIM + 1)*(GRID_DIM + 1); i++)
+        for (uint16_t i = 0; i < GRID_SIZE; i++)
         {
             material->pShdr(grid[i]);
         }
@@ -113,7 +108,7 @@ struct Shape : public AbstractShape
 
     void shade()
     {
-        for (uint16_t i = 0; i < (GRID_DIM + 1)*(GRID_DIM + 1); i++)
+        for (uint16_t i = 0; i < GRID_SIZE; i++)
         {
             material->cShdr(grid[i]);
         }
@@ -122,7 +117,7 @@ struct Shape : public AbstractShape
     bool requiresSplit()
     {
         // calc bounding box
-        for (uint16_t i = 0; i < (GRID_DIM + 1)*(GRID_DIM + 1); i++)
+        for (uint16_t i = 0; i < GRID_SIZE; i++)
         {
 
         }
@@ -157,3 +152,19 @@ struct ParametricSurface : public Shape<MatTy, VertexTy>
         // raspodeli uv
     }
 };
+
+/*ParametricSurface<USE_MAT(Lambert)> oblik;
+ParametricSurface<USE_MAT(SolidColor)> kugla;
+oblik.dice();
+oblik.shade();
+AbstractShape* shapes[2];
+shapes[0] = &oblik;
+shapes[1] = &kugla;
+
+for (uint16_t i = 0; i < 2; i++)
+{
+shapes[i]->dice();
+shapes[i]->split();
+shapes[i]->shade();
+shapes[i]->rasterize(0);
+}*/

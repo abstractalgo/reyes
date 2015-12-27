@@ -42,18 +42,9 @@ namespace reyes
         }
         void rasterize(Microgrid& grid)
         {
-            //glDisable(GL_CULL_FACE);
-            
-            //glClearColor(1, 1, 0, 1);
-            //
-            
-            
-            //glDepthFunc(GL_LEQUAL);
-            switch (grid.type)
-            {
-            case MicrogridType::TRIANGLE:
+#if GRID_TYPE==TRIANGLE_GRID
                 glBegin(GL_TRIANGLES);
-                for (uint16_t i = 0; i < grid.primCount(); i++)
+                for (uint16_t i = 0; i < GRID_PRIM_SIZE; i++)
                 {
                     Vertex a = grid.vertices[grid.indices[3 * i + 0]];
                     Vertex b = grid.vertices[grid.indices[3 * i + 1]];
@@ -68,10 +59,9 @@ namespace reyes
                     glVertex3f(c.p.x, c.p.y, -c.p.z);
                 }
                 glEnd();
-                break;
-            case MicrogridType::QUAD:
+#else
                 glBegin(GL_QUADS);
-                for (uint16_t i = 0; i < grid.primCount(); i++)
+                for (uint16_t i = 0; i < GRID_PRIM_COUNT; i++)
                 {
                     Vertex a = grid.vertices[grid.indices[4 * i + 0]];
                     Vertex b = grid.vertices[grid.indices[4 * i + 1]];
@@ -90,8 +80,7 @@ namespace reyes
                     glVertex3f(d.p.x, d.p.y, -d.p.z);
                 }
                 glEnd();
-                break;
-            }
+#endif
         }
 
         ~OGLFilm()

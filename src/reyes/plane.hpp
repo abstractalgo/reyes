@@ -17,7 +17,7 @@ namespace reyes
             {
                 return vec3(-0.5f + uv.x, 0.5f - uv.y, 0);
             }
-            void split(SplitDir direction, Scene& scene)
+            void split(Scene& scene)
             {
                 mem::blk mblks[4];
                 for (char i = 0; i < 4; i++)

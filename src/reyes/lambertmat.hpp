@@ -8,13 +8,13 @@ namespace reyes
     namespace lib
     {
         // ------------------------------------------- Lambert
-        UNIFORM(Lambert)
-        {
-            DirectionalLight* light;
-            Sampler* texture;
-        };
         MATERIAL(Lambert)
         {
+            UNIFORM_BEGIN
+                DirectionalLight* light;
+                Sampler* texture;
+            UNIFORM_END
+
             DISPLACE
             {
                 return vertex.p;
