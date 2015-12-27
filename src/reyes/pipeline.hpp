@@ -17,15 +17,18 @@ namespace reyes
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
         glEnable(GL_DEPTH_TEST);
 
+        mem::Pool<Microgrid, 30>* grids = new mem::Pool<Microgrid, 30>;
+
         //glEnable(GL_CULL_FACE); // do culling
         while (scene)
         {
             mem::blk shp_blk = scene.pop();
             Shape* shape = static_cast<Shape*>(shp_blk.ptr);
-            
-            shape->dice();                                                      // DICE
 
-            AABB2 bb = shape->grid.aabb();                                      // BOUND
+            Microgrid& grid = *(grids->alloc());
+            shape->dice(grid);                                                  // DICE
+
+            AABB2 bb = grid.aabb();                                             // BOUND
             if (bb.max.x <= -1.0f || bb.min.x >= 1.0f ||                        // | try to cull
                 bb.min.y >= 1.0f || bb.max.y <= -1.0f)                          // |
                 goto memoryCleanup;                                             // |
@@ -37,15 +40,17 @@ namespace reyes
             }                                                                   // |
             else                                                                // | don't split, so continue to raster
             {
-                shape->shade();                                                 // SHADE
+                shape->shade(grid);                                             // SHADE
 
-                camera.film.rasterize(shape->grid);                             // SAMPLE
+                camera.film.rasterize(grid);                                    // SAMPLE
             }
 
         memoryCleanup:
+            grids->free(grid);
             scene.free(shp_blk);
             printf("\rSHAPES: %d    ", scene.cnt);
         }
+        delete grids;
         SwapBuffersBackend();
     }
 

@@ -399,24 +399,31 @@ namespace reyes
                 freeList[slotCount-1] = -1;
             }
 
-            SlotTy* getFree(void)
+            SlotTy* alloc(void)
             {
-                if (freeHead < 0)
-                    return 0;
+                assert(freeHead>=0 && freeHead<slotCount);
+                freeCnt--;
                 int idx = freeHead;
                 freeHead = freeList[freeHead];
                 return data + idx;
             }
 
-            void free(int idx)
+            void free(SlotTy* ptr)
             {
+                freeCnt++;
+                int idx = (ptr - data)/sizeof(SlotTy);
                 freeList[idx] = freeHead;
                 freeHead = idx;
             }
 
+            void free(SlotTy& slot)
+            {
+                this->free(&slot);
+            }
+
             ~Pool()
             {
-                //assert()
+                assert(slotCount == freeCnt);
             }
         };
     }

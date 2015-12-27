@@ -36,37 +36,32 @@ void mainApp()
     // scene setup
     Scene scene;
 
-    // test shapes
-    // materials
-    lib::DisplacementMat sp_mat;
-    lib::SamplerMat sq_mat;
-    lib::Lambert teapot_mat;
-    lib::UVColor uv_mat;
-    // samplers
-    lib::SinCosSampler sc_sampler;
-    lib::BMPSampler lena_sampler(512, 512, "lena.bmp");
-    lib::BMPSampler stone_sampler(512, 512, "stone_albedo.bmp");
-    //light
-    lib::DirectionalLight dir_lig({ 1, 1, 1, 1 }, { 1, 1, 0.5 });
-
     // sphere
-    /*MAKE_SHAPE(sphere, scene, lib::Sphere<lib::DisplacementMat>);
+    MAKE_SHAPE(sphere, scene, lib::Sphere);
+    lib::DisplacementMat sp_mat;
+    lib::SinCosSampler sc_sampler;
+    sp_mat.uniform.sampler = &sc_sampler;
+    sp_mat.uniform.k = 0.1f;
     sphere->material = &sp_mat;
-    sphere->material->uniform.sampler = &sc_sampler;
-    sphere->material->uniform.k = 0.1f;*/
     //sphere->transform.T = vec3(-0.5f, 0.5f, 0);
     //sphere->transform.S = vec3(0.3f, 0.3f, 0.3f);
 
     // textured plane
-    /*MAKE_SHAPE(square, scene, lib::Plane<lib::SamplerMat>);
-    square->material = &sq_mat;
-    square->material->uniform.sampler = &lena_sampler;*/
-
+    //MAKE_SHAPE(square, scene, lib::Plane);
+    //lib::SamplerMat sq_mat;
+    //lib::BMPSampler lena_sampler(512, 512, "lena.bmp");
+    //sq_mat.uniform.sampler = &lena_sampler;
+    //square->material = &sq_mat;
     //square->transform.T = vec3(-0.5f, -0.5f, 0);
     //square->transform.S = vec3(.8f, .8f, .8f);
     //square->transform.R.z = -0.2;
 
-    // textured teapot        
+    // textured teapot
+    //lib::Lambert teapot_mat;
+    //lib::BMPSampler stone_sampler(512, 512, "stone_albedo.bmp");
+    //lib::DirectionalLight dir_lig({ 1, 1, 1, 1 }, { 1, 1, 0.5 });
+    //teapot_mat.uniform.texture = &stone_sampler;
+    //teapot_mat.uniform.light = &dir_lig;
     //for (uint32_t i = 0; i < kTeapotNumPatches; i++)
     //{
     //    vec3 control_points[16];
@@ -76,18 +71,17 @@ void mainApp()
     //        control_points[vi].z = teapotVertices[teapotPatches[i][vi] - 1][1] * 0.3f;
     //        control_points[vi].y = teapotVertices[teapotPatches[i][vi] - 1][2] * 0.3f;
     //    }
-    //    MAKE_SHAPE(patch, scene, lib::Bezier16<lib::Lambert>) (control_points);
+    //    MAKE_SHAPE(patch, scene, lib::Bezier16) (control_points);
     //    patch->material = &teapot_mat;
-    //    patch->material->uniform.texture = &stone_sampler;
-    //    patch->material->uniform.light = &dir_lig;
     //    //patch->transform.S = vec3(0.15f, 0.15f, 0.15f);
     //    //patch->transform.T = vec3(0.45f, 0.3f, 0);
     //    //patch->transform.R.x = M_PI * 0.3f;
     //}
 
-    //// uv disc
-    MAKE_SHAPE(disc, scene, lib::Disc);
-    disc->material = &uv_mat;
+    // uv disc
+    //MAKE_SHAPE(disc, scene, lib::Disc);
+    //lib::UVColor uv_mat;
+    //disc->material = &uv_mat;
     //disc->transform.S = vec3(.4f, .4f, .4f);
     //disc->transform.T = vec3(0.5f, -0.5f, 0);
 

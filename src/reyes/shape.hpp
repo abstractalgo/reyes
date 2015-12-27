@@ -18,7 +18,6 @@ namespace reyes
     struct Shape
     {
         float start_u, end_u, start_v, end_v;
-        Microgrid grid;
         Material* material;
 
         Shape()
@@ -28,7 +27,7 @@ namespace reyes
             , end_v(1)
         {}
 
-        void dice(void)
+        void dice(Microgrid& grid)
         {
             float wu = (end_u - start_u) / (float)(GRID_DIM);
             float wv = (end_v - start_v) / (float)(GRID_DIM);
@@ -81,7 +80,7 @@ namespace reyes
             }
         }
 
-        void shade(void)
+        void shade(Microgrid& grid)
         {
 #ifdef DEBUG_GRID
             color rnd = { rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, 1 };

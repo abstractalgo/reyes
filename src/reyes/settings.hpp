@@ -8,7 +8,7 @@
 
 #define GRID_DIM 8
 #define GRID_TYPE TRIANGLE_GRID
-namespace reyes { static const vec2 RASTER_THRESHOLD = { 16, 16 }; }
+namespace reyes { static const vec2 RASTER_THRESHOLD = { 32, 32 }; }
 #define DEBUG_GRID
 //#define DEBUG_PRIM
 
