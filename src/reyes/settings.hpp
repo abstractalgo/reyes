@@ -6,12 +6,13 @@
 
 // ---- <settings> ----------------------------
 
+#define REYES_VERSION "2.0"
 #define GRID_DIM 8
 #define GRID_TYPE TRIANGLE_GRID
 namespace reyes { static const vec2 RASTER_THRESHOLD = { 16, 16 }; }
 #define GIRDPOOL_SIZE 20
 #define SCENEMEM_SIZE 1<<23
-#define DEBUG_GRID
+//#define DEBUG_GRID
 //#define DEBUG_PRIM
 
 // ---- </settings> ---------------------------

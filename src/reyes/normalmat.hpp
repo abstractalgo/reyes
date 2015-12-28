@@ -10,9 +10,15 @@ namespace reyes
     {
         MATERIAL(NormalColor)
         {
+            struct uniform_tag
+            {
+                vec3 S;
+                vec3 T;
+            } uniform;
+
             DISPLACE
             {
-                return vertex.p;
+                return vertex.p * uniform.S + uniform.T;
             }
 
             SHADE

@@ -3,7 +3,7 @@ reyes renderer
 
 ![cover](log/cover.png "cover")
 
-current version v1.95
+current version v2.05
 
 ###TODO
 
@@ -11,31 +11,29 @@ current version v1.95
 
 - ~~basic buffer (1 sample per pixel)~~
 - ~~no bucketing~~
-- ~~orthographic camera~~
 - ~~no splitting and bounding (dice entire primitives, each and every)~~
 - ~~basic pipeline~~
 - ~~basic rasterizer~~
 
 ####v2.0 dragonfly
 
-- camera (perspective and orthographic)
-- ~~transformations (translate, rotate, scale)~~
+- ~~transformations (translate, scale)~~
 - ~~dicing~~
 - ~~bounding and splitting~~
 - ~~entire reyes pipeline~~
 - ~~finalize quadrilaterals and triangles~~
 - ~~G-buffer~~
 - ~~improved memory management and speed~~
-- geometry: ~~plane~~, ~~sphere~~, ~~disc~~, ~~cubic bezier patch~~, ~~Utah teapot~~, Klein bottle
+- ~~geometry: plane, sphere, disc, cubic bezier patch, Utah teapot~~
 - ~~materials~~
 - ~~samplers~~
-- lights: ~~directional~~, ~~point~~, SH
+- ~~lights: directional, point~~
 
 ####v3.0 nautilus
 
 - threaded renderer
 - profiling
-- even better memory managment
+- ~~even better memory managment~~
 - A-buffer
     - stochastic (multi)sampling
     - transparency support
@@ -46,9 +44,13 @@ current version v1.95
 - task (job) manager
 - (more advanced rasterizer)
 - (progress indicator)
+- (camera; perspective and orthographic)
+- (Klein bottle)
+- (SH light)
 
 ####v4.0 cheetah
 
+- optimized memory layout
 - (GP)GPU implementation
 - (pseudo) real-time
 
