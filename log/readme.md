@@ -137,3 +137,12 @@ Here's the image of the displaced sphere, cubic bezier patch, textured rectangle
 ---
 
 ***shading and memory layout:*** Started working on more flexible shading system, that is also more memory friendly. I'm pretty happy with current outcome. Finally, shading is completely flexible (as much as possible) and I'm satisfied with API that is left to programmer to deal with. As far as I can see, it plays well with memory, and I can see many things coming out of this design that even later GPGPU implementations might benefit from (per-material batching, memory coalescing, good SIMD). I will have too work more on making use of cache, because so far, I don't think it's too good for GPGPU version, but I can definitely predict good results on much less threads that also don't have to coalesce memory that much. Profiling is yet to come, so stay tuned, right?
+
+***Dec 28, 2015***
+---
+
+So, after 4 weeks, here's the v2.0 that is released. Code is pretty, I'm happy with it, there should be no memory leaks, everything goes through custom allocators, it's quite nicely optimized, it runs decently fast. :)
+
+![cover2](cover2.png "cover2")
+
+Next is multithreading the application and managing memory, being smart about its layout and making use of cache. More later future will be about GPGPUing the app. But first things first...

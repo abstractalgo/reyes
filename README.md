@@ -1,7 +1,7 @@
 # reyes
 reyes renderer
 
-![cover](log/cover.png "cover")
+![cover2](log/cover2.png "cover2")
 
 current version v2.05
 
