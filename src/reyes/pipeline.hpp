@@ -17,7 +17,7 @@ namespace reyes
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
         glEnable(GL_DEPTH_TEST);
 
-        mem::Pool<Microgrid, 30>* grids = new mem::Pool<Microgrid, 30>;
+        mem::Pool<Microgrid, GIRDPOOL_SIZE>* grids = new mem::Pool<Microgrid, GIRDPOOL_SIZE>;
 
         //glEnable(GL_CULL_FACE); // do culling
         while (scene)
@@ -29,8 +29,7 @@ namespace reyes
             shape->dice(grid);                                                  // DICE
 
             AABB2 bb = grid.aabb();                                             // BOUND
-            if (bb.max.x <= -1.0f || bb.min.x >= 1.0f ||                        // | try to cull
-                bb.min.y >= 1.0f || bb.max.y <= -1.0f)                          // |
+            if (!isInFrustum(bb))                                               // | try to cull
                 goto memoryCleanup;                                             // |
 
             vec2 rasSz = camera.film.estimate(bb.max - bb.min);                 // SPLIT - estimate grid's raster size
@@ -47,7 +46,7 @@ namespace reyes
 
         memoryCleanup:
             grids->free(grid);
-            scene.free(shp_blk);
+            //scene.free(shp_blk);
             printf("\rSHAPES: %d    ", scene.cnt);
         }
         delete grids;

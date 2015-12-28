@@ -10,6 +10,10 @@
 
 namespace reyes
 {
+    inline bool isInFrustum(AABB2& bb)
+    {
+        return !(bb.max.x <= -1.0f || bb.min.x >= 1.0f || bb.min.y >= 1.0f || bb.max.y <= -1.0f);
+    }
     inline bool requiresSplit(vec2 size, vec2 threshold)
     {
         return (size.x > threshold.x || size.y > threshold.y);

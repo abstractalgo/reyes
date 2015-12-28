@@ -8,13 +8,16 @@ namespace reyes
     {
         MATERIAL(SamplerMat)
         {
-            UNIFORM_BEGIN
+            struct uniform_tag
+            {
+                vec3 S;
+                vec3 T;
                 Sampler* sampler;
-            UNIFORM_END
-                
+            } uniform;
+
             DISPLACE
             {
-                return vertex.p;
+                return vertex.p * uniform.S + uniform.T;
             }
 
             SHADE

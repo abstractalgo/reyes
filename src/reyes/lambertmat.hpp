@@ -13,11 +13,12 @@ namespace reyes
             UNIFORM_BEGIN
                 DirectionalLight* light;
                 Sampler* texture;
+                vec3 S, T;
             UNIFORM_END
 
             DISPLACE
             {
-                return vertex.p;
+                return vertex.p * uniform.S + uniform.T;
             }
 
             SHADE

@@ -159,17 +159,17 @@ namespace reyes
         {
             return *this = *this * s;
         }
-        float operator*(vec3& v)
+        vec3 operator*(vec3& v)
         {
-            return x*v.x + y*v.y + z*v.z;
+            return vec3(x*v.x, y*v.y, z*v.z);
         }
         friend vec3 operator*(const vec3& a, const vec3& b)
         {
-            return{ a.x * b.x, a.y * b.y, a.z * b.z };
+            return vec3(a.x*b.x, a.y*b.y, a.z*b.z);
         }
         friend vec3 operator*(const vec3& a, const float s)
         {
-            return{ a.x * s, a.y *s, a.z * s };
+            return vec3(a.x*s, a.y*s, a.z*s);
         }
         float operator[](int i)
         {

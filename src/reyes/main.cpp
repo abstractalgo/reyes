@@ -41,49 +41,48 @@ void mainApp()
     lib::DisplacementMat sp_mat;
     lib::SinCosSampler sc_sampler;
     sp_mat.uniform.sampler = &sc_sampler;
-    sp_mat.uniform.k = 0.1f;
+    sp_mat.uniform.k = 0.01f;
     sphere->material = &sp_mat;
-    //sphere->transform.T = vec3(-0.5f, 0.5f, 0);
-    //sphere->transform.S = vec3(0.3f, 0.3f, 0.3f);
+    sp_mat.uniform.T = vec3(-0.5f, 0.5f, 0);
+    sp_mat.uniform.S = vec3(0.3f, 0.3f, 0.3f);
 
     // textured plane
-    //MAKE_SHAPE(square, scene, lib::Plane);
-    //lib::SamplerMat sq_mat;
-    //lib::BMPSampler lena_sampler(512, 512, "lena.bmp");
-    //sq_mat.uniform.sampler = &lena_sampler;
-    //square->material = &sq_mat;
-    //square->transform.T = vec3(-0.5f, -0.5f, 0);
-    //square->transform.S = vec3(.8f, .8f, .8f);
-    //square->transform.R.z = -0.2;
+    MAKE_SHAPE(square, scene, lib::Plane);
+    lib::SamplerMat sq_mat;
+    lib::BMPSampler lena_sampler(512, 512, "lena.bmp");
+    sq_mat.uniform.sampler = &lena_sampler;
+    square->material = &sq_mat;
+    sq_mat.uniform.T = vec3(-0.5f, -0.5f, 0);
+    sq_mat.uniform.S = vec3(.8f, .8f, .8f);
 
     // textured teapot
-    //lib::Lambert teapot_mat;
-    //lib::BMPSampler stone_sampler(512, 512, "stone_albedo.bmp");
-    //lib::DirectionalLight dir_lig({ 1, 1, 1, 1 }, { 1, 1, 0.5 });
-    //teapot_mat.uniform.texture = &stone_sampler;
-    //teapot_mat.uniform.light = &dir_lig;
-    //for (uint32_t i = 0; i < kTeapotNumPatches; i++)
-    //{
-    //    vec3 control_points[16];
-    //    for (uint32_t vi = 0; vi < 16; vi++)
-    //    {
-    //        control_points[vi].x = teapotVertices[teapotPatches[i][vi] - 1][0] *0.3f;
-    //        control_points[vi].z = teapotVertices[teapotPatches[i][vi] - 1][1] * 0.3f;
-    //        control_points[vi].y = teapotVertices[teapotPatches[i][vi] - 1][2] * 0.3f;
-    //    }
-    //    MAKE_SHAPE(patch, scene, lib::Bezier16) (control_points);
-    //    patch->material = &teapot_mat;
-    //    //patch->transform.S = vec3(0.15f, 0.15f, 0.15f);
-    //    //patch->transform.T = vec3(0.45f, 0.3f, 0);
-    //    //patch->transform.R.x = M_PI * 0.3f;
-    //}
+    lib::Lambert teapot_mat;
+    lib::BMPSampler stone_sampler(512, 512, "stone_albedo.bmp");
+    lib::DirectionalLight dir_lig({ 1, 1, 1, 1 }, { 1, 1, 0.5 });
+    teapot_mat.uniform.texture = &stone_sampler;
+    teapot_mat.uniform.light = &dir_lig;
+    teapot_mat.uniform.S = vec3(0.5f, 0.5f, 0.5f);
+    teapot_mat.uniform.T = vec3(0.45f, 0.3f, 0);
+    for (uint32_t i = 0; i < kTeapotNumPatches; i++)
+    {
+        vec3 control_points[16];
+        for (uint32_t vi = 0; vi < 16; vi++)
+        {
+            control_points[vi].x = teapotVertices[teapotPatches[i][vi] - 1][0] *0.3f;
+            control_points[vi].z = teapotVertices[teapotPatches[i][vi] - 1][1] * 0.3f;
+            control_points[vi].y = teapotVertices[teapotPatches[i][vi] - 1][2] * 0.3f;
+        }
+        MAKE_SHAPE(patch, scene, lib::Bezier16) (control_points);
+        patch->material = &teapot_mat;
+        
+    }
 
     // uv disc
-    //MAKE_SHAPE(disc, scene, lib::Disc);
-    //lib::UVColor uv_mat;
-    //disc->material = &uv_mat;
-    //disc->transform.S = vec3(.4f, .4f, .4f);
-    //disc->transform.T = vec3(0.5f, -0.5f, 0);
+    MAKE_SHAPE(disc, scene, lib::Disc);
+    lib::UVColor uv_mat;
+    disc->material = &uv_mat;
+    uv_mat.uniform.S = vec3(.4f, .4f, .4f);
+    uv_mat.uniform.T = vec3(0.5f, -0.5f, 0);
 
     /*vec3 control_points[16];
     control_points[0] = vec3(-.75f, .75f, 0);
@@ -131,11 +130,11 @@ void mainApp()
 
     // camera setup
     Camera<OGLFilm, 480, 480> camera;
-    //camera.perspective(45, 1, 0.1, 100);
-    //camera.lookAt(/*eye*/ { 0, 5, 0 }, /*target*/ { 0, 0, 0 } /*up*/);
+    camera.perspective(45, 1, 0.1, 100);
+    camera.lookAt(/*eye*/ { 0, 5, 0 }, /*target*/ { 0, 0, 0 } /*up*/);
 
     // render
-    reyes::render(scene, camera);
+    reyes::render(scene, camera);    
     //camera.image.writePPM("test.ppm");
 }
 #else

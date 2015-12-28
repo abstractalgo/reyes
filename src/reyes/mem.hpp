@@ -29,7 +29,6 @@ namespace reyes
             size_t size;
             blk() : ptr(nullptr), size(0) {}
             blk(void* p, size_t s = 0) : ptr(p), size(s) {}
-            blk(size_t s, void* p = 0) : ptr(p), size(s) {}
 
             template<class ptr_t>
             ptr_t to() { return static_cast<ptr_t>(ptr); }
@@ -269,55 +268,51 @@ namespace reyes
             }
         };
 
-        template<class ObjTy, size_t capacity>
-        struct StaticObjectStack
+        struct ObjectArray
         {
-            // ....[ Object_n-1 ][ size_n-1 ][ Object_n ][ size_n ]
-            // ....................................................^ top
+            size_t capacity;
+            char* data;
+            char* writePtr;
+            char* readPtr;
+            size_t allocCnt;
 
-            char data[capacity];
-            char* top;
-
-            StaticObjectStack()
-                : top(data)
+            ObjectArray(size_t cap)
+                : capacity(cap)
+                , data(new char[cap])
+                , readPtr(data)
+                , writePtr(data)
+                , allocCnt(0)
             {}
-            void* alloc(size_t size)
+            ~ObjectArray()
             {
-                if (size + sizeof(size_t) > data + capacity - top)
-                    return nullptr;
-
-                void* mem = static_cast<void*>(top);
-                size_t* sz_ptr = (size_t*)(top += size);
-                *sz_ptr = size;
-                top += sizeof(size_t);
-                return mem;
-            }
-            ObjTy* pop(void)
-            {
-                if (!size()) return 0;
-                size_t size = *(size_t*)(top -= sizeof(size_t));
-                top -= size;
-                return (ObjTy*)(top);
-            }
-            ObjTy* get(char* ptr)
-            {
-                if (ptr == data) return 0;
-                size_t size = *(size_t*)(ptr -= sizeof(size_t));
-                ptr -= size;
-                return (ObjTy*)(ptr);
-            }
-            size_t size() const
-            {
-                return top - data;
-            }
-            operator bool(void) const
-            {
-                return size() > 0;
-            }
-            ~StaticObjectStack()
-            {
-                assert(data == top);
+                assert(0 == allocCnt);
                 delete[] data;
+            }
+
+            mem::blk alloc(size_t size)
+            {
+                assert(size + sizeof(size_t) <= data + capacity - writePtr);
+                allocCnt++;
+
+                size_t* sz_ptr = (size_t*)(writePtr);
+                *sz_ptr = size;
+                writePtr += sizeof(size);
+                void* mem = (void*)(writePtr);
+                writePtr += size;
+                return {mem, size};
+            }
+
+            mem::blk getNext(void)
+            {
+                assert(allocCnt > 0);
+                assert(readPtr < writePtr);
+                allocCnt--;
+
+                size_t* sz_ptr = (size_t*)(readPtr);
+                readPtr += sizeof(size_t);
+                void* objptr = (void*)(readPtr);
+                readPtr += *sz_ptr;
+                return{objptr,*sz_ptr};
             }
         };
 
@@ -348,39 +343,6 @@ namespace reyes
                 return top > 0;
             }
         };
-
-//#define DEBUG_ALLOC(_a,_s) 
-//
-//        template<size_t max_allocs>
-//        struct DebugAllocator
-//        {
-//            struct AllocDesc
-//            {
-//                const char* file;
-//                size_t line;
-//            };
-//            size_t places[max_allocs];
-//            size_t head;
-//            size_t count;
-//            mAllocator allocator;
-//            DebugAllocator()
-//                : head(0)
-//                , count(0)
-//            {
-//                for (size_t i = 0; i < max_allocs; i++)
-//                {
-//                    places[i] = i + 1;
-//                }
-//                places[max_allocs - 1] = 0;
-//            }
-//            blk alloc(size_t size, const char* file, size_t line)
-//            {
-//                blk m = allocator.alloc(size);
-//                places[head] = 
-//                count++;
-//                return m;
-//            }
-//        };
 
         template<class SlotTy, int slotCount>
         struct Pool

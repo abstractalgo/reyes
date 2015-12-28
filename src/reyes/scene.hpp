@@ -4,37 +4,30 @@ namespace reyes
 {
     struct Scene
     {
-        mem::Stack<mem::blk, 2048> allocations;
-        mem::mAllocator memory;
+        mem::ObjectArray memory;
         uint16_t cnt;
 
-        Scene() : cnt(0)
+        Scene()
+            : cnt(0)
+            , memory(SCENEMEM_SIZE)
         {}
 
         mem::blk alloc(size_t size)
         {
             mem::blk block = memory.alloc(size);
-            allocations.push(block);
             cnt++;
             return block;
         }
 
         mem::blk pop()
         {
-            return allocations.pop();
-        }
-
-        void free(mem::blk block)
-        {
             cnt--;
-            memory.free(block);
+            return memory.getNext();
         }
 
         operator bool()
         {
-            return allocations.top > 0;
+            return cnt > 0;
         }
     };
-
-    //typedef mem::StaticObjectStack<char, 1 << 20> Scene;
 }
