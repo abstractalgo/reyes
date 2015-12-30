@@ -11,16 +11,17 @@ struct Worker
         : muiId(auiId)
         , mTaskQueue(aJq)
     {
-        mpThread = new Thread(fastdelegate::MakeDelegate(this, &Worker::workerFunc));
+        mpThread = new Thread( &workerFunc );
         mpThread->start();
     }
     ~Worker()
     {
         delete mpThread;
     }
-
-    void workerFunc(){
-        while (1){
+    void workerFunc()
+    {
+        while (1)
+        {
             Task t = mTaskQueue.getNext();
             if (t.fn)
             {
@@ -29,9 +30,9 @@ struct Worker
             }
         }
     }
-    uint32_t muiId; // don't really need this, it is just for debug purpose
-    Thread * mpThread;
-    TaskQueue& mTaskQueue; // the queue from which to get jobs
+    uint32_t muiId;
+    Thread* mpThread;
+    TaskQueue& mTaskQueue;
 private:
     Worker(const Worker& a);
     Worker& operator=(const Worker& a);

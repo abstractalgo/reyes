@@ -2,36 +2,33 @@
 
 #include <Windows.h>
 
-class Thread{
-public:
-    Thread(const fastdelegate::FastDelegate0<>& a) :mFunc(a){
+class Worker;
+
+struct Thread
+{
+    Thread(void(*fn)())
+        : mFunc(fn)
+    {
         mHandle = CreateThread(0, 0, &ThreadFunc, this, CREATE_SUSPENDED, &mId);
     }
-    Thread(const Thread&a) :mFunc(a.mFunc){
-        mHandle = CreateThread(0, 0, &ThreadFunc, this, CREATE_SUSPENDED, &mId);
-    }
-    Thread& operator=(const Thread&a){
-        SuspendThread(mHandle);
-        CloseHandle(mHandle);
-        mFunc = a.mFunc;
-        mHandle = CreateThread(0, 0, &ThreadFunc, this, CREATE_SUSPENDED, &mId);
-    }
-    void start(){
-        ResumeThread(mHandle);
-    }
-    void stop(){
-        SuspendThread(mHandle);
-    }
-    ~Thread(){
+    void start() { ResumeThread(mHandle); }
+    void stop() { SuspendThread(mHandle); }
+    ~Thread()
+    {
         SuspendThread(mHandle);
         CloseHandle(mHandle);
     }
-    static DWORD WINAPI ThreadFunc(void* a){
-        Thread* pT = (Thread*)a;
+    static DWORD WINAPI ThreadFunc(void* fn)
+    {
+        Thread* pT = (Thread*)fn;
         pT->mFunc();
         return 0;
     }
-    fastdelegate::FastDelegate0<> mFunc;
+    void(*mFunc)();
     HANDLE mHandle;
     DWORD  mId;
+
+private:
+    Thread(const Thread& t);
+    Thread& operator=(const Thread& t);
 };

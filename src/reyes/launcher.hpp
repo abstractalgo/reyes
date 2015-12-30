@@ -23,7 +23,8 @@ public:
                 mWorkers.push_back(new Worker(i, mTaskQueue));
         }
     }
-    ~MultiProcess(){
+    ~MultiProcess()
+    {
         for (uint32_t i = 0; i < mWorkers.size(); ++i)
         {
             delete mWorkers[i];

@@ -89,12 +89,18 @@
     <ClInclude Include="directionalight.hpp" />
     <ClInclude Include="disc.hpp" />
     <ClInclude Include="displacementmat.hpp" />
+    <ClInclude Include="event.hpp" />
     <ClInclude Include="grid.hpp" />
     <ClInclude Include="film.hpp" />
+    <ClInclude Include="launcher.hpp" />
+    <ClInclude Include="worker.hpp" />
+    <ClInclude Include="taskqueue.hpp" />
+    <ClInclude Include="task.hpp" />
     <ClInclude Include="klein.hpp" />
     <ClInclude Include="lambertmat.hpp" />
     <ClInclude Include="litmat.hpp" />
     <ClInclude Include="mat.hpp" />
+    <ClInclude Include="mutex.hpp" />
     <ClInclude Include="normalmat.hpp" />
     <ClInclude Include="oglfilm.hpp" />
     <ClInclude Include="settings.hpp" />
@@ -113,6 +119,7 @@
     <ClInclude Include="pipeline.hpp" />
     <ClInclude Include="primitive.hpp" />
     <ClInclude Include="teapot.hpp" />
+    <ClInclude Include="thread.hpp" />
     <ClInclude Include="uvmat.hpp" />
     <ClInclude Include="vecmx.hpp" />
   </ItemGroup>
