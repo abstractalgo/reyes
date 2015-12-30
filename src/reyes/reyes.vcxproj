@@ -93,6 +93,7 @@
     <ClInclude Include="grid.hpp" />
     <ClInclude Include="film.hpp" />
     <ClInclude Include="launcher.hpp" />
+    <ClInclude Include="renderer.hpp" />
     <ClInclude Include="worker.hpp" />
     <ClInclude Include="taskqueue.hpp" />
     <ClInclude Include="task.hpp" />

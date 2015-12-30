@@ -52,38 +52,4 @@ namespace reyes
         delete grids;
         SwapBuffersBackend();
     }
-
-    /*struct Renderer
-    {
-        Scene* scene;
-        CameraI* camera;
-        HANDLE threadHandle;
-        DWORD threadId;
-        bool running;
-
-        Renderer(Scene* _scene, CameraI* _camera)
-            : scene(_scene)
-            , camera(_camera)
-            , running(false)
-        {
-            threadHandle = CreateThread(0, 0, this->render, this, CREATE_SUSPENDED, &threadId);
-        }
-
-        void go()
-        {
-            running = true;
-        }
-
-        void pause()
-        {
-            running = false;
-        }
-
-        static DWORD WINAPI render(void* a)
-        {
-            Renderer* r = static_cast<Renderer*>(a);
-            
-            return 0;
-        }
-    };*/
 }

@@ -5,8 +5,8 @@
 #include "worker.hpp"
 #include <vector>
 
-class MultiProcess{
-public:
+struct MultiProcess
+{
     MultiProcess()
         : mbWorkInSingleProcess(true)
     {}
@@ -20,7 +20,7 @@ public:
         {
             mbWorkInSingleProcess = false;
             for (uint32_t i = 0; i < auiNbWroker; ++i)
-                mWorkers.push_back(new Worker(i, mTaskQueue));
+                mWorkers.push_back(new Worker(i));
         }
     }
     ~MultiProcess()

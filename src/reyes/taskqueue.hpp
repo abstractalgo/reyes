@@ -7,7 +7,6 @@
 
 struct TaskQueue
 {
-public:
     TaskQueue()
         : mNbWorkingJob(0)
     {}

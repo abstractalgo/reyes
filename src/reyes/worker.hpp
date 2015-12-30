@@ -7,9 +7,8 @@
 
 struct Worker
 {
-    Worker(uint32_t auiId, TaskQueue& aJq)
+    Worker(uint32_t auiId)
         : muiId(auiId)
-        , mTaskQueue(aJq)
     {
         mpThread = new Thread( &workerFunc );
         mpThread->start();
@@ -18,7 +17,7 @@ struct Worker
     {
         delete mpThread;
     }
-    void workerFunc()
+    static void workerFunc()
     {
         while (1)
         {
@@ -32,7 +31,7 @@ struct Worker
     }
     uint32_t muiId;
     Thread* mpThread;
-    TaskQueue& mTaskQueue;
+    static TaskQueue mTaskQueue;
 private:
     Worker(const Worker& a);
     Worker& operator=(const Worker& a);
