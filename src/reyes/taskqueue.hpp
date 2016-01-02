@@ -10,7 +10,8 @@ struct TaskQueue
     TaskQueue()
         : mNbWorkingJob(0)
     {}
-    void addJob(const Task& t){
+    void addJob(const Task& t)
+    {
         Mutex::Lock lock(mJobMutex);
         mAllDone.reset();
         mJobs.push_back(t);
@@ -33,13 +34,11 @@ struct TaskQueue
     }
 
     // called when a job is done
-    void markJobDone(Task& t){
+    void markJobDone(Task& t)
+    {
         Mutex::Lock lock(mJobMutex);
-        // _InterlockedDecrement is used to force updating local variable 
-        // with up-to-date variable changed be other thread
-        // a volatile pointer would probably work as well.
         long bbWorking = _InterlockedDecrement(&mNbWorkingJob);
-        if (bbWorking == 0 && mJobs.size() == 0)
+        if (bbWorking <= 0 && mJobs.size() == 0)
         {
             mAllDone.raise();
         }

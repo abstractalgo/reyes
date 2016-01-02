@@ -162,9 +162,6 @@
     <ClInclude Include="taskqueue.hpp">
       <Filter>app\core</Filter>
     </ClInclude>
-    <ClInclude Include="launcher.hpp">
-      <Filter>app\core</Filter>
-    </ClInclude>
     <ClInclude Include="renderer.hpp">
       <Filter>app\reyes</Filter>
     </ClInclude>

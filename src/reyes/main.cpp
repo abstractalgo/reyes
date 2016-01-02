@@ -1,6 +1,7 @@
 #include "backend.hpp"
 #include "pipeline.hpp"
 #include "settings.hpp"
+#include "renderer.hpp"
 
 #include "oglfilm.hpp"
 // shapes
@@ -26,9 +27,14 @@ using namespace reyes;
 
 #define MAKE_SHAPE(_name, _scene, _shp) _shp* _name = ::new(_scene.alloc(sizeof(_shp)).ptr) _shp
 
+TaskQueue* Worker::mTaskQueue = 0;
+
 #ifndef ANIMATE_BACKEND
 void mainApp()
 {
+    reyes::Renderer::render(2);
+    Renderer& r = reyes::Renderer::getInstance();
+    /*
     // REYES
     srand(time(NULL));
     printf("REYES renderer v" REYES_VERSION "\n");
@@ -84,6 +90,7 @@ void mainApp()
 
     // render
     reyes::render(scene, camera);
+    */
 }
 #else
 void InitApp()

@@ -2,8 +2,6 @@
 
 #include <Windows.h>
 
-class Worker;
-
 struct Thread
 {
     Thread(void(*fn)())

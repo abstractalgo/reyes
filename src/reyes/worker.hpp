@@ -21,17 +21,17 @@ struct Worker
     {
         while (1)
         {
-            Task t = mTaskQueue.getNext();
+            Task t = mTaskQueue->getNext();
             if (t.fn)
             {
                 t.fn(t.data);
-                mTaskQueue.markJobDone(t);
             }
+            mTaskQueue->markJobDone(t);
         }
     }
     uint32_t muiId;
     Thread* mpThread;
-    static TaskQueue mTaskQueue;
+    static TaskQueue* mTaskQueue;
 private:
     Worker(const Worker& a);
     Worker& operator=(const Worker& a);
