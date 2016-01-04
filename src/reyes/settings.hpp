@@ -14,6 +14,9 @@ namespace reyes { static const vec2 RASTER_THRESHOLD = { 16, 16 }; }
 #define SCENEMEM_SIZE 1<<23
 //#define DEBUG_GRID
 //#define DEBUG_PRIM
+#ifdef DEBUG_GRID
+//#define DEBUG_THREAD
+#endif
 
 // ---- </settings> ---------------------------
 

@@ -87,7 +87,15 @@ namespace reyes
         void shade(Microgrid& grid)
         {
 #ifdef DEBUG_GRID
+#ifdef DEBUG_THREAD
+            DWORD ctid = GetCurrentThreadId();
+            DWORD b = ctid%10;
+            DWORD g = ((ctid-b)/10)%10;
+            DWORD r = ((ctid-b-10*g)/100)/100;
+            color rnd = { (float)r/10.f, (float)g/10.f, (float)b/10.f, 1 };
+#else
             color rnd = { rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, 1 };
+#endif
 #endif
             for (uint16_t i = 0; i < GRID_SIZE; i++)
             {

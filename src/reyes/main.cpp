@@ -35,7 +35,7 @@ void mainApp()
     // mt test
     {
         // mt version
-        ryRenderer.render(3);
+        ryRenderer.render();
         // no-mt version
         //for (int i = 0; i < 10000; i++) reyes::Renderer::testJob(&i);
     }
