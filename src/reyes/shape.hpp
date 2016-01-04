@@ -91,8 +91,8 @@ namespace reyes
             DWORD ctid = GetCurrentThreadId();
             DWORD b = ctid%10;
             DWORD g = ((ctid-b)/10)%10;
-            DWORD r = ((ctid-b-10*g)/100)/100;
-            color rnd = { (float)r/10.f, (float)g/10.f, (float)b/10.f, 1 };
+            DWORD r = ((ctid-b-10*g)/100)%100;
+            color rnd = { (float)r/9.0f, (float)g/9.0f, (float)b/9.0f, 1 };
 #else
             color rnd = { rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, 1 };
 #endif
