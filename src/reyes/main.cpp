@@ -25,15 +25,21 @@
 
 using namespace reyes;
 
-#define MAKE_SHAPE(_name, _scene, _shp) _shp* _name = ::new(_scene.alloc(sizeof(_shp)).ptr) _shp
+reyes::Renderer ryRenderer;
 
-TaskQueue* Worker::mTaskQueue = 0;
+#define MAKE_SHAPE(_name, _scene, _shp) _shp* _name = ::new(_scene.alloc(sizeof(_shp)).ptr) _shp
 
 #ifndef ANIMATE_BACKEND
 void mainApp()
 {
-    reyes::Renderer::render(2);
-    Renderer& r = reyes::Renderer::getInstance();
+    // mt test
+    {
+        // mt version
+        ryRenderer.render(3);
+        // no-mt version
+        //for (int i = 0; i < 10000; i++) reyes::Renderer::testJob(&i);
+    }
+
     /*
     // REYES
     srand(time(NULL));

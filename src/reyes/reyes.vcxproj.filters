@@ -144,26 +144,11 @@
     <ClInclude Include="settings.hpp">
       <Filter>app\reyes</Filter>
     </ClInclude>
-    <ClInclude Include="event.hpp">
-      <Filter>app\core</Filter>
-    </ClInclude>
-    <ClInclude Include="mutex.hpp">
-      <Filter>app\core</Filter>
-    </ClInclude>
-    <ClInclude Include="thread.hpp">
-      <Filter>app\core</Filter>
-    </ClInclude>
-    <ClInclude Include="task.hpp">
-      <Filter>app\core</Filter>
-    </ClInclude>
-    <ClInclude Include="worker.hpp">
-      <Filter>app\core</Filter>
-    </ClInclude>
-    <ClInclude Include="taskqueue.hpp">
-      <Filter>app\core</Filter>
-    </ClInclude>
     <ClInclude Include="renderer.hpp">
       <Filter>app\reyes</Filter>
+    </ClInclude>
+    <ClInclude Include="aajob.hpp">
+      <Filter>app\core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
