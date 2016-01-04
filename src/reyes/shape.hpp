@@ -44,8 +44,8 @@ namespace reyes
             {
                 _uv = vec2(start_u + u*wu, start_v + v*wv);
                 vx.uv = uv(start_u + u*wu, start_v + v*wv);
-                vx.p = P(_uv);
-                vx.n = N(_uv);
+                vx.p = EvalP(_uv);
+                vx.n = EvalN(_uv);
                 vx.p = material->pShdr(vx);
                 grid.vertices[v * (GRID_DIM + 1) + u] = vx;
             }
@@ -110,8 +110,8 @@ namespace reyes
         // -----------------------------------------------
         // every parametric shape needs to implement these
         virtual void split(Scene& scene) = 0;
-        virtual position P(uv _uv) = 0;
-        virtual normal N(uv _uv) = 0;
+        virtual position EvalP(uv _uv) = 0;
+        virtual normal EvalN(uv _uv) = 0;
         // -----------------------------------------------
     };
 }

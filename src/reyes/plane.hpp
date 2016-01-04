@@ -8,11 +8,11 @@ namespace reyes
     {
         struct Plane : public Shape
         {
-            normal N(uv uv)
+            normal EvalN(uv uv)
             {
                 return vec3(0, 0, 1);
             }
-            position P(uv uv)
+            position EvalP(uv uv)
             {
                 return vec3(-0.5f + uv.x, 0.5f - uv.y, 0);
             }

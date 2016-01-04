@@ -12,11 +12,11 @@
 //            Klein()
 //            {}
 //
-//            normal N(uv uv)
+//            normal EvalN(uv uv)
 //            {
 //                return vec3(0, 0, 1);
 //            }
-//            position P(uv uv)
+//            position EvalP(uv uv)
 //            {
 //                float u = (uv.x *2.0f)*M_PI;
 //                float v = (uv.y *2.0f) *M_PI;

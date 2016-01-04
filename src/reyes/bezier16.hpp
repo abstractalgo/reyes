@@ -29,13 +29,13 @@ namespace reyes {
                 return P[0] * b0 + P[1] * b1 + P[2] * b2 + P[3] * b3;
             }
 
-            normal N(uv _uv)
+            normal EvalN(uv _uv)
             {
                 float epsi = 0.01f;
                 
-                vec3 pa = P(_uv);
-                vec3 pb = P(uv(_uv.x + epsi, _uv.y));
-                vec3 pc = P(uv(_uv.x, _uv.y + epsi));
+                vec3 pa = EvalP(_uv);
+                vec3 pb = EvalP(uv(_uv.x + epsi, _uv.y));
+                vec3 pc = EvalP(uv(_uv.x, _uv.y + epsi));
 
                 vec3 b(pb.x - pa.x, pb.y - pa.y, pb.z - pa.z);
                 vec3 a(pc.x - pa.x, pc.y - pa.y, pc.z - pa.z);
@@ -45,7 +45,7 @@ namespace reyes {
                     n = vec3(-n.x, -n.y, -n.z);*/
                 return n.normalize();
             }
-            position P(uv uv)
+            position EvalP(uv uv)
             {
                 vec3 uCurve[4];
                 for (int i = 0; i < 4; ++i)

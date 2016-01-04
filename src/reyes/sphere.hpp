@@ -8,12 +8,12 @@ namespace reyes
     {
         struct Sphere : public Shape
         {
-            position P(uv uv)
+            position EvalP(uv uv)
             {
-                vec3 n = N(uv);
+                vec3 n = EvalN(uv);
                 return n;
             }
-            normal N(uv uv)
+            normal EvalN(uv uv)
             {
                 float theta = uv.x*2.0f*M_PI;
                 float phi = uv.y* M_PI;

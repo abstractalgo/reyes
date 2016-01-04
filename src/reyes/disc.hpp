@@ -7,11 +7,11 @@ namespace reyes {
 
         struct Disc : public Shape
         {
-            normal N(uv uv)
+            normal EvalN(uv uv)
             {
                 return vec3(0, 0, 1);
             }
-            position P(uv uv)
+            position EvalP(uv uv)
             {
                 float angle = 2.0f*M_PI*(1.0f - uv.x);
                 vec3 v = vec3(cos(angle), -sin(angle), 0).normalize();
