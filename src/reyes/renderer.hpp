@@ -13,20 +13,7 @@ namespace reyes
 {
     struct Renderer
     {
-        /*Scene* scene;
-        Camera* camera;
-
-        Renderer(Scene* _scene, Camera* _camera)
-        : scene(_scene)
-        , camera(_camera)
-        {}*/
-
-        //mem::Pool<Microgrid, GIRDPOOL_SIZE>* grids;
-        HANDLE hRenderThread;
-        uint8_t threadCnt;
-
         Renderer()
-        //, grids(new mem::Pool<Microgrid, GIRDPOOL_SIZE>)
         {
             hRenderThread = CreateThread(0, 0, &renderProc, this, CREATE_SUSPENDED, 0);
         }
@@ -44,6 +31,10 @@ namespace reyes
             SuspendThread(hRenderThread);
             CloseHandle(hRenderThread);
         }
+    private:
+
+        HANDLE hRenderThread;
+        uint8_t threadCnt;
 
         static DWORD WINAPI renderProc(void* pR)
         {
@@ -67,9 +58,6 @@ namespace reyes
             return 0;
         }
 
-        
-
-    private:
         struct _InRenderData
         {
             Scene* scene;
