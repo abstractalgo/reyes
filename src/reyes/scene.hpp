@@ -14,6 +14,11 @@ namespace reyes
             , memory(SCENEMEM_SIZE)
         {}
 
+        ~Scene()
+        {
+            assert(0 == cnt);
+        }
+
         mem::blk alloc(size_t size)
         {
             mem::blk block = memory.alloc(size);

@@ -3,7 +3,7 @@ reyes renderer
 
 ![cover2](log/cover2.png "cover2")
 
-current version v2.05
+current version v2.2
 
 ###TODO
 
@@ -31,18 +31,17 @@ current version v2.05
 
 ####v3.0 nautilus
 
-- threaded renderer
-- profiling
+- ~~threaded renderer~~
 - ~~even better memory managment~~
 - A-buffer
-    - stochastic (multi)sampling
+    - *stochastic (multi)sampling*
     - transparency support
     - inject optimizations
 - dof
 - motion blur
+- ~~task (job) manager~~
+- profiling
 - bucketing
-- task (job) manager
-- (more advanced rasterizer)
 - (progress indicator)
 - (camera; perspective and orthographic)
 - (Klein bottle)

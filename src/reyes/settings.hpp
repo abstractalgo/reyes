@@ -6,7 +6,7 @@
 
 // ---- <settings> ----------------------------
 
-#define REYES_VERSION "2.0"
+#define REYES_VERSION "2.2"
 #define GRID_DIM 8
 #define GRID_TYPE TRIANGLE_GRID
 namespace reyes { static const vec2 RASTER_THRESHOLD = { 16, 16 }; }
