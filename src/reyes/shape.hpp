@@ -109,7 +109,7 @@ namespace reyes
 
         // -----------------------------------------------
         // every parametric shape needs to implement these
-        virtual void split(Scene& scene) = 0;
+        virtual void split(Scene& scene, Shape** shapes=0) = 0;
         virtual position EvalP(uv _uv) = 0;
         virtual normal EvalN(uv _uv) = 0;
         // -----------------------------------------------

@@ -35,7 +35,7 @@ namespace reyes
         {
             threadCnt = _threadCnt - 1;
 
-            // startuj glavnu nit
+            // kickoff
             ResumeThread(hRenderThread);
         }
 
@@ -52,14 +52,8 @@ namespace reyes
             // init other threads besides main rendering
             aajob::Init(_renderer->threadCnt);
 
-            // dodaj job-ove
-            int vals[10000];
-            for (int i = 0; i < 10000; i++)
-            {
-                vals[i] = i;
-                aajob::JobDecl job(testJob, vals + i);
-                aajob::RunJob(job);
-            }
+            // add jobs
+            // TODO
 
             // go!
             aajob::Flush();
@@ -68,63 +62,57 @@ namespace reyes
             aajob::Cleanup();
 
             // notify that render has ended
-            _renderer->endOfRender();
+            // TODO
 
             return 0;
         }
 
-        void endOfRender()
-        {
-            SuspendThread(hRenderThread);
-        }
-
-        static AAJOB_ENTRY_POINT(testJob)
-        {
-            int* pN = static_cast<int*>(jobDataPtr);
-            DWORD tid = GetCurrentThreadId();
-            printf("%d [%d]\n", *pN, tid);
-
-            int j = 0;
-            for (int i = 0; i < 100000; i++)
-            {
-                j += i;
-            }
-        }
+        
 
     private:
-        static void dice(void* data)
+        struct _InRenderData
         {
-            // get shape
-            // allocate memory
-            // dice
-            // create bound task
-            // dispatch
-            Shape* _shape = static_cast<Shape*>(data);
-            Microgrid* grid = new Microgrid;
-            _shape->dice(*grid);
-
-        }
-
-        static void bound(void* data)
+            Scene* scene;
+            Shape* shape;
+            Camera* camera;
+        };
+        static AAJOB_ENTRY_POINT(renderShape)
         {
-            // get grid
-            // get shape
-            // calc bounds
-            // compare to threshold
-            // either create 4x split taks, or send to shade
-            Microgrid* _shape = static_cast<Microgrid*>(data);
-        }
+            _InRenderData* pRD = static_cast<_InRenderData*>(jobDataPtr);
+            Scene* scene = pRD->scene;
+            Shape* shape = pRD->shape;
+            Camera* camera = pRD->camera;
 
-        static void shade(void* data)
-        {
-            // get grid
-            // shade
-            // create sample task
-        }
+            Microgrid grid;
 
-        static void sample(void* data)
-        {
-            // rasterize
+            shape->dice(grid);                                                  // DICE
+
+            AABB2 bb = grid.aabb();                                             // BOUND
+            if (!isInFrustum(bb))                                               // | try to cull
+                goto memoryCleanup;                                             // |
+
+            vec2 rasSz = camera->film->estimate(bb.max - bb.min);               // SPLIT - estimate grid's raster size
+            if (requiresSplit(rasSz, RASTER_THRESHOLD))                         // |
+            {                                                                   // |
+                Shape* sptrs[4];                                                // |
+                shape->split(*scene, sptrs);                                    // | do split
+                for (uint8_t i = 0; i < 4; i++)
+                {
+                    _InRenderData& rd = *new _InRenderData;
+                    rd.camera = camera;
+                    rd.scene = scene;
+                    rd.shape = sptrs[i];
+                    aajob::JobDecl job(renderShape, &rd); //// SH*T!
+                }
+            }                                                                   // |
+            else                                                                // | don't split, so continue to raster
+            {
+                shape->shade(grid);                                             // SHADE
+
+                camera->film->rasterize(grid);                                  // SAMPLE
+            }
+        memoryCleanup:
+            delete pRD;
         }
     };
 }

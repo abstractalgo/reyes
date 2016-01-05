@@ -55,7 +55,7 @@ namespace reyes {
                 return evalBezierCurve4(uCurve, uv.y);
             }
 
-            void split(Scene& scene)
+            void split(Scene& scene, Shape** shapes=0)
             {
                 mem::blk mblks[4];
                 for (char i = 0; i < 4; i++)
@@ -69,6 +69,8 @@ namespace reyes {
                         p->points[i].z = points[i].z;
                     }
                     Shape::splitData(p, i);
+                    if (shapes)
+                        shapes[i] = p;
                 }
             }
         };

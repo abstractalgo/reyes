@@ -18,7 +18,7 @@ namespace reyes {
                 float l = uv.y;
                 return v*l;
             }
-            void split(Scene& scene)
+            void split(Scene& scene, Shape** shapes=0)
             {
                 mem::blk mblks[4];
                 for (char i = 0; i < 4; i++)
@@ -26,6 +26,8 @@ namespace reyes {
                     mblks[i] = scene.alloc(sizeof(Disc));
                     Disc* p = ::new(mblks[i].ptr) Disc;
                     Shape::splitData(p, i);
+                    if (shapes)
+                        shapes[i] = p;
                 }
                 
             }

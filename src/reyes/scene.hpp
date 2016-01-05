@@ -1,11 +1,13 @@
 #pragma once
 
 #include "mem.hpp"
+#include "aajob.hpp"
 
 namespace reyes
 {
     struct Scene
     {
+        aajob::Mutex mJobMutex;
         mem::ObjectArray memory;
         uint16_t cnt;
 
@@ -21,6 +23,7 @@ namespace reyes
 
         mem::blk alloc(size_t size)
         {
+            aajob::Mutex::Lock lock(mJobMutex);
             mem::blk block = memory.alloc(size);
             cnt++;
             return block;
