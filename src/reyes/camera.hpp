@@ -5,15 +5,13 @@
 
 namespace reyes
 {
-    struct CameraTransform
+    /* Camera interface. */
+    struct Camera
     {
         mx4 view;
         mx4 projection;
-    };
+        FilmI* film;
 
-    /* Camera interface. */
-    struct CameraI : public CameraTransform
-    {
         /* Mark perspective frustum. */
         void perspective(float fov, float aspect, float near, float far)
         {
@@ -41,16 +39,5 @@ namespace reyes
         {
             projection.lookAt(eye, target, up);
         }
-    };
-
-    template<class FilmTy, uint16_t width, uint16_t height>
-    /* Camera and its film. */
-    struct Camera : public CameraI
-    {
-        FilmTy film;
-
-        Camera()
-            : film(width, height)
-        {}
     };
 }

@@ -46,7 +46,9 @@ void mainApp()
     printf("REYES renderer v" REYES_VERSION "\n");
 
     // camera and scene
-    Camera<OGLFilm, 480, 480> camera;
+    OGLFilm camFilm(480, 480);
+    Camera camera;
+    camera.film = &camFilm;
     Scene scene;
 
     // material for sphere
@@ -95,8 +97,14 @@ void mainApp()
     disc->material = &uv_mat;
 
     // render
+    glUseProgram(0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+
     reyes::render(scene, camera);
-    
+
+    SwapBuffersBackend();
 }
 #else
 void InitApp()
