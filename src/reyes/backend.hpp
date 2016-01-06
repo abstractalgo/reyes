@@ -2,7 +2,7 @@
 
 // <options> ---------------------------------------------------------------------------
 #define USE_CONSOLE_BACKEND
-//#define USE_NVTX_BACKEND
+#define USE_NVTX_BACKEND
 //#define USE_ANTTWBAR_BACKEND
 //#define ANIMATE_BACKEND
 // </options> --------------------------------------------------------------------------
@@ -122,20 +122,37 @@ extern void(*__resizeF)(unsigned int, unsigned int);
 // loading perf tracking (nv tools extension)
 #ifdef USE_NVTX_BACKEND
 #   include "thirdparty/nvToolsExt.h"
-#   define perfMarkerStart(a) nvtxRangePushA(a)
-#   define perfMarkerEnd(a) nvtxRangePop()
+#   define perfMarkerStart(_text) nvtxRangePushA((_text))
+#   define perfMarkerEnd(_nil) nvtxRangePop()
+#   define perfMarkerStartEx(_text,_col) \
+{                                                       \
+    nvtxEventAttributes_t initAttrib = { 0 };           \
+    initAttrib.version = NVTX_VERSION;                  \
+    initAttrib.size = NVTX_EVENT_ATTRIB_STRUCT_SIZE;    \
+    initAttrib.color = (_col);                          \
+    initAttrib.colorType = NVTX_COLOR_ARGB;             \
+    initAttrib.message.ascii = _text;                   \
+    initAttrib.messageType = NVTX_MESSAGE_TYPE_ASCII;   \
+    nvtxRangePushEx(&initAttrib);                       \
+}
 #else
-#   define perfMarkerStart(a) 
-#   define perfMarkerEnd(a) 
+#   define perfMarkerStart(_text) 
+#   define perfMarkerEnd(_nil) 
+#   define perfMarkerStartEx(_text,_col) 
 #endif
-struct _PerfMarker
+struct PerfMarker_t
 {
-    _PerfMarker(const char* name) { perfMarkerStart(name); }
-    ~_PerfMarker() { perfMarkerEnd(); }
+    PerfMarker_t(const char* name, unsigned int col=0)
+    {
+        if (0 == col)   perfMarkerStart(name);
+        else            perfMarkerStartEx(name, col);
+    }
+    ~PerfMarker_t() { perfMarkerEnd(); }
 };
 #define NVTX_B_COMBINE1(X,Y) X##Y
 #define NVTX_B_COMBINE(X,Y) NVTX_B_COMBINE1(X,Y)
-#define PerfMarker(markerName) _PerfMarker NVTX_B_COMBINE(marker,__LINE__) (markerName)
+#define PerfMarker(markerName,col) PerfMarker_t NVTX_B_COMBINE(marker,__LINE__) (markerName, col)
+
 
 // loading antTweakBar libraries
 #ifdef USE_ANTTWBAR_BACKEND
@@ -195,6 +212,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
     ShowWindow(g_hWnd, SW_SHOW);
     SetForegroundWindow(g_hWnd);
     SetFocus(g_hWnd);
+
+    nvtxNameOsThreadA(GetCurrentThreadId(), "MAIN_THREAD");
 
 #ifdef USE_ANTTWBAR_BACKEND
     TwInit(TW_OPENGL, NULL);
