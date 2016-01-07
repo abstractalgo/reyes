@@ -91,6 +91,7 @@ namespace reyes
                     rd.scene = scene;
                     rd.shape = sptrs[i];
                     aajob::JobDecl job(renderShape, &rd); //// SH*T!
+                    aajob::RunJob(job);
                 }
             }                                                                   // |
             else                                                                // | don't split, so continue to raster
