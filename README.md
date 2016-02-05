@@ -89,19 +89,19 @@ Source code is divided as following:
 ![ls](log/ls.png "ls")
 
 - **core/**: responsible for systems independent of the reyes algorithm
-	- **aajob.hpp**: multithreading management
-	- **backend.hpp**: win api and opengl init
-	- **mem.hpp**: memory management
+	- [aajob.hpp](src/reyes/aajob.hpp): multithreading management
+	- [backend.hpp](src/reyes/backend.hpp): win api and opengl init
+	- [mem.hpp](src/reyes/mem.hpp): memory management
 - **reyes/**
-	- **settings.hpp**: modifies behavior and data structures
-	- **pipeline.hpp**: main rendering procedure and heart of the system
-	- **shape.hpp**: main abstraction of the input
-	- **shading.hpp**: abstraction of a material and shading system
-	- **grid.hpp**: microgrid abstraction
-	- **scene.hpp**: convenient data structure
+	- [settings.hpp](src/reyes/settings.hpp): modifies behavior and data structures
+	- [pipeline.hpp](src/reyes/pipeline.hpp): main rendering procedure and heart of the system
+	- [shape.hpp](src/reyes/shape.hpp): main abstraction of the input
+	- [shading.hpp](src/reyes/shading.hpp): abstraction of a material and shading system
+	- [grid.hpp](src/reyes/grid.hpp): microgrid abstraction
+	- [scene.hpp](src/reyes/scene.hpp): convenient data structure
 	- **camera/**
-		- **camera.hpp**: abstraction of the virtual camera
-		- **film.hpp**: abstraction of the image's film
+		- [scene.hpp](src/reyes/scene.hpp): abstraction of the virtual camera
+		- [film.hpp](src/reyes/film.hpp): abstraction of the image's film
 		- **film/**: different implementations of the film
 	- **lib/**: different implementations of the core parts of the shading system
 		- **lights/**
