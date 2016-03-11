@@ -27,7 +27,26 @@ using namespace reyes;
 
 reyes::Renderer ryRenderer;
 
-#define MAKE_SHAPE(_name, _scene, _shp) _shp* _name = ::new(_scene.alloc(sizeof(_shp)).ptr) _shp
+#define MAKE_SHAPE(_scene, _shp, _name) _shp* _name = ::new(_scene.alloc(sizeof(_shp)).ptr) _shp
+#define MAKE_MSHAPE(_scene, _shptype, _shpname, _shpmat) _shptype* _shpname = ::new(_scene.alloc(sizeof(_shptype)).ptr) _shptype; _shpname->material = &_shpmat;
+
+void keyUpHandler(unsigned int key)
+{
+    if (key == INPUT_KEY_A)
+    {
+        RASTER_THRESHOLD.x /= 2;
+        RASTER_THRESHOLD.y /= 2;
+    }
+    else if (key == INPUT_KEY_S)
+    {
+        RASTER_THRESHOLD.x *= 2;
+        RASTER_THRESHOLD.y *= 2;
+    }
+    else if (key == INPUT_KEY_D)
+    {
+        mainApp();
+    }
+}
 
 #ifndef ANIMATE_BACKEND
 void mainApp()
@@ -35,51 +54,45 @@ void mainApp()
     // mt test
     {
         // mt version
-        ryRenderer.render();
+        //ryRenderer.render(3);
         // no-mt version
         //for (int i = 0; i < 10000; i++) reyes::Renderer::testJob(&i);
     }
 
-    
     // REYES
     srand(time(NULL));
-    printf("REYES renderer v" REYES_VERSION "\n");
+    printf("REYES renderer v" REYES_VERSION "(%.1f %.1f)\n", RASTER_THRESHOLD.x, RASTER_THRESHOLD.y);
+    INPUT_f_keyUp(keyUpHandler);
 
     // camera and scene
-    OGLFilm camFilm(480, 480);
-    Camera camera;
-    camera.film = &camFilm;
     Scene scene;
-
-    // material for sphere
+    Camera camera;
+    OGLFilm film(800, 800);
+    camera.film = &film;
+    // sphere
     lib::DisplacementMat sp_mat;
     lib::SinCosSampler sc_sampler;
     sp_mat.uniform.k = 0.03f;
     sp_mat.uniform.sampler = &sc_sampler;
     sp_mat.uniform.T = vec3(-0.5f, 0.5f, 0);
     sp_mat.uniform.S = vec3(0.3f, 0.3f, 0.3f);
-    // material for plane
+    MAKE_MSHAPE(scene, lib::Sphere, sphere, sp_mat);
+    // plane
     lib::SamplerMat sq_mat;
     lib::BMPSampler lena_sampler(512, 512, "lena.bmp");
     sq_mat.uniform.sampler = &lena_sampler;
     sq_mat.uniform.T = vec3(-0.5f, -0.5f, 0);
     sq_mat.uniform.S = vec3(.8f, .8f, .8f);
-    // material for teapot
-    lib::NormalColor n_mat;
-    n_mat.uniform.S = vec3(0.15f, 0.15f, 0.15f);
-    n_mat.uniform.T = vec3(0.45f, 0.3f, 0);
-    // material for disc
+    MAKE_MSHAPE(scene, lib::Plane, square, sq_mat);
+    // disc
     lib::UVColor uv_mat;
     uv_mat.uniform.S = vec3(.4f, .4f, .4f);
     uv_mat.uniform.T = vec3(0.5f, -0.5f, 0);
-
-    // sphere
-    MAKE_SHAPE(sphere, scene, lib::Sphere);
-    sphere->material = &sp_mat;
-    // plane
-    MAKE_SHAPE(square, scene, lib::Plane);
-    square->material = &sq_mat;
+    MAKE_MSHAPE(scene, lib::Disc, disc, uv_mat);
     // teapot
+    lib::NormalColor n_mat;
+    n_mat.uniform.S = vec3(0.15f, 0.15f, 0.15f);
+    n_mat.uniform.T = vec3(0.45f, 0.3f, 0);
     for (uint32_t i = 0; i < kTeapotNumPatches; i++)
     {
         vec3 control_points[16];
@@ -89,12 +102,9 @@ void mainApp()
             control_points[vi].z = teapotVertices[teapotPatches[i][vi] - 1][1];
             control_points[vi].y = teapotVertices[teapotPatches[i][vi] - 1][2];
         }
-        MAKE_SHAPE(patch, scene, lib::Bezier16) (control_points);
+        MAKE_SHAPE(scene, lib::Bezier16, patch) (control_points);
         patch->material = &n_mat;
     }
-    // disc
-    MAKE_SHAPE(disc, scene, lib::Disc);
-    disc->material = &uv_mat;
 
     // render
     glUseProgram(0);

@@ -15,8 +15,7 @@ namespace reyes
 
         while (scene)
         {
-            mem::blk shp_blk = scene.pop();
-            Shape* shape = static_cast<Shape*>(shp_blk.ptr);
+            Shape* shape = static_cast<Shape*>(scene.pop().ptr);
 
             shape->dice(grid);                                                  // DICE
 

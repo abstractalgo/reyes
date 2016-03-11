@@ -2,7 +2,7 @@
 
 // <options> ---------------------------------------------------------------------------
 #define USE_CONSOLE_BACKEND
-#define USE_NVTX_BACKEND
+//#define USE_NVTX_BACKEND
 //#define USE_ANTTWBAR_BACKEND
 //#define ANIMATE_BACKEND
 // </options> --------------------------------------------------------------------------
@@ -213,8 +213,6 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
     SetForegroundWindow(g_hWnd);
     SetFocus(g_hWnd);
 
-    nvtxNameOsThreadA(GetCurrentThreadId(), "MAIN_THREAD");
-
 #ifdef USE_ANTTWBAR_BACKEND
     TwInit(TW_OPENGL, NULL);
 #endif
@@ -288,7 +286,7 @@ HRESULT InitWindow(HINSTANCE hInstance, int nCmdShow)
 
     // Create window
     g_hInst = hInstance;
-    RECT rc = { 0, 0, 480, 480 };
+    RECT rc = { 0, 0, 800, 800 };
     AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
     g_hWnd = CreateWindow(L"FrameWinClass", L"Frame",
         WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
