@@ -1,6 +1,8 @@
 # reyes
 reyes renderer
 
+http://www.slideshare.net/DraganOkanovic/reyes-59489937/
+
 ![cover2](log/cover2.png "cover2")
 
 current version v2.05
