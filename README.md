@@ -1,7 +1,11 @@
 # reyes
 REYES renderer in C++
 
-![cover2](log/cover2.png "cover2")
+complementary slides about the algorithm and the implementation: https://www.slideshare.net/DraganOkanovic/reyes-59489937
+
+| example renderer output | algorithm |
+| --- | --- |
+| ![cover2](log/cover2.png "cover2") | ![image](https://user-images.githubusercontent.com/1355455/147876291-fdb4e1e2-de13-4790-9c90-6509a8552da1.png) |
 
 ### file structure
 
