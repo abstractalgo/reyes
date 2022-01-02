@@ -1,88 +1,9 @@
 # reyes
-reyes renderer
+REYES renderer in C++
 
 ![cover2](log/cover2.png "cover2")
 
-current version v2.2
-
-###TODO
-
-####v1.0 rock
-
-- ~~basic buffer (1 sample per pixel)~~
-- ~~no bucketing~~
-- ~~no splitting and bounding (dice entire primitives, each and every)~~
-- ~~basic pipeline~~
-- ~~basic rasterizer~~
-
-####v2.0 dragonfly
-
-- ~~transformations (translate, scale)~~
-- ~~dicing~~
-- ~~bounding and splitting~~
-- ~~entire reyes pipeline~~
-- ~~finalize quadrilaterals and triangles~~
-- ~~G-buffer~~
-- ~~improved memory management and speed~~
-- ~~geometry: plane, sphere, disc, cubic bezier patch, Utah teapot~~
-- ~~materials~~
-- ~~samplers~~
-- ~~lights: directional, point~~
-
-####v3.0 nautilus
-
-- ~~threaded renderer~~
-- ~~even better memory managment~~
-- A-buffer
-    - *stochastic (multi)sampling*
-    - transparency support
-    - inject optimizations
-- dof
-- motion blur
-- ~~task (job) manager~~
-- profiling
-- bucketing
-- (progress indicator)
-- (camera; perspective and orthographic)
-- (Klein bottle)
-- (SH light)
-
-####v4.0 cheetah
-
-- optimized memory layout
-- (GP)GPU implementation
-- (pseudo) real-time
-
-####v5.0 alien
-
-- fix cracks (no need?)
-- fix elongated micropolygons
-- dice criterium different
-- dynamic dicing
-
-####v6.0 bambi (totally irrelevant)
-
-- shadow mapping
-- extra
-    - additional post-processing effects
-- animation
-- materials (toon, phong, ggxD)
-- additional geometry
-    - catmull-clark subdiv
-    - more bezier
-    - nurbs (b-spline)
-    - loop subdiv
-- ~~shading language~~ (***needs to be more flexible***)
-
-####v113A
-
-- full Renderman specification :D
-
-####challenge
-
-- normal-mapped, textured cube
-
-###Source
+### file structure
 
 Source code is divided as following:
 
@@ -109,3 +30,71 @@ Source code is divided as following:
 		- **samplers/**
 		- **shapes/**
 	- **misc/**: vector math and matrices
+
+---
+
+#### v1.0
+
+- [x] basic buffer (1 sample per pixel)
+- [x] no bucketing
+- [x] no splitting and bounding (dice entire primitives, each and every)
+- [x] basic pipeline
+- [x] basic rasterizer
+
+#### v2.0
+
+- [x] transformations (translate, scale)
+- [x] dicing
+- [x] bounding and splitting
+- [x] entire reyes pipeline
+- [x] finalize quadrilaterals and triangles
+- [x] G-buffer
+- [x] improved memory management and speed
+- [x] geometry: plane, sphere, disc, cubic bezier patch, Utah teapot
+- [x] support for different materials (custom "shaders")
+- [x] texture samplers in "shaders"
+- [x] support for lights: directional, point
+
+#### v3.0
+
+- [x] threaded renderer
+- [x] improved memory managment
+- [ ] A-buffer
+    - [ ] *stochastic (multi)sampling*
+    - [ ] transparency support
+    - [ ] inject optimizations
+- [ ] dof
+- [ ] motion blur
+- [x] task (job) manager
+- [ ] profiling
+- [ ] bucketing
+- [ ] (progress indicator)
+- [ ] (camera; perspective and orthographic)
+- [ ] (Klein bottle)
+- [ ] (SH light)
+
+#### v4.0
+
+- [ ] optimized memory layout
+- [ ] (GP)GPU implementation
+- [ ] (pseudo) real-time
+
+#### v5.0
+
+- [ ] alogirthms for fixing cracks
+- [ ] fix elongated micropolygons
+- [ ] dice criterium different
+- [ ] dynamic dicing
+
+#### v6.0
+
+- [ ] shadow mapping
+- [ ] additional post-processing effects
+- [ ] animations
+- [ ] materials (toon, phong, ggxD)
+- [ ] additional geometry
+    - [ ] catmull-clark subdiv
+    - [ ] more bezier
+    - [ ] nurbs (b-spline)
+    - [ ] loop subdiv
+- [ ] full Renderman specification
